@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorAlpha" format="color|reference" />
+    <attr name="colorChoose" format="color|reference" />
+    <attr name="colorWhite" format="color|reference" />
+    <attr name="mapCata" format="reference" />
+    <attr name="mapMore" format="reference" />
+    <attr name="mapRandom" format="reference" />
+    <attr name="mapPreview" format="reference" />
+    <attr name="mapNext" format="reference" />
+    <attr name="mapPreviewNo" format="reference" />
+    <attr name="mapNextNo" format="reference" />
+    <attr name="mapPlay" format="reference" />
+    <attr name="mapStop" format="reference" />
+    <attr name="mapStopNo" format="reference" />
+    <attr name="mapPause" format="reference" />
+    <attr name="mapRepeat" format="reference" />
+    <attr name="mapRepeatNo" format="reference" />
+    <attr name="dimenBtnSize" format="dimension|reference"/>
+    <attr name="mapC1" format="reference" />
+    <attr name="mapC2" format="reference" />
+    <attr name="mapC3" format="reference" />
+</resources>

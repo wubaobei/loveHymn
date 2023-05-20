@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/set_padding">
+
+            <TextView
+                android:id="@+id/all_read_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="说明文档" />
+
+            <Button
+                android:id="@+id/readMeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="使用说明" />
+
+
+            <Button
+                android:id="@+id/askanswerBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="常见问题" />
+
+            <Button
+                android:id="@+id/addfriend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bg_msg"
+                android:text="加百度网盘好友教程" />
+
+            <Button
+                android:id="@+id/addpackage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/addfriend"
+                android:text="附加包教程" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

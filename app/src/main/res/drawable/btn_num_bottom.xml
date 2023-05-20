@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 数字文件夹的背景，下同 -->
+    <solid android:color="?attr/colorWhite" />
+
+    <corners android:bottomLeftRadius="10dip"
+        android:bottomRightRadius="10dip"/>
+</shape>

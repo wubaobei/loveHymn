@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">唱诗歌</string>
+
+    <string name="play">播放</string>
+    <string name="repeat">单曲循环</string>
+    <string name="repeat_no">不循环</string>
+    <string name="pause">暂停</string>
+
+
+    <string name="more">设置</string>
+    <string name="downloadaddress">下载与更新</string>
+    <string name="sample">样例</string>
+    <string name="catalog_song">目录</string>
+    <string name="return_string">返回</string>
+    <string name="example">示例</string>
+    <string name="download_url">下载地址</string>
+
+    <string name="dk1">最近播放列表</string>
+    <string name="dk2">最近播放列表</string>
+    <string name="dk3">无播放列表</string>
+    <string name="db1">三旧一新</string>
+    <string name="db2">三旧一新</string>
+    <string name="db3">错误</string>
+</resources>

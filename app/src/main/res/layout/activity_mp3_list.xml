@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".client.MainActivity">
+
+        <RelativeLayout
+            android:id="@+id/all"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/rLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/mp3_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:background="?attr/colorAlpha"
+                    android:gravity="center"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="3dp"
+                    android:shadowColor="#000000"
+                    android:shadowDx="0.2"
+                    android:shadowDy="0.2"
+                    android:shadowRadius="0.2"
+                    android:text="音乐播放器"
+                    android:textColor="@color/mainpagebtncolor"
+                    android:textSize="22sp"
+                    android:typeface="serif" />
+
+                <RelativeLayout
+                    android:id="@+id/mp3Layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mp3_title"
+                    android:orientation="horizontal">
+
+                    <TableLayout
+                        android:id="@+id/tableLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/colorAlpha"
+                        android:stretchColumns="*">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <ImageButton
+                                    android:id="@+id/previewBtn"
+                                    android:layout_width="?attr/dimenBtnSize"
+                                    android:layout_height="?attr/dimenBtnSize"
+                                    android:layout_gravity="center"
+                                    android:background="#00000000"
+                                    android:scaleType="fitXY"
+                                    app:srcCompat="?attr/mapPlay" />
+
+                                <TextView
+                                    android:id="@+id/previewBtnT"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="上一首"
+                                    android:textColor="@color/mainpagebtncolor" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <ImageButton
+                                    android:id="@+id/playBtn"
+                                    android:layout_width="?attr/dimenBtnSize"
+                                    android:layout_height="?attr/dimenBtnSize"
+                                    android:layout_gravity="center"
+                                    android:background="#00000000"
+                                    android:scaleType="fitXY"
+                                    app:srcCompat="?attr/mapPlay" />
+
+                                <TextView
+                                    android:id="@+id/playBtnT"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="随机"
+                                    android:textColor="@color/mainpagebtncolor" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <ImageButton
+                                    android:id="@+id/repeatBtn"
+                                    android:layout_width="?attr/dimenBtnSize"
+                                    android:layout_height="?attr/dimenBtnSize"
+                                    android:layout_gravity="center"
+                                    android:background="#00000000"
+                                    android:scaleType="fitXY"
+                                    app:srcCompat="?attr/mapRepeat" />
+
+                                <TextView
+                                    android:id="@+id/repeatBtnT"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="循环模式"
+                                    android:textColor="@color/mainpagebtncolor" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <ImageButton
+                                    android:id="@+id/nextBtn"
+                                    android:layout_width="?attr/dimenBtnSize"
+                                    android:layout_height="?attr/dimenBtnSize"
+                                    android:layout_gravity="center"
+                                    android:background="#00000000"
+                                    android:scaleType="fitXY"
+                                    app:srcCompat="?attr/mapPlay" />
+
+                                <TextView
+                                    android:id="@+id/nextBtnT"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="下一首"
+                                    android:textColor="@color/mainpagebtncolor" />
+                            </LinearLayout>
+
+                        </TableRow>
+
+                    </TableLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/seekBarLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tableLayout2"
+                        android:background="?attr/colorAlpha"
+                        android:orientation="horizontal">
+
+                        <SeekBar
+                            android:id="@+id/seekBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="25dp"
+                            android:layout_toStartOf="@+id/progressText"
+                            android:maxHeight="2dp"
+                            android:progressDrawable="@drawable/seek_bar_bg"
+                            android:thumb="@mipmap/dot" />
+
+                        <TextView
+                            android:id="@+id/progressText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="25dp"
+                            android:text="0/0" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <ScrollView
+                android:id="@+id/list_sv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/rLayout"
+                android:layout_below="@+id/rLayout2"
+                android:background="#eeeeff">
+
+                <LinearLayout
+                    android:id="@+id/mp3_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </ScrollView>
+
+            <RelativeLayout
+                android:id="@+id/lyric_ls"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/rLayout"
+                android:layout_below="@+id/rLayout2"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/showNow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/btn_shape_left"
+                    android:minWidth="@dimen/lyric_min_width"
+                    android:minHeight="@dimen/lyric_min_height"
+                    android:text="⇙" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/lyric_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/rLayout"
+                android:layout_below="@+id/rLayout2"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/hideNow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/btn_shape_lefttop"
+                        android:minWidth="@dimen/lyric_min_width"
+                        android:minHeight="@dimen/lyric_min_height"
+                        android:text="⇗" />
+
+                    <Button
+                        android:id="@+id/sizeP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/hideNow"
+                        android:background="@drawable/btn_shape_up"
+                        android:minWidth="@dimen/lyric_min_width"
+                        android:minHeight="@dimen/lyric_min_height"
+                        android:text="+" />
+
+                    <Button
+                        android:id="@+id/sizeD"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/sizeP"
+                        android:background="@drawable/btn_shape_up"
+                        android:minWidth="@dimen/lyric_min_width"
+                        android:minHeight="@dimen/lyric_min_height"
+                        android:text="-" />
+
+                </RelativeLayout>
+
+                <ScrollView
+                    android:id="@+id/lyric_sv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#eeeeff">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/lyric_show_list"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="第一段歌词"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="第二段歌词"/>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </ScrollView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical">
+
+                <TableLayout
+                    android:id="@+id/tableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:stretchColumns="*">
+
+                    <TableRow
+                        android:id="@+id/tr_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/lyricTv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingTop="5sp"
+                            android:paddingBottom="5sp"
+                            android:text="歌词"
+                            android:textColor="@color/mainpagebtncolor"
+                            android:textSize="@dimen/mp3_btn_size" />
+
+                        <TextView
+                            android:id="@+id/jumpTv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingTop="5sp"
+                            android:paddingBottom="5sp"
+                            android:text="回蓝版"
+                            android:textColor="@color/mainpagebtncolor"
+                            android:textSize="@dimen/mp3_btn_size" />
+
+                        <TextView
+                            android:id="@+id/addToLable"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingTop="5sp"
+                            android:paddingBottom="5sp"
+                            android:text="标签"
+                            android:textColor="@color/mainpagebtncolor"
+                            android:textSize="@dimen/mp3_btn_size" />
+
+                    </TableRow>
+
+                </TableLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

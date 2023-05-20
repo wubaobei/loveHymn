@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:shortcutId="background_settings"
+        android:enabled="true"
+        android:icon="@drawable/music"
+        android:shortcutShortLabel="@string/dk1"
+        android:shortcutLongLabel="@string/dk2"
+        android:shortcutDisabledMessage="@string/dk3">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="pri.prepare.lovehymn"
+            android:targetClass="pri.prepare.lovehymn.client.Mp3ListActivity" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="background_settings2"
+        android:enabled="true"
+        android:icon="@drawable/bible"
+        android:shortcutShortLabel="@string/db1"
+        android:shortcutLongLabel="@string/db2"
+        android:shortcutDisabledMessage="@string/db3">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="pri.prepare.lovehymn"
+            android:targetClass="pri.prepare.lovehymn.client.DailyBibleActivity" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+</shortcuts>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".client.StartPageActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:background="#ffaa55"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/sa1e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingLeft="20dp"
+
+            android:paddingTop="120dp"
+            android:paddingRight="20dp"
+            android:text="很抱歉，由于初始化失败，app无法打开，请点击下面的按钮清除app数据并重新打开。加载时请保持屏幕常亮！如果仍有问题，请联系作者微信：PrepareWu"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:text="可以把'内部储存设备/诗歌蓝版分享/日志'里的日志发给作者，方便找原因"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/other_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/clear_app_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清空app数据" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

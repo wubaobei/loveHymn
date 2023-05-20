@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorChoose">#dddddd</color>
+    <color name="colorChooseA">#a0dddddd</color>
+    <color name="colorChoose_c">#dddddd</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorWhiteA">#a0ffffff</color>
+    <color name="mainpagebtnback">#eeeeee</color>
+    <color name="mainpagebtnbackA">#c0eeeeee</color>
+    <color name="mainpagebtncolor">#666666</color>
+    <color name="mainpagebtnback2">#00eeeeee</color>
+    <color name="gn_text">#ffffff</color>
+</resources>

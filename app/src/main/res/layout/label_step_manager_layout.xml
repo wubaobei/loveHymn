@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/set_padding">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lm_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="标签管理"
+                    android:textSize="@dimen/dialog_title" />
+
+                <Button
+                    android:id="@+id/lm_add_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_shape_hide"
+                    android:gravity="center_vertical"
+                    android:text="" />
+
+                <Button
+                    android:id="@+id/lm_label_stat_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_shape_hide"
+                    android:gravity="right|center_vertical"
+                    android:text="统计" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="诗歌1\n诗歌1\n诗歌3" />
+
+
+            <Button
+                android:id="@+id/lm_delete_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="删除" />
+
+            <Button
+                android:id="@+id/lm_rename_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="重命名" />
+
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_white"
+                android:scaleType="fitXY"
+                android:src="@mipmap/line" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lm_title2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="足迹管理"
+                    android:textSize="@dimen/dialog_title" />
+
+                <Button
+                    android:id="@+id/lm_step_stat_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_shape_hide"
+                    android:gravity="right|center_vertical"
+                    android:text="我的足迹" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <Button
+                android:id="@+id/lm_step_fmt_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="时间格式" />
+
+            <Button
+                android:id="@+id/auto_step_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="自动足迹" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="注：当在一首诗歌停留时间超过五分钟，且当天没有留下过足迹时，则弹窗让用户选择是否留下足迹"
+                android:textSize="@dimen/tip_size" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_white"
+                android:scaleType="fitXY"
+                android:src="@mipmap/line" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="注：每次的标签和足迹的修改都会在储存卡备份，因此清除app数据并不会丢失足迹和标签(收藏夹和浏览记录清除数据会丢失，以后可能会根据标签添加一些特殊功能)" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

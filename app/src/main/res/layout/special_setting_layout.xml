@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/set_padding">
+
+            <TextView
+                android:id="@+id/special_setting_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/title_padding_bottom"
+                android:text="其他设置"/>
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="切换搜索的结果的分隔符" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="主要是针对于多关键字搜索，你试过多关键字搜索就能明白"
+                android:textSize="@dimen/tip_size" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="竖屏时隐藏状态栏" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="对于挖空屏，刘海屏等状态栏不好用于显示标题栏，目前这类手机占大多数，因此默认显示状态栏。而对于非全面屏和弹出式全面屏等，可以隐藏状态栏以获取更好的显示效果"
+                android:textSize="@dimen/tip_size" />
+
+            <Button
+                android:id="@+id/alpha_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="主题" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="随着版本的更新，主题样式没有同步更新，后续UI都是以标准主题设计的，其他主题都没有维护了，就移到这里终老孤身了。修改重启生效"
+                android:textSize="@dimen/tip_size" />
+            <Button
+                android:id="@+id/clear_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="清除app数据" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="用于数据错误时清空数据"
+                android:textSize="@dimen/tip_size" />
+
+            <Button
+                android:id="@+id/add_pdf_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="导入自定义pdf" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="导入pdf到‘其它’中，可自定义名字，作者等信息(测试功能)"
+                android:textSize="@dimen/tip_size" />
+
+            <Button
+                android:id="@+id/clear_cache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="清除缓存和过期文件" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="包括分享产生的临时文件，旧的日志，过期的资源文件"
+                android:textSize="@dimen/tip_size" />
+
+            <Button
+                android:id="@+id/close_yb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="异步功能" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="在某些情况下，异步功能会导致错误，可以选择关闭"
+                android:textSize="@dimen/tip_size" />
+            <Button
+                android:id="@+id/secret_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="神秘代码" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="这是个开发者功能！！！"
+                android:textSize="@dimen/tip_size" />
+        </LinearLayout>
+    </ScrollView>
+
+</layout>

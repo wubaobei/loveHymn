@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="set_padding">5dp</dimen>
+    <dimen name="frame_margin_bottom">10dp</dimen>
+    <dimen name="btn_in_hide_size">20dp</dimen>
+    <dimen name="btn_in_hide_size_c">28dp</dimen>
+    <dimen name="hide_btn_width">5dp</dimen>
+
+    <dimen name="cata_marin_lr">10dp</dimen>
+
+    <dimen name="setting_btn_min_height">40dp</dimen>
+
+    <dimen name="tip_size">10sp</dimen>
+</resources>

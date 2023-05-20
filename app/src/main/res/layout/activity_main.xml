@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".client.MainActivity">
+
+        <RelativeLayout
+            android:id="@+id/all"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/bg_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="加载pdf失败" />
+
+            <com.github.barteksc.pdfviewer.PDFView
+                android:id="@+id/pdfv0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="#00000000" />
+
+            <com.github.barteksc.pdfviewer.PDFView
+                android:id="@+id/pdfv1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="#00000000" />
+
+            <RelativeLayout
+                android:id="@+id/other_tool_ll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!--这个按钮纯粹的占位用-->
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:layout_alignParentBottom="true"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/tvInToast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/button"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <RelativeLayout
+                    android:id="@+id/rLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/tvbackTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:background="?attr/colorAlpha"
+                        android:gravity="center"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="3dp"
+                        android:shadowColor="#000000"
+                        android:shadowDx="0.2"
+                        android:shadowDy="0.2"
+                        android:shadowRadius="0.2"
+                        android:text="@string/sample"
+                        android:textColor="@color/mainpagebtncolor"
+                        android:textSize="22sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:id="@+id/timeTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="15dp"
+                        android:text="TextView"
+                        android:textColor="#00bb00"
+                        android:background="#00ffffff"
+                        tools:ignore="RtlSymmetry" />
+
+                    <TextView
+                        android:id="@+id/dpdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/hide_btn_width"
+                        android:layout_below="@id/tvbackTitle"
+                        android:background="@drawable/btn_shape_hide_down" />
+
+                    <RelativeLayout
+                        android:id="@+id/mp3Layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvbackTitle"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvback2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/colorAlpha" />
+
+                        <TableLayout
+                            android:id="@+id/tableLayout2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:stretchColumns="*">
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <ImageButton
+                                        android:id="@+id/playBtn"
+                                        android:layout_width="?attr/dimenBtnSize"
+                                        android:layout_height="?attr/dimenBtnSize"
+                                        android:layout_gravity="center"
+                                        android:background="#00000000"
+                                        android:scaleType="fitXY"
+                                        app:srcCompat="?attr/mapPlay" />
+
+                                    <TextView
+                                        android:id="@+id/playBtnT"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:text="@string/play"
+                                        android:textColor="@color/mainpagebtncolor" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <ImageButton
+                                        android:id="@+id/randomBtn"
+                                        android:layout_width="?attr/dimenBtnSize"
+                                        android:layout_height="?attr/dimenBtnSize"
+                                        android:layout_gravity="center"
+                                        android:background="#00000000"
+                                        android:scaleType="fitXY"
+                                        app:srcCompat="?attr/mapRandom" />
+
+                                    <TextView
+                                        android:id="@+id/randomBtnT"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:text="猜你喜欢"
+                                        android:textColor="@color/mainpagebtncolor" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <ImageButton
+                                        android:id="@+id/repeatBtn"
+                                        android:layout_width="?attr/dimenBtnSize"
+                                        android:layout_height="?attr/dimenBtnSize"
+                                        android:layout_gravity="center"
+                                        android:background="#00000000"
+                                        android:scaleType="fitXY"
+                                        app:srcCompat="?attr/mapRepeat" />
+
+                                    <TextView
+                                        android:id="@+id/repeatBtnT"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:text="？？？"
+                                        android:textColor="@color/mainpagebtncolor" />
+                                </LinearLayout>
+
+                            </TableRow>
+
+                        </TableLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/seekBarLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tableLayout2"
+                            android:orientation="horizontal">
+
+                            <SeekBar
+                                android:id="@+id/seekBar"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="25dp"
+                                android:layout_toStartOf="@+id/progressText"
+                                android:maxHeight="2dp"
+                                android:progressDrawable="@drawable/seek_bar_bg"
+                                android:thumb="@mipmap/dot" />
+
+                            <TextView
+                                android:id="@+id/progressText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="25dp"
+                                android:text="0/0" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/hide_btn_width"
+                            android:layout_below="@id/seekBarLayout"
+                            android:background="@drawable/btn_shape_hide_down" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/tv_shape_hide"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/hide_btn_width"
+                        android:layout_above="@+id/tableLayout"
+                        android:background="@drawable/btn_shape_hide" />
+
+                    <TextView
+                        android:id="@+id/tvback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="?attr/colorAlpha" />
+
+                    <TableLayout
+                        android:id="@+id/tableLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:stretchColumns="*">
+
+                        <TableRow
+                            android:id="@+id/tr_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <LinearLayout
+                                android:id="@+id/cata_ll"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+
+                                <ImageButton
+                                    android:id="@+id/cataBtn"
+                                    android:layout_width="?attr/dimenBtnSize"
+                                    android:layout_height="?attr/dimenBtnSize"
+                                    android:layout_gravity="center"
+                                    android:background="#00000000"
+                                    android:scaleType="fitXY"
+                                    app:srcCompat="?attr/mapCata" />
+
+                                <TextView
+                                    android:id="@+id/cataTv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="@string/catalog_song"
+                                    android:textColor="@color/mainpagebtncolor" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/cata_mp3"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+
+                                <ImageButton
+                                    android:id="@+id/mp3PlayerBtn"
+                                    android:layout_width="?attr/dimenBtnSize"
+                                    android:layout_height="?attr/dimenBtnSize"
+                                    android:layout_gravity="center"
+                                    android:background="#00000000"
+                                    android:scaleType="fitXY"
+                                    app:srcCompat="@drawable/music" />
+
+                                <TextView
+                                    android:id="@+id/mp3PlayerTv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="播放列表"
+                                    android:textColor="@color/mainpagebtncolor" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+                                <ImageButton
+                                    android:id="@+id/introBtn"
+                                    android:layout_width="?attr/dimenBtnSize"
+                                    android:layout_height="?attr/dimenBtnSize"
+                                    android:layout_gravity="center"
+                                    android:background="#00000000"
+                                    android:scaleType="fitXY"
+                                    app:srcCompat="@drawable/detail_no" />
+
+                                <TextView
+                                    android:id="@+id/introTv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="@color/mainpagebtncolor" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+
+                                <ImageButton
+                                    android:id="@+id/moreBtn"
+                                    android:layout_width="?attr/dimenBtnSize"
+                                    android:layout_height="?attr/dimenBtnSize"
+                                    android:layout_gravity="center"
+                                    android:background="#00000000"
+                                    android:scaleType="fitXY"
+                                    app:srcCompat="?attr/mapMore" />
+
+                                <TextView
+                                    android:id="@+id/moreTv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="@string/more"
+                                    android:textColor="@color/mainpagebtncolor" />
+                            </LinearLayout>
+
+                        </TableRow>
+
+                    </TableLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

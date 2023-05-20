@@ -1,0 +1,130 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="SmallTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorAlpha">@color/mainpagebtnback</item>
+        <item name="colorChoose">@color/colorChoose</item>
+        <item name="colorWhite">@color/colorWhite</item>
+        <item name="mapCata">@drawable/cata</item>
+        <item name="mapMore">@drawable/more</item>
+        <item name="mapRandom">@drawable/random_play</item>
+        <item name="mapPreview">@drawable/preview</item>
+        <item name="mapPreviewNo">@drawable/preview_no</item>
+        <item name="mapNext">@drawable/next</item>
+        <item name="mapNextNo">@drawable/next_no</item>
+        <item name="mapPlay">@drawable/play</item>
+        <item name="mapPause">@drawable/pause</item>
+        <item name="mapRepeat">@drawable/repeat</item>
+        <item name="mapRepeatNo">@drawable/one2</item>
+        <item name="mapC1">@drawable/c1</item>
+        <item name="mapC2">@drawable/c2</item>
+        <item name="mapC3">@drawable/c3</item>
+        <item name="dimenBtnSize">@dimen/btn_in_hide_size</item>
+    </style>
+
+    <style name="BigTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorAlpha">@color/mainpagebtnback</item>
+        <item name="colorChoose">@color/colorChoose</item>
+        <item name="colorWhite">@color/colorWhite</item>
+        <item name="mapCata">@drawable/cata</item>
+        <item name="mapMore">@drawable/more</item>
+        <item name="mapRandom">@drawable/random_play</item>
+        <item name="mapPreview">@drawable/preview</item>
+        <item name="mapPreviewNo">@drawable/preview_no</item>
+        <item name="mapNext">@drawable/next</item>
+        <item name="mapNextNo">@drawable/next_no</item>
+        <item name="mapPlay">@drawable/play</item>
+        <item name="mapPause">@drawable/pause</item>
+        <item name="mapRepeat">@drawable/repeat</item>
+        <item name="mapRepeatNo">@drawable/one2</item>
+        <item name="mapC1">@drawable/c1</item>
+        <item name="mapC2">@drawable/c2</item>
+        <item name="mapC3">@drawable/c3</item>
+        <item name="dimenBtnSize">@dimen/btn_in_hide_size_c</item>
+    </style>
+
+    <style name="ColorfulTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorAlpha">@color/mainpagebtnback</item>
+        <item name="colorChoose">@color/colorChoose_c</item>
+        <item name="colorWhite">@color/colorWhite</item>
+        <item name="mapCata">@drawable/cata_c</item>
+        <item name="mapMore">@drawable/more_c</item>
+        <item name="mapRandom">@drawable/random_play_c</item>
+        <item name="mapPreview">@drawable/preview_c</item>
+        <item name="mapPreviewNo">@drawable/preview_no_c</item>
+        <item name="mapNext">@drawable/next_c</item>
+        <item name="mapNextNo">@drawable/next_no_c</item>
+        <item name="mapPlay">@drawable/play_c</item>
+        <item name="mapPause">@drawable/pause_c</item>
+        <item name="mapRepeat">@drawable/repeat_c</item>
+        <item name="mapRepeatNo">@drawable/one2_c</item>
+        <item name="mapC1">@drawable/c1_c</item>
+        <item name="mapC2">@drawable/c2_c</item>
+        <item name="mapC3">@drawable/c3_c</item>
+        <item name="dimenBtnSize">@dimen/btn_in_hide_size_c</item>
+    </style>
+
+    <style name="AlphaTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorAlpha">@color/mainpagebtnbackA</item>
+        <item name="colorChoose">@color/colorChooseA</item>
+        <item name="colorWhite">@color/colorWhiteA</item>
+        <item name="mapCata">@drawable/cata</item>
+        <item name="mapMore">@drawable/more</item>
+        <item name="mapRandom">@drawable/random_play</item>
+        <item name="mapPreview">@drawable/preview</item>
+        <item name="mapPreviewNo">@drawable/preview_no</item>
+        <item name="mapNext">@drawable/next</item>
+        <item name="mapNextNo">@drawable/next_no</item>
+        <item name="mapPlay">@drawable/play</item>
+        <item name="mapPause">@drawable/pause</item>
+        <item name="mapRepeat">@drawable/repeat</item>
+        <item name="mapRepeatNo">@drawable/one2</item>
+        <item name="mapC1">@drawable/c1</item>
+        <item name="mapC2">@drawable/c2</item>
+        <item name="mapC3">@drawable/c3</item>
+        <item name="dimenBtnSize">@dimen/btn_in_hide_size</item>
+    </style>
+
+    <style name="SplashActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">#00000000</item>
+        <item name="android:navigationBarColor">#ffaa55</item>
+        <item name="android:statusBarColor">#ffaa55</item>
+    </style>
+
+    <!-- ios 动画 -->
+    <style name="DialogIOSAnim" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/push_ios_in</item>
+        <item name="android:windowExitAnimation">@anim/push_ios_out</item>
+    </style>
+    <!-- 顶部弹出动画 -->
+    <style name="DialogTopAnim" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/push_top_in</item>
+        <item name="android:windowExitAnimation">@anim/push_top_out</item>
+    </style>
+
+    <!-- 底部弹出动画 -->
+    <style name="DialogBottomAnim" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
+    </style>
+
+    <!-- 左边弹出动画 -->
+
+    <!-- 右边弹出动画 -->
+</resources>

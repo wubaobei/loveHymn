@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".client.StartPageActivity">
+
+    <RelativeLayout
+        android:id="@+id/spbg_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/sa1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingLeft="20dp"
+            android:paddingTop="120dp"
+            android:paddingRight="20dp"
+            android:text="用诗章、颂辞、灵歌，彼此对说，\n从心中向主歌唱、颂咏"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/sa2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sa1"
+            android:layout_alignEnd="@id/sa1"
+            android:gravity="right"
+            android:paddingLeft="@dimen/salr"
+            android:paddingRight="@dimen/salr"
+            android:text="弗五19"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            tools:ignore="RtlHardcoded" />
+
+
+        <TextView
+            android:id="@+id/sa3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/sa1"
+            android:layout_alignParentBottom="true"
+            android:gravity="right"
+            android:paddingBottom="@dimen/sat"
+            android:text="By PrepareWu"
+            android:textColor="#ffffff"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/testMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="#ff3333"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

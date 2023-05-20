@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/detLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp">
+
+                    <Button
+                        android:id="@+id/dispearTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_toStartOf="@+id/dispearTimeBtn"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="自动隐藏时间" />
+
+                    <Button
+                        android:id="@+id/dispearTimeBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/set_padding"
+                        android:background="@drawable/btn_white"
+                        android:minHeight="@dimen/setting_btn_min_height" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/screenK"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_toStartOf="@+id/screenKBtn"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="横屏比例" />
+
+                    <Button
+                        android:id="@+id/screenKBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/set_padding"
+                        android:background="@drawable/btn_white"
+                        android:minHeight="@dimen/setting_btn_min_height" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/spgb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_toStartOf="@+id/spbgBtn"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="启动页图片" />
+
+                    <Button
+                        android:id="@+id/spbgBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/set_padding"
+                        android:background="@drawable/btn_white"
+                        android:minHeight="@dimen/setting_btn_min_height" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/showtoolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_toStartOf="@+id/showtoolbarSw"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="默认显示工具栏" />
+
+                    <ImageButton
+                        android:id="@+id/showtoolbarSw"
+                        android:layout_width="@dimen/setting_btn_min_height"
+                        android:layout_height="@dimen/setting_btn_min_height"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="25dp"
+                        android:background="#00000000"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/off" />
+
+                </RelativeLayout>
+
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_white"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/line" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/bibleShowChineseEnglish"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_toStartOf="@+id/bibleShowChineseEnglishBtn"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="相关经节显示" />
+
+                    <Button
+                        android:id="@+id/bibleShowChineseEnglishBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/set_padding"
+                        android:background="@drawable/btn_white"
+                        android:minHeight="@dimen/setting_btn_min_height" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/sectionCt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_toStartOf="@+id/sectionCtBtn"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="经节连续显示" />
+
+                    <ImageButton
+                        android:id="@+id/sectionCtBtn"
+                        android:layout_width="@dimen/setting_btn_min_height"
+                        android:layout_height="@dimen/setting_btn_min_height"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="25dp"
+                        android:background="#00000000"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/off" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/dict_show"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_toStartOf="@+id/dict_show_sw"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="显示生僻字拼音" />
+
+                    <ImageButton
+                        android:id="@+id/dict_show_sw"
+                        android:layout_width="@dimen/setting_btn_min_height"
+                        android:layout_height="@dimen/setting_btn_min_height"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="25dp"
+                        android:background="#00000000"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/off" />
+
+                </RelativeLayout>
+
+
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_white"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/line" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/resStatBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="资源统计" />
+
+                    <Button
+                        android:id="@+id/downloadAddressBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="@string/downloadaddress" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/signSettingBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="手势设置" />
+
+                    <Button
+                        android:id="@+id/lableBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="标签与足迹" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/specialSettingBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="其他设置" />
+
+                    <Button
+                        android:id="@+id/small_tool_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="小工具" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/all_read"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="说明文档" />
+
+                    <Button
+                        android:id="@+id/close_tig_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="关闭小贴士" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="15dp">
+
+                    <TextView
+                        android:id="@+id/authorTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dip"
+                        android:paddingRight="10dip"
+                        android:paddingBottom="5dip"
+                        android:text="作者及感谢" />
+
+                    <TextView
+                        android:id="@+id/tvVersion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dip"
+                        android:paddingRight="10dip"
+                        android:paddingBottom="5dip"
+                        android:text="version"
+                        tools:layout_editor_absoluteY="19dp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/sl_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="bookName"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/button_all"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="所有" />
+
+        <Button
+            android:id="@+id/button_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="有标签" />
+
+        <Button
+            android:id="@+id/button_no_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="无标签" />
+
+    </LinearLayout>
+</layout>

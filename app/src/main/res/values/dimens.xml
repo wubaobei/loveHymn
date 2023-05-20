@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="salr">30dp</dimen>
+    <dimen name="sat">90dp</dimen>
+    <dimen name="sat2">10dp</dimen>
+    <dimen name="dialog_title">28sp</dimen>
+    <dimen name="lyric_min_height">35dp</dimen>
+    <dimen name="lyric_min_width">50dp</dimen>
+    <dimen name="mp3_btn_size">21sp</dimen>
+    <dimen name="title_padding_bottom">5sp</dimen>
+    <integer name="anim_speech">350</integer>
+</resources>

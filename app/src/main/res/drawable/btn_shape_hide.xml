@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 填充的颜色 -->
+    <!--    <solid android:color="@color/colorHideBlue" />-->
+    <!--设置渐变-->
+
+    <gradient
+        android:startColor="@color/mainpagebtnback2"
+        android:endColor="?attr/colorAlpha"
+        android:angle="-90"/>
+    <padding
+        android:bottom="5dp"
+        android:left="15dp"
+        android:right="15dp"
+        android:top="5dp" />
+
+    <!--    <corners-->
+    <!--        android:topLeftRadius="20dip"-->
+    <!--        android:topRightRadius="20dip" />-->
+</shape>

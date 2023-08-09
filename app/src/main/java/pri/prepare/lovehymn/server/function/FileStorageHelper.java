@@ -113,7 +113,9 @@ public class FileStorageHelper {
         File file = new File(storagePath);
         try {
             if (forceUpdate && file.exists()) {
-                file.delete();
+                if (!file.delete()) {
+                    Logger.info("删除" + file.getAbsolutePath() + "失败");
+                }
             }
 
             if (!file.exists()) {

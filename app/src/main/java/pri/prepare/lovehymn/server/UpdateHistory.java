@@ -24,6 +24,7 @@ public class UpdateHistory {
     }
 
     public static final String[] VERSION_HISTORY = {
+            "23/07/31 1.8.4 {修复十几处蓝版pdf或歌词错误}，没别的了",
             "23/03/24 temp 修复一些细节",
             "23/03/23 1.8.3 启动页美化",
             "23/03/20 temp {修复18处蓝版pdf}",

@@ -46,7 +46,7 @@ public class LableCollectDialog extends Dialog implements IShowDialog {
     private MyFile _file;
     private Hymn hymn = null;
 
-    private LabelCollectionLayoutBinding binding = null;
+    private LabelCollectionLayoutBinding binding ;
 
     public LableCollectDialog(@NonNull Context context, MyFile file, I4LC i4LC, I4Set i4Set) {
         super(context);

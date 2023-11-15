@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 getPdfV1().setLayoutParams(lp);
             }
             boolean showTime = Setting.getValueB(Setting.AUTO_STEP_TIME);
-            if (Setting.getValueB(Setting.STATUS_BAR_SHOW) && !showTime)
+            if (Setting.getValueB(Setting.STATUS_BAR_SHOW) && !showTime && lp.width<lp.height)
                 Tool.showStatusBar(getWindow(), this);
             else
                 hideStatusBar();

@@ -144,6 +144,7 @@ public class StartPageActivity extends AppCompatActivity {
     final Runnable rb = new Runnable() {
         @Override
         public void run() {
+            Logger.info("开始获取权限，并尝试更新资源");
             try {
                 //请求文件管理权限
                 requestPermission();
@@ -158,8 +159,11 @@ public class StartPageActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
+                    Logger.info("获取权限成功");
                     Service.getC().forceUpdate(StartPageActivity.this);
                     Setting.updateSetting(Setting.RES_VERSION, 1);
+                }else{
+                    Logger.info("已有权限？？");
                 }
 
                 String s = Service.getC().checkSelf();

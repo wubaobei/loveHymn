@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -213,14 +214,23 @@ public class MainActivity extends AppCompatActivity {
                 getPdfV1().setLayoutParams(lp);
             }
             boolean showTime = Setting.getValueB(Setting.AUTO_STEP_TIME);
-            if (Setting.getValueB(Setting.STATUS_BAR_SHOW) && !showTime)
-                Tool.showStatusBar(getWindow(), this);
-            else
+
+            if (isLandscape()) {
                 hideStatusBar();
+            } else if (Setting.getValueB(Setting.STATUS_BAR_SHOW) && !showTime) {
+                Tool.showStatusBar(getWindow(), this);
+            } else {
+                hideStatusBar();
+            }
 
         } catch (Exception e) {
             Logger.exception(e);
         }
+    }
+
+    private boolean isLandscape() {
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        return rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270;
     }
 
     /**

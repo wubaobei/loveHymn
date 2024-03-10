@@ -206,6 +206,7 @@ public class Service {
 
     /**
      * 获取当前版本号
+     *
      * @param context
      * @return
      */
@@ -1271,8 +1272,15 @@ public class Service {
             //if (SearchIndexD.getCount() < 100)
             //    return "诗歌数量异常，请检查'诗歌蓝版'文件夹的位置或内容有无问题";
 
-            if (LetterD.getAll().length != 66)
-                return "未找到圣经各卷书名的资源文件或文件内容异常";
+            LetterD[] allLetter = LetterD.getAll();
+            if (allLetter.length != 66) {
+                if (allLetter.length > 0 && allLetter.length % 66 == 0) {
+                    //重复插入了
+                    LetterD.clearRepeat();
+                    Logger.info("清除重复数据！");
+                }
+                return "未找到圣经各卷书名的资源文件或文件内容异常:" + allLetter.length;
+            }
             MyFile f = MyFile.from(SdCardTool.getLbPath());
             if (!f.exists() || !f.isDirectory() || f.listFiles().length == 0)
                 return "找不到蓝版诗歌文件夹或者文件夹里没有文件，请确认是否移动了文件夹或者是只下载了升级包";

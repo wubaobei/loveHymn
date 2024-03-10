@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content">
 
 
-                    <TextView
+                    <pri.prepare.lovehymn.client.tool.MarqueeTextView
                         android:id="@+id/tvbackTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

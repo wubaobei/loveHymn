@@ -19,9 +19,9 @@ public class Constant {
     public static final String AD_TEXT = "ad_text";
     public static final String COLLECT_TIG = "还没有任何收藏，点击标题栏进行收藏";
     private static String[] DEFAULT_AD_ARRAY = new String[]{
-           // "吉他、尤克里里、钢琴代理\r\n需要咨询或购买的联系作者",
+            // "吉他、尤克里里、钢琴代理\r\n需要咨询或购买的联系作者",
             "如果你觉得好用\r\n把这个APP推荐给同伴吧"
-           // "广告位招租"
+            // "广告位招租"
     };
     private static String[] DEFAULT_AD_CONTENT_ARRAY = new String[]{
             //"做一个app时间精力消耗都挺大的，离不开家人的支持和所有用户的鼓励，使我能坚持到这一步。\r\n我考虑该怎么实现盈利，又不影响用户体验，于是就在这里加了个广告。",
@@ -31,28 +31,26 @@ public class Constant {
     private static int adN = 0;
 
     public static String getStartPageAd() {
+        String s;
+        if ((s = Setting.getValueS(Setting.AD_TITLE)).length() > 0) {
+            String s2 = Setting.getValueS(Setting.AD_CONTENT);
+            if (s2.length() > 30)
+                s2 = s2.substring(0, 28) + "...";
+            return s + "\r\n" + s2;
+        }
         return "By PrepareWu";
-//        String s;
-//        if ((s = Setting.getValueS(Setting.AD_TITLE)).length() > 0) {
-//            String s2 = Setting.getValueS(Setting.AD_CONTENT);
-//            if(s2.length()>30)
-//                s2=s2.substring(0,28)+"...";
-//            return s + "\r\n" + s2;
-//        }
-//        return CharConst.GUITAR + "吉他、尤克里里、" + CharConst.PIANO + "钢琴代理\r\n需要咨询或购买的联系作者";
     }
 
     public static String getRandomAd() {
-        return DEFAULT_AD_ARRAY[0];
-//        String t1 = Setting.getValueS(Setting.AD_TITLE);
-//        String t2 = Setting.getValueS(Setting.AD_CONTENT);
-//        if (!t1.equals("广告位招租")) {
-//            DEFAULT_AD_ARRAY = new String[]{t1};
-//            DEFAULT_AD_CONTENT_ARRAY = new String[]{t2};
-//        }
-//        Random rd = new Random();
-//        adN = rd.nextInt(Constant.DEFAULT_AD_ARRAY.length);
-//        return DEFAULT_AD_ARRAY[adN];
+        String t1 = Setting.getValueS(Setting.AD_TITLE);
+        String t2 = Setting.getValueS(Setting.AD_CONTENT);
+        if (!t1.equals("广告位招租")) {
+            DEFAULT_AD_ARRAY = new String[]{t1};
+            DEFAULT_AD_CONTENT_ARRAY = new String[]{t2};
+        }
+        Random rd = new Random();
+        adN = rd.nextInt(Constant.DEFAULT_AD_ARRAY.length);
+        return DEFAULT_AD_ARRAY[adN];
     }
 
     public static String getDefaultAdValue() {

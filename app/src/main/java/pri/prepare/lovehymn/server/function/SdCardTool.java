@@ -23,12 +23,20 @@ import pri.prepare.lovehymn.server.entity.MyFile;
 import pri.prepare.lovehymn.server.entity.SearchIndex;
 
 public class SdCardTool {
+    private static String mkdirs(String path){
+        File f=new File(path);
+        if(!f.exists()){
+            f.mkdirs();
+        }
+        return path;
+    }
+
     public static String getLbPath() {
         return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + Constant.LB_DIR_NAME;
     }
 
     public static String getResPath() {
-        return SdCardTool.getLbPath() + "/" + Constant.RES_NAME;
+        return mkdirs(SdCardTool.getLbPath() + "/" + Constant.RES_NAME);
     }
 
     public static String getStepPath() {

@@ -5,13 +5,20 @@ import androidx.databinding.DataBindingUtil;
 
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.tool.DisplayStat;
+import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.databinding.ActivityWhiteBinding;
 import pri.prepare.lovehymn.server.entity.Logger;
+import pri.prepare.lovehymn.server.entity.Setting;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.github.barteksc.pdfviewer.PDFView;
 
@@ -37,6 +44,29 @@ public class WhiteActivity extends AppCompatActivity {
         new Thread(r).start();
         new Thread(timerR).start();
         MainActivity.timeTool.Resume();
+        if (!Setting.getValueB(Setting.STATUS_BAR_SHOW)) {
+            hideStatusBar(this);
+        }else{
+            Tool.showStatusBar(getWindow(), this);
+        }
+    }
+
+    /**
+     * 竖屏时隐藏状态栏
+     *
+     * @param activity
+     */
+    public void hideStatusBar(Activity activity) {
+        if (activity == null) return;
+        Window window = activity.getWindow();
+        if (window == null) return;
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
+        window.setAttributes(lp);
     }
 
     /**

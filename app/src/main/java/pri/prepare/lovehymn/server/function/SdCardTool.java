@@ -12,20 +12,21 @@ import java.util.Collections;
 import java.util.regex.Pattern;
 
 import pri.prepare.lovehymn.client.tool.LoadProcess;
-import pri.prepare.lovehymn.server.UpdateHistory;
-import pri.prepare.lovehymn.server.result.ShowResult;
 import pri.prepare.lovehymn.server.Service;
+import pri.prepare.lovehymn.server.UpdateHistory;
 import pri.prepare.lovehymn.server.entity.Book;
 import pri.prepare.lovehymn.server.entity.Hymn;
 import pri.prepare.lovehymn.server.entity.Logger;
 import pri.prepare.lovehymn.server.entity.MusicSearch;
 import pri.prepare.lovehymn.server.entity.MyFile;
 import pri.prepare.lovehymn.server.entity.SearchIndex;
+import pri.prepare.lovehymn.server.entity.Setting;
+import pri.prepare.lovehymn.server.result.ShowResult;
 
 public class SdCardTool {
-    private static String mkdirs(String path){
-        File f=new File(path);
-        if(!f.exists()){
+    private static String mkdirs(String path) {
+        File f = new File(path);
+        if (!f.exists()) {
             f.mkdirs();
         }
         return path;
@@ -227,6 +228,9 @@ public class SdCardTool {
                             Logger.info("has same path");
                             continue;
                         }
+                        if (Setting.getValueB(Setting.HIDE_QING) && p.contains(Book.Qing.FullName)) {
+                            continue;
+                        }
                         searchTemp0.add(p);
                         n++;
                         if (n == Constant.SEARCH_RESULT_SHOW_MAX_COUNT + 1)
@@ -288,14 +292,14 @@ public class SdCardTool {
                 return new ShowResult[0];
 
             int n = 0;
-            long tp=System.currentTimeMillis();
+            long tp = System.currentTimeMillis();
             for (int i = tempInd; i < searchTemp1.length; i++) {
                 Hymn h = searchTemp1[i];
                 ShowResult f;
                 if (n >= Constant.SEARCH_RESULT_SHOW_COUNT) {
                     res.add(new ShowResult(Constant.SHOW_MORE));
                     tempInd = i;
-                    Logger.info("tp "+(System.currentTimeMillis()-tp));
+                    Logger.info("tp " + (System.currentTimeMillis() - tp));
                     return res.toArray(new ShowResult[0]);
                 }
                 f = new ShowResult(Service.getC().searchFile(h), h, new ArrayList<>(list));
@@ -307,7 +311,7 @@ public class SdCardTool {
 
                 n++;
             }
-            Logger.info("tp "+(System.currentTimeMillis()-tp));
+            Logger.info("tp " + (System.currentTimeMillis() - tp));
             if (page == 0 && searchTemp1.length == 0) {
                 res.add(new ShowResult(Constant.NO_RESULT));
                 return res.toArray(new ShowResult[0]);
@@ -408,9 +412,9 @@ public class SdCardTool {
     }
 
     public static MyFile getQitaFile() {
-        String path=getResPath();
-        path+="/199.qita.txt";
-        if(new File(path).exists())
+        String path = getResPath();
+        path += "/199.qita.txt";
+        if (new File(path).exists())
             return MyFile.from(path);
         return null;
     }

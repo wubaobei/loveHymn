@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
+import pri.prepare.lovehymn.server.entity.Logger;
 import pri.prepare.lovehymn.server.function.DBHelper;
 import pri.prepare.lovehymn.server.function.DBUtil;
 
@@ -50,6 +51,7 @@ public class SearchIndexD extends DaoBase {
             while (cursor.moveToNext()) {
                 SearchIndexD a = new SearchIndexD();
                 res.add(DBUtil.getC().convert(cursor, a));
+                Logger.info("search index " + a.name + " " + a.paths);
             }
         }
         return res.toArray(new SearchIndexD[0]);

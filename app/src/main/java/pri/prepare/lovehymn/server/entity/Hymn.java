@@ -1,5 +1,7 @@
 package pri.prepare.lovehymn.server.entity;
 
+import androidx.annotation.NonNull;
+
 import java.io.File;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -10,19 +12,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-
-import pri.prepare.lovehymn.client.CatalogDialog;
-import pri.prepare.lovehymn.server.function.CommonTool;
-import pri.prepare.lovehymn.server.function.Constant;
-import pri.prepare.lovehymn.server.function.DBUtil;
-import pri.prepare.lovehymn.server.function.SdCardTool;
 import pri.prepare.lovehymn.server.Service;
 import pri.prepare.lovehymn.server.dal.AuthorRelatedD;
 import pri.prepare.lovehymn.server.dal.ContentD;
 import pri.prepare.lovehymn.server.dal.ContentTypeD;
 import pri.prepare.lovehymn.server.dal.HymnD;
 import pri.prepare.lovehymn.server.dal.SectionRelatedD;
+import pri.prepare.lovehymn.server.function.CommonTool;
+import pri.prepare.lovehymn.server.function.Constant;
+import pri.prepare.lovehymn.server.function.DBUtil;
+import pri.prepare.lovehymn.server.function.SdCardTool;
 
 public class Hymn {
     private static final String ORDER_SQL = " order by bookid,index1 ";

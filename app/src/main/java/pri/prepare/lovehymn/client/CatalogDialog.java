@@ -36,6 +36,7 @@ import pri.prepare.lovehymn.client.tool.ImmTool;
 import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.databinding.CatelogLayoutBinding;
 import pri.prepare.lovehymn.server.entity.MyFile;
+import pri.prepare.lovehymn.server.entity.Setting;
 import pri.prepare.lovehymn.server.function.CharConst;
 import pri.prepare.lovehymn.server.function.Constant;
 import pri.prepare.lovehymn.server.result.ShowResult;
@@ -329,16 +330,19 @@ public class CatalogDialog extends Dialog implements IShowDialog {
             else
                 lt = numLL;
         }
-        MyFile[] fileList = f.listFiles();// CommonTool.listFiles(f);
+        MyFile[] fileList = f.listFiles();
         ArrayList<MyFile> showFileList = new ArrayList<>();
-        for (MyFile file : Service.getC().orderFiles(fileList))
+        for (MyFile file : Service.getC().orderFiles(fileList)) {
+            if (Setting.getValueB(Setting.HIDE_QING) && file.getName().equals(Book.Qing.FullName)) {
+                continue;
+            }
             //跳过资源文件 隐藏文件 MP3 白版
             if (!file.getName().equals(Constant.RES_NAME) && !(file.getName().startsWith("."))
                     && !(file.getName().endsWith("mp3")) && !(file.getName().equals(Constant.WHITE))
                     && (!isRoot || file.getName().length() > 1) && (!file.getName().contains("hide"))) {
                 showFileList.add(file);
             }
-
+        }
         int n = 0;
         Button btnF = null;
 

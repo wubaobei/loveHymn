@@ -224,7 +224,11 @@ public class Setting {
     /**
      * 启动页背景
      */
-    public static final int STARTPAGE_BACKGROUND=53;
+    public static final int STARTPAGE_BACKGROUND = 53;
+    /**
+     * 隐藏青年诗歌
+     */
+    public static final int HIDE_QING = 54;
 
     public static final int CATELOG_QUICK = 1;
     public static final int DETAIL_QUICK = 3;
@@ -316,7 +320,8 @@ public class Setting {
             defaultMap.put(LOAD_STEP, false);
             defaultMap.put(USE_WEB_DAILY_BIBLE, false);
             defaultMap.put(USE_ASYNC, true);
-            defaultMap.put(STARTPAGE_BACKGROUND,0);
+            defaultMap.put(STARTPAGE_BACKGROUND, 0);
+            defaultMap.put(HIDE_QING, true);
         }
         return defaultMap.get(key);
     }

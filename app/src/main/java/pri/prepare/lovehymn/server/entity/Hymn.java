@@ -252,6 +252,16 @@ public class Hymn {
         String sql = DBUtil.getC().getSelectSql(HymnD.class) + condition + ORDER_SQL + " limit " + maxCount;
         //Logger.info("sql " + sql);
         HymnD[] hs = HymnD.getListBySql(sql);
+        if (Setting.getValueB(Setting.HIDE_QING)) {
+            List<HymnD> t = new ArrayList<>();
+            for (HymnD h : hs) {
+                if (h.bookId == Book.Qing.id) {
+                    continue;
+                }
+                t.add(h);
+            }
+            hs = t.toArray(new HymnD[0]);
+        }
         return orderList(toArr(hs));
     }
 

@@ -300,9 +300,9 @@ public class Setting {
             defaultMap.put(MP3_COUNT_CACHE, "");
             defaultMap.put(COLLECT, "");
             defaultMap.put(LAST_OPEN, Service.getC().getFirstHymnPath());
-            defaultMap.put(LAST_BD, "");
+            defaultMap.put(LAST_BD, "https://pan.baidu.com/s/1VFuigoViOR63QDBQcAVfgw");
             defaultMap.put(SHORT_CUT1, "99]false]1]a");//默认显示所有诗歌
-            defaultMap.put(LAST_BD_PWD, "");
+            defaultMap.put(LAST_BD_PWD, "2iof");
             defaultMap.put(NEW_VERSION, "");
             defaultMap.put(OPEN_RECENT, "");
             defaultMap.put(AD_TITLE, "广告位招租");

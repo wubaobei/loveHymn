@@ -63,7 +63,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
         setAdBtn();
         setSectionEnclises();
         setScreenKBtn();
-        //setThemeBtn();
         setSpecialSetting();
         setLabelSetting();
         setAllRead();
@@ -255,55 +254,40 @@ public class SettingDialog extends Dialog implements IShowDialog {
         Button btn = binding.downloadAddressBtn;
         String link = Setting.getValueS(Setting.LAST_BD);
         String pwd = Setting.getValueS(Setting.LAST_BD_PWD);
-        //String newVersion= Setting.getValueS(Setting.NEW_VERSION,"");
 
-        String c = Service.getC().getVersionStr(ct);
-        String ver = Setting.getValueS(Setting.NEW_VERSION);
-        if (ver.length() == 0)
-            ver = c;
-        if (ver.compareTo(c) > 0) {
-            Logger.info(c + ";" + ver);
-            binding.downloadAddressBtn.setText("发现新版本：" + ver);
-        }
+        btn.setEnabled(true);
 
-        if (link.length() == 0) {
-            btn.setText(Constant.NO_DOWNLOAD_ADDRESS);
-            return;
-        } else {
-            btn.setEnabled(true);
+        final String finalLink = link;
+        final String finalPwd = pwd;
+        btn.setOnClickListener(v -> {
+            try {
+                //总是回显示链接和提取码作为保底
+                String str = "链接：" + finalLink + "  提取码：" + finalPwd;
 
-            final String finalLink = link;
-            final String finalPwd = pwd;
-            btn.setOnClickListener(v -> {
-                try {
-                    //总是回显示链接和提取码作为保底
-                    String str = "链接：" + finalLink + "  提取码：" + finalPwd;
+                HashMap<String, String> map = new HashMap<>();
+                map.put(Constant.LINK, link);
+                map.put(Constant.PWD, pwd);
+                SimpleTextDialog cl = new SimpleTextDialog(ct, map, SimpleTextDialog.DOWNLOAD);
+                cl.showDialog();
 
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put(Constant.LINK, link);
-                    map.put(Constant.PWD, pwd);
-                    SimpleTextDialog cl = new SimpleTextDialog(ct, map, SimpleTextDialog.DOWNLOAD);
-                    cl.showDialog();
-
-                    String disk = "com.baidu.netdisk";
-                    if (isExistApp(disk)) {
-                        Service.getC().CB(str, ct);
-                        try {
-                            Intent intent = ct.getPackageManager().getLaunchIntentForPackage(disk);
-                            ct.startActivity(intent);
-                        } catch (Exception e) {
-                            Logger.exception(e);
-                        }
-                    } else {
-                        Service.getC().openByIE(ct, map.get(Constant.LINK));
-                        Service.getC().CB(map.get(Constant.PWD), ct);
+                String disk = "com.baidu.netdisk";
+                if (isExistApp(disk)) {
+                    Service.getC().CB(str, ct);
+                    try {
+                        Intent intent = ct.getPackageManager().getLaunchIntentForPackage(disk);
+                        ct.startActivity(intent);
+                    } catch (Exception e) {
+                        Logger.exception(e);
                     }
-                } catch (Exception e) {
-                    Logger.exception(e);
-                    Tool.toastRestart(getContext(), e);
+                } else {
+                    Service.getC().openByIE(ct, map.get(Constant.LINK));
+                    Service.getC().CB(map.get(Constant.PWD), ct);
                 }
-            });
-        }
+            } catch (Exception e) {
+                Logger.exception(e);
+                Tool.toastRestart(getContext(), e);
+            }
+        });
     }
 
     /**

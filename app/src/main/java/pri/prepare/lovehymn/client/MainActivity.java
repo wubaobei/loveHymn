@@ -603,7 +603,7 @@ public class MainActivity extends AppCompatActivity {
         }
         try {
             new Thread(checkResAble).start();
-            new Thread(getAd).start();
+            //new Thread(getAd).start();
             DBHelper.current.check();
         } catch (Exception e) {
             Logger.exception(e);
@@ -842,39 +842,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 Logger.exception(e);
-            }
-        }
-    };
-
-    /**
-     * 更新广告内容
-     */
-    final Runnable getAd = () -> {
-        HashMap<String, String> ads = WebHelper.getAds();
-        if (ads == null) return;
-        if (ads.containsKey(WebHelper.AD_TITLE)) {
-            Setting.updateSetting(Setting.AD_TITLE, ads.get(WebHelper.AD_TITLE));
-            Setting.updateSetting(Setting.AD_CONTENT, ads.get(WebHelper.AD_CONTENT));
-        }
-
-        String lt = Setting.getValueS(Setting.LAST_BD);
-        if (ads.containsKey(WebHelper.BD_URL) && ads.containsKey(WebHelper.BD_PW) && ads.containsKey(WebHelper.NEW_VERSION)) {
-            Logger.info("获取下载地址" + ads.get(WebHelper.BD_URL));
-            if (lt.length() == 0) {
-                if (ads.containsKey(WebHelper.BD_URL) && ads.containsKey(WebHelper.BD_PW)) {
-                    Setting.updateSetting(Setting.LAST_BD, ads.get(WebHelper.BD_URL));
-                    Setting.updateSetting(Setting.LAST_BD_PWD, ads.get(WebHelper.BD_PW));
-                    Setting.updateSetting(Setting.NEW_VERSION, ads.get(WebHelper.NEW_VERSION));
-                    Logger.info("首次获取下载地址");
-                    lt = ads.get(WebHelper.BD_URL);
-                }
-            }
-            if (!ads.get(WebHelper.BD_URL).equals(lt)) {
-                ToastInTimerH("发现新版本：" + ads.get(WebHelper.NEW_VERSION) + "\r\n点击'更多'-'下载与更新'查看");
-
-                Setting.updateSetting(Setting.LAST_BD, ads.get(WebHelper.BD_URL));
-                Setting.updateSetting(Setting.LAST_BD_PWD, ads.get(WebHelper.BD_PW));
-                Setting.updateSetting(Setting.NEW_VERSION, ads.get(WebHelper.NEW_VERSION));
             }
         }
     };

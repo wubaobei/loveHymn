@@ -35,7 +35,7 @@ public class SimpleTextDialog extends Dialog implements IShowDialog {
                 list.add(map.get(Constant.LINK));
                 list.add("提取码");
                 list.add(map.get(Constant.PWD));
-                list.add("如果你发现链接失效了，请联系作者更新");
+                list.add("如果你发现链接失效了，请联系作者");
                 list.add("可以截图扫描加网盘好友，或查看说明文档");
                 //list.add("这个");
                 tv.setText(String.join("\r\n", list));

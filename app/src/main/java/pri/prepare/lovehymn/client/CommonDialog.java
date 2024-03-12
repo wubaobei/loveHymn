@@ -185,6 +185,7 @@ public class CommonDialog extends Dialog implements IShowDialog {
                             + CODE_STATUS + ":手机及app状态" + sp
                             + ENCODE + ":加密" + sp
                             + DECODE + ":解密" + sp
+                            + QING_HIDE + ":显示/隐藏《青年诗歌》"
                             + CODE_OUTPUT_RES + ":导出资源文件" + sp
                             + CODE_STEP_TIME + ":显示/隐藏自动足迹时间";
                     Tool.ShowDialog(getContext(), "代码编号", content);
@@ -205,6 +206,14 @@ public class CommonDialog extends Dialog implements IShowDialog {
                 } else if (s == DECODE) {
                     binding.cmIo.setText(WebHelper.decode(binding.cmIo.getText().toString()));
                     return;
+                } else if (s == QING_HIDE) {
+                    boolean b = Setting.getValueB(Setting.HIDE_QING);
+                    if (b) {
+                        toast("显示青年诗歌");
+                    } else {
+                        toast("隐藏青年诗歌");
+                    }
+                    Setting.updateSetting(Setting.HIDE_QING, !b);
                 } else {
                     toast("未识别的代码");
                     return;
@@ -260,6 +269,7 @@ public class CommonDialog extends Dialog implements IShowDialog {
     private static final int CODE_STATUS = 2;
     private static final int ENCODE = 3;
     private static final int DECODE = 4;
+    private static final int QING_HIDE = 5;
     //100-199 输出
     private static final int CODE_OUTPUT_RES = 100;
     //200-299 调试信息

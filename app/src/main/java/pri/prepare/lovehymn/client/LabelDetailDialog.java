@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -45,6 +46,10 @@ public class LabelDetailDialog extends Dialog implements IShowDialog {
                 tv.setTextColor(Color.valueOf(1f, 1f, 1f).toArgb());
                 tv.setBackgroundColor(cgColor(i++));
                 binding.lableList.addView(tv);
+                if (h.getShowName().startsWith("?")) {
+                    tv.setOnClickListener(v -> Toast.makeText(getContext(), "诗歌异常", Toast.LENGTH_SHORT).show());
+                    continue;
+                }
                 tv.setOnClickListener(v -> {
                     i4Set.loadPdfCall(h.getFile().getAbsolutePath());
                     dismiss();
@@ -58,7 +63,7 @@ public class LabelDetailDialog extends Dialog implements IShowDialog {
                 binding.lableList.addView(tv);
                 binding.deleteLabel.setBackground(null);
                 binding.deleteLabel.setOnLongClickListener(view -> {
-                    Logger.info("deleteLabel "+lt.getName());
+                    Logger.info("deleteLabel " + lt.getName());
                     lt.delete(false);
                     dismiss();
                     return true;

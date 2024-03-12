@@ -163,6 +163,9 @@ public class Hymn {
     }
 
     public String getShortShowName() {
+        if (getBook() == null) {
+            return ("??" + String.format("%03d", dao.index1) + (dao.index2 > 1 ? ("+" + dao.index2) : "")).replace("-", "附").replace("+", "-");
+        }
         return (getBook().SimpleName + String.format("%03d", dao.index1) + (dao.index2 > 1 ? ("+" + dao.index2) : "")).replace("-", "附").replace("+", "-");
     }
 

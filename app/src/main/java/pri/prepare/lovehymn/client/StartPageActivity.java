@@ -109,7 +109,7 @@ public class StartPageActivity extends AppCompatActivity {
                 TextView tvs = findViewById(R.id.sa3);
                 tvs.setText(Constant.getStartPageAd());
                 TextView mode = findViewById(R.id.testMode);
-                if (UpdateHistory.isTestMode()) {
+                if (UpdateHistory.isTestMode(this)) {
                     mode.setText("内测版");
                 } else {
                     String c = Service.getC().getVersionStr(this);

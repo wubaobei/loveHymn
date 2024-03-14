@@ -531,7 +531,7 @@ public class Service {
                     }
                     h = new Hymn();
                     Book bk = null;
-                    for (Book b : Book.getAll()) {
+                    for (Book b : Book.getAllInLoad()) {
                         if (b.SimpleName.equals(line.substring(sOrder.length(), sOrder.length() + 1))) {
                             bk = b;
                             break;
@@ -1247,7 +1247,6 @@ public class Service {
             Logger.info("step 3:开始预处理");
             Service.getC().predealDir(new File(path));
             Logger.info("step 4:开始加载资源文件");
-            MyFile fa = MyFile.from(path);
 
             try {
                 LoadProcess.process = LOAD_ENUM.LOAD_RES;

@@ -31,6 +31,10 @@ public class Book {
     public static final Book ErTong = new Book(6, "E", "儿童诗歌", 4, "ertongshige");
     public static final Book Other = new Book(7, "O", "其它", 3, "qita");
 
+    public static final Book[] getAllInLoad(){
+        return new Book[]{DaBen, BuChong, Chang, Xin, Qing, ErTong, Other};
+    }
+
     public static final Book[] getAll() {
         if (Setting.getValueB(Setting.HIDE_QING)) {
             return new Book[]{DaBen, BuChong, Chang, Xin, ErTong, Other};

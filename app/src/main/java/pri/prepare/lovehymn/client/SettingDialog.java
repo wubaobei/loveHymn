@@ -1,5 +1,6 @@
 package pri.prepare.lovehymn.client;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -40,8 +41,9 @@ public class SettingDialog extends Dialog implements IShowDialog {
     private final WindowManager _wm;
 
     private final SettingLayoutBinding binding;
-    private Activity activity;
+    private final Activity activity;
 
+    @SuppressLint("SetTextI18n")
     public SettingDialog(@NonNull Activity activity, I4Set tell, WindowManager wm) {
         super(activity);
         this.activity = activity;
@@ -50,14 +52,14 @@ public class SettingDialog extends Dialog implements IShowDialog {
         setContentView(binding.getRoot());
         TextView tvv = binding.tvVersion;
         tvv.setText("当前版本：" + Service.getC().getVersionStr(ct));
-        Service.getC().checkVersion(ct);
+        Service.getC().checkVersion(activity);
         iTell = tell;
         _wm = wm;
-        setStasticsBtn();
+        setStatisticBtn();
         setUpdateHistoryBtn();
         setAuthorTV();
         setSettingIcons();
-        setDispearBtn();
+        setDisappearBtn();
         setCEBtn();
         setUpdateBtn();
         setAdBtn();
@@ -89,14 +91,14 @@ public class SettingDialog extends Dialog implements IShowDialog {
         });
     }
 
-    private static final int[] dispearTimeArr = new int[]{999000, 2000, 4000, 6000};
+    private static final int[] disappearTimeArr = new int[]{999000, 2000, 4000, 6000};
 
-    public static int getInitDispearTime() {
-        return dispearTimeArr[dispearTimeArr.length - 1];
+    public static int getInitDisappearTime() {
+        return disappearTimeArr[disappearTimeArr.length - 1];
     }
 
     private String getText(int t) {
-        if (t == dispearTimeArr[0])
+        if (t == disappearTimeArr[0])
             return "不自动隐藏";
         return (t / 1000d) + "秒";
     }
@@ -125,7 +127,7 @@ public class SettingDialog extends Dialog implements IShowDialog {
     /**
      * 渐隐时间设置
      */
-    private void setDispearBtn() {
+    private void setDisappearBtn() {
         Button btn = binding.dispearTimeBtn;
         int v = Setting.getValueI(Setting.DISPEAR_TIME);
         btn.setText(getText(v));
@@ -133,15 +135,15 @@ public class SettingDialog extends Dialog implements IShowDialog {
         btn.setOnClickListener(v1 -> {
             int v2 = Setting.getValueI(Setting.DISPEAR_TIME);
             int ind = 0;
-            for (int i = 0; i < dispearTimeArr.length; i++)
-                if (dispearTimeArr[i] == v2) {
+            for (int i = 0; i < disappearTimeArr.length; i++)
+                if (disappearTimeArr[i] == v2) {
                     ind = i;
                     break;
                 }
             ind++;
-            if (ind >= dispearTimeArr.length)
+            if (ind >= disappearTimeArr.length)
                 ind = 0;
-            v2 = dispearTimeArr[ind];
+            v2 = disappearTimeArr[ind];
             Setting.updateSetting(Setting.DISPEAR_TIME, v2);
             btn.setText(getText(v2));
         });
@@ -243,7 +245,7 @@ public class SettingDialog extends Dialog implements IShowDialog {
     /**
      * 资源统计
      */
-    private void setStasticsBtn() {
+    private void setStatisticBtn() {
         binding.resStatBtn.setOnClickListener(v -> Tool.ShowDialog(ct, "资源统计", Service.getC().getResStatString(), -1));
     }
 
@@ -369,15 +371,15 @@ public class SettingDialog extends Dialog implements IShowDialog {
             return;
         }
         binding.closeTigBtn.setOnClickListener(v -> {
-            final AlertDialog.Builder alterDiaglog = new AlertDialog.Builder(getContext());
-            alterDiaglog.setTitle("警告");
-            alterDiaglog.setMessage("由于种种原因，该app的许多功能用户都不会使用，因此添加了" + Constant.TIPS + "功能。如果你确定你会使用大部分功能，可以关闭自动弹窗，" +
+            final AlertDialog.Builder alterDialog = new AlertDialog.Builder(getContext());
+            alterDialog.setTitle("警告");
+            alterDialog.setMessage("由于种种原因，该app的许多功能用户都不会使用，因此添加了" + Constant.TIPS + "功能。如果你确定你会使用大部分功能，可以关闭自动弹窗，" +
                     "使app更简洁清爽。关闭后，除非你清空app数据或重装app，这些" + Constant.TIPS + "不会再自动弹出。另外，可以在'" + Constant.READ_ME + "'中查看所有" + Constant.TIPS);
-            alterDiaglog.setPositiveButton("我知道了，确定关闭", (dialog, which) -> {
+            alterDialog.setPositiveButton("我知道了，确定关闭", (dialog, which) -> {
                 Setting.updateSetting(Setting.SHOW_TIG, false);
                 binding.closeTigBtn.setVisibility(View.GONE);
             });
-            alterDiaglog.show();
+            alterDialog.show();
         });
     }
 
@@ -386,12 +388,8 @@ public class SettingDialog extends Dialog implements IShowDialog {
      */
     private void setAdBtn() {
         HashMap<String, String> map = new HashMap<>();
-        if (!map.containsKey(Constant.AD)) {
-            map = new HashMap<>();
-            map.put(Constant.AD, Constant.getRandomAd());
-            map.put(Constant.AD_TEXT, Constant.getDefaultAdValue());
-        }
-
+        map.put(Constant.AD, Constant.getRandomAd());
+        map.put(Constant.AD_TEXT, Constant.getDefaultAdValue());
 
         if (map.containsKey(Constant.AD)) {
             LinearLayout ll = binding.detLayout;
@@ -435,7 +433,7 @@ public class SettingDialog extends Dialog implements IShowDialog {
     private void setUpdateHistoryBtn() {
         TextView textView = binding.tvVersion;
         textView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        textView.setOnClickListener(v -> Tool.ShowDialog(ct, "更新历史", UpdateHistory.VERSION_HISTORY, -1));
+        textView.setOnClickListener(v -> Tool.ShowDialog(ct, "更新历史", UpdateHistory.getVersionHistory(activity), -1));
     }
     //
 

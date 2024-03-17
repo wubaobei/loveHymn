@@ -1,5 +1,8 @@
 package pri.prepare.lovehymn.server;
 
+import static pri.prepare.lovehymn.server.function.SdCardTool.FILE_NO_OVERWRITE;
+import static pri.prepare.lovehymn.server.function.SdCardTool.FILE_OVERWRITE;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,11 +13,9 @@ import android.text.ClipboardManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,7 +35,6 @@ import java.util.zip.ZipInputStream;
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.MainActivity;
 import pri.prepare.lovehymn.client.SettingDialog;
-import pri.prepare.lovehymn.client.tool.DisplayStat;
 import pri.prepare.lovehymn.client.tool.LOAD_ENUM;
 import pri.prepare.lovehymn.client.tool.LoadProcess;
 import pri.prepare.lovehymn.server.dal.AuthorD;
@@ -43,7 +43,6 @@ import pri.prepare.lovehymn.server.dal.ContentD;
 import pri.prepare.lovehymn.server.dal.ContentTypeD;
 import pri.prepare.lovehymn.server.dal.HymnD;
 import pri.prepare.lovehymn.server.dal.LetterD;
-import pri.prepare.lovehymn.server.dal.SearchIndexD;
 import pri.prepare.lovehymn.server.entity.Author;
 import pri.prepare.lovehymn.server.entity.Book;
 import pri.prepare.lovehymn.server.entity.Content;
@@ -60,10 +59,6 @@ import pri.prepare.lovehymn.server.function.Constant;
 import pri.prepare.lovehymn.server.function.DBHelper;
 import pri.prepare.lovehymn.server.function.ResFileManager;
 import pri.prepare.lovehymn.server.function.SdCardTool;
-import pri.prepare.lovehymn.server.function.WebHelper;
-
-import static pri.prepare.lovehymn.server.function.SdCardTool.FILE_NO_OVERWRITE;
-import static pri.prepare.lovehymn.server.function.SdCardTool.FILE_OVERWRITE;
 
 public class Service {
     private static Service c;
@@ -164,8 +159,6 @@ public class Service {
 
     /**
      * 扫描所有文件并预处理
-     *
-     * @param f
      */
     public void predealDir(File f) {
         try {
@@ -206,9 +199,6 @@ public class Service {
 
     /**
      * 获取当前版本号
-     *
-     * @param context
-     * @return
      */
     public String getVersionStr(Context context) {
         try {
@@ -222,7 +212,7 @@ public class Service {
     public static boolean isInteger(String str) {
         if (str.length() == 0)
             return false;
-        Pattern pattern = Pattern.compile("^[-+]?[\\d]*$");
+        Pattern pattern = Pattern.compile("^[-+]?\\d*$");
         return pattern.matcher(str).matches();
     }
 
@@ -634,7 +624,6 @@ public class Service {
     /**
      * 加载资源
      *
-     * @param res
      * @return 是否需要记录
      */
     private boolean loadResFile(MyFile res) {
@@ -766,7 +755,7 @@ public class Service {
             return new MyFile[0];
         boolean isBookName = false;
         for (MyFile f : fs)
-            for (Book bk : Book.getAll()) {
+            for (Book bk : Book.getAllInLoad()) {
                 if (bk.FullName.equals(f.getName())) {
                     isBookName = true;
                     break;
@@ -871,7 +860,7 @@ public class Service {
                 }
             }
 
-            Logger.info("slow search " + hymn.toString());
+            Logger.info("slow search " + hymn);
             MyFile df = MyFile.from(SdCardTool.getLbPath());
             Book bk = hymn.getBook();
             for (MyFile f : df.listFiles()) {
@@ -1102,15 +1091,10 @@ public class Service {
 
     /**
      * 注意内部文件（夹）的名字不能为中文
-     *
-     * @param target
-     * @param source
-     * @return
      */
     public int unzip(String target, String source, String[] msg) throws IOException {
         long t1 = System.currentTimeMillis();
         int res = 0;
-        String fn = "";
 
         File file = new File(source);
         if (!file.exists()) {
@@ -1135,7 +1119,6 @@ public class Service {
                 msg[0] += "已存在'" + temp.getName() + "'跳过";
                 continue;
             }
-            fn = fileName;
             byte[] buffer = new byte[1024];
             try (OutputStream os = new FileOutputStream(temp);
                  InputStream is = zipFile.getInputStream(zipEntry)) {
@@ -1204,10 +1187,10 @@ public class Service {
      *
      * @param ct
      */
-    public void checkVersion(Context ct) {
+    public void checkVersion(Activity ct) {
         try {
             String res = ct.getPackageManager().getPackageInfo(ct.getPackageName(), 0).versionName;
-            String[] vs = UpdateHistory.VERSION_HISTORY;
+            String[] vs = UpdateHistory.getVersionHistory(ct);
             for (String v : vs) {
                 String[] va = v.split(" ");
                 if (va.length <= 2)
@@ -1268,8 +1251,6 @@ public class Service {
         try {
             if (!new File(getFirstHymnPath()).exists())
                 return "找不到诗歌pdf，请检查'诗歌蓝版'文件夹的位置或内容有无问题。如果你下载的是升级包，请再去下载pdf附加包。如果已下载，但无法自动加载，请将下载的附加包移动到储存卡根目录。";
-            //if (SearchIndexD.getCount() < 100)
-            //    return "诗歌数量异常，请检查'诗歌蓝版'文件夹的位置或内容有无问题";
 
             LetterD[] allLetter = LetterD.getAll();
             if (allLetter.length != 66) {
@@ -1326,12 +1307,11 @@ public class Service {
     /**
      * 获取标签的播放列表
      */
-    public List<String> getLableMp3List() {
+    public List<String> getLabelMp3List() {
         List<String> res = new ArrayList<>();
 
         for (LabelType lt : LabelType.getAll()) {
-            //if (lt.getMp3Count() > 0)
-            res.add("-" + lt.getId() + ";" + lt.getName());//+ "(" + lt.getMp3Count() + ")");
+            res.add("-" + lt.getId() + ";" + lt.getName());
         }
         return res;
     }
@@ -1671,7 +1651,7 @@ public class Service {
         List<String> mp3List = getDirectoryMp3List();
         if (mp3List.size() == 0)
             return new ArrayList<>();
-        mp3List.addAll(getLableMp3List());
+        mp3List.addAll(getLabelMp3List());
         mp3List.add(0, Book.ALL.id + ";" + Book.ALL.FullName);
         return mp3List;
     }

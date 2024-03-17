@@ -1,6 +1,6 @@
 package pri.prepare.lovehymn.client;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -29,8 +29,6 @@ import pri.prepare.lovehymn.server.entity.MyFile;
 import pri.prepare.lovehymn.server.entity.Setting;
 import pri.prepare.lovehymn.server.function.BibleTool;
 import pri.prepare.lovehymn.server.function.DBHelper;
-import pri.prepare.lovehymn.server.function.ResFileManager;
-import pri.prepare.lovehymn.server.function.SdCardTool;
 import pri.prepare.lovehymn.server.function.WebHelper;
 
 public class DailyBibleActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
@@ -92,11 +90,7 @@ public class DailyBibleActivity extends AppCompatActivity implements TextToSpeec
 
                 if (!tts.isSpeaking()) {
                     volumeUtil.setMediaVolumeIfZero();
-                    int i = 0;
-                    if (currentInd >= 0)
-                        play(currentInd);
-                    else
-                        play(0);
+                    play(Math.max(currentInd, 0));
                     Logger.info("开始播放语音");
                     binding.ps.setText("暂停");
                 } else {
@@ -219,13 +213,11 @@ public class DailyBibleActivity extends AppCompatActivity implements TextToSpeec
             Setting.updateSetting(Setting.DAILY_BIBLE_AUTO_SCR, t);
             setAuto();
         });
-        binding.readme.setOnClickListener(v -> {
-            Tool.ShowDialog(this, binding.readme.getText().toString(), new String[]{
-                    "1:播放功能使用的是TTS(文字转语音)引擎,可能会使用少量流量",
-                    "2:如果无法播放,请检查手机是否有安装tts(一般手机会自带该功能)",
-                    "3:如果不满意当前的语音质量,可以下载第三方的tts来替换"
-            });
-        });
+        binding.readme.setOnClickListener(v -> Tool.ShowDialog(this, binding.readme.getText().toString(), new String[]{
+                "1:播放功能使用的是TTS(文字转语音)引擎,可能会使用少量流量",
+                "2:如果无法播放,请检查手机是否有安装tts(一般手机会自带该功能)",
+                "3:如果不满意当前的语音质量,可以下载第三方的tts来替换"
+        }));
         //自动跳转
         boolean useWeb = Setting.getValueB(Setting.USE_WEB_DAILY_BIBLE);
         binding.checkBox.setChecked(useWeb);
@@ -255,13 +247,10 @@ public class DailyBibleActivity extends AppCompatActivity implements TextToSpeec
         }
         cut -= height / 2;
 
-        int aim = 0;
+        int aim;
         if (cut > sum - height)
             aim = sum - height;
-        else if (cut <= 0)
-            aim = 0;
-        else
-            aim = cut;
+        else aim = Math.max(cut, 0);
         if (binding.scrollview.getScrollY() != aim)
             binding.scrollview.smoothScrollTo(0, aim);
     }
@@ -313,7 +302,6 @@ public class DailyBibleActivity extends AppCompatActivity implements TextToSpeec
             Logger.exception(e);
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        ;
     }
 
 
@@ -342,6 +330,7 @@ public class DailyBibleActivity extends AppCompatActivity implements TextToSpeec
     private int dt = 0;
     private String[] allContent;
 
+    @SuppressLint("SetTextI18n")
     private void load() {
         binding.setList.setVisibility(View.GONE);
         if (tts.isSpeaking()) {
@@ -392,7 +381,7 @@ public class DailyBibleActivity extends AppCompatActivity implements TextToSpeec
             tvs.clear();
 
             for (SpeckBibleStruct s : cts) {
-                if(s==null)continue;
+                if (s == null) continue;
                 TextView tv = new TextView(this);
                 tv.setText(s.content);
                 tv.setTextColor(COLOR_DEFAULT);
@@ -483,6 +472,7 @@ public class DailyBibleActivity extends AppCompatActivity implements TextToSpeec
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void setAuto() {
         boolean b = Setting.getValueB(Setting.DAILY_BIBLE_AUTO_SCR);
         binding.autoscr.setText("自动滚动:" + (b ? "开" : "关"));

@@ -116,7 +116,7 @@ public class Constant {
             "感谢@C18857836876 设计的界面",
             "感谢@Daniel198717 @miaomiao1989127 @伟www @火烧荆棘 整理的‘思路’‘背景’等资料",
             "特别感谢姊妹@马晓可 和家人的支持",
-            "如果你觉得这个APP不错，也可以给作者一点资助\uD83D\uDE00"};
+            "如果你觉得这个APP不错，也可以给作者一点捐赠\uD83D\uDE00"};
     public static final String ADURL = "https://www.jianshu.com/p/7964f2b8de07";
     /**
      * 百度网盘分享链接

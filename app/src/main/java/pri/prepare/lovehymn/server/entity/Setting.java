@@ -291,7 +291,7 @@ public class Setting {
             defaultMap.put(MP3_PLAYER_MODE, 3);
             defaultMap.put(LYRIC_SIZE, Setting.lyric_default_text_size);
             defaultMap.put(PDF_TIME, 0);
-            defaultMap.put(DISPEAR_TIME, SettingDialog.getInitDispearTime());
+            defaultMap.put(DISPEAR_TIME, SettingDialog.getInitDisappearTime());
             defaultMap.put(SHOW_CHINESE_ENGLISH, show_chinese_english_default);
             defaultMap.put(APP_THEME, 0);
             defaultMap.put(RES_VERSION, 0);

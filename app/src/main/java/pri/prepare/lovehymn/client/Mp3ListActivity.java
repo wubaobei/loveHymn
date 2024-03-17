@@ -137,11 +137,13 @@ public class Mp3ListActivity extends AppCompatActivity {
         binding.showNow.setOnClickListener(v -> lyricVisible(VISIBLE));
     }
 
+    @SuppressLint("SetTextI18n")
     private void lyricBtnSet() {
         binding.lyricTv.setText(CharConst.MUSIC + binding.lyricTv.getText().toString());
         binding.lyricTv.setOnClickListener(lyricListener);
     }
 
+    @SuppressLint("SetTextI18n")
     private void jumpPdfSet() {
         binding.jumpTv.setText(CharConst.BOOK + binding.jumpTv.getText().toString());
         binding.jumpTv.setOnClickListener(v -> {
@@ -154,6 +156,7 @@ public class Mp3ListActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void updateLabelCount(String s) {
         String t = s.substring(0, s.indexOf(" ")).trim();
         Hymn h = Hymn.search(t);
@@ -163,8 +166,6 @@ public class Mp3ListActivity extends AppCompatActivity {
             SpannableString ss = new SpannableString(CharConst.LABEL + "标签x" + h.getLabels().length);
             ForegroundColorSpan bc = new ForegroundColorSpan(Color.parseColor("#ff0000"));
             ss.setSpan(bc, ss.length() - 2, ss.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-            // SuperscriptSpan sup = new SuperscriptSpan();
-            //ss.setSpan(sup, 2, 4, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             binding.addToLable.setText(ss);
         }
     }
@@ -179,8 +180,7 @@ public class Mp3ListActivity extends AppCompatActivity {
             return;
 
         if (hide == HIDE_NOW) {
-            if (lyricStatus == INVISIBLE) {
-            } else if (lyricStatus == VISIBLE) {
+            if (lyricStatus == VISIBLE) {
                 binding.lyricLl.setAnimation(AnimationUtils.loadAnimation(this, R.anim.push_right_out));
                 binding.lyricLl.setVisibility(INVISIBLE);
                 binding.lyricLs.setAnimation(AnimationUtils.loadAnimation(this, R.anim.push_right_in));
@@ -245,6 +245,7 @@ public class Mp3ListActivity extends AppCompatActivity {
 
     private static final String IS_LOADING = "(加载中)";
 
+    @SuppressLint("SetTextI18n")
     private void run0() {
         try {
             if (getType() == LABEL) {
@@ -258,6 +259,9 @@ public class Mp3ListActivity extends AppCompatActivity {
                 }
             } else if (getType() == BOOK) {
                 Book book = Book.getById(helper.getId());
+                if (book == null) {
+                    throw new RuntimeException("找不到书 " + helper.getId());
+                }
                 binding.addToLable.setText(CharConst.LABEL + binding.addToLable.getText().toString());
                 HashMap<String, String> map = Service.getC().getHymnNameBat(book);
 
@@ -329,7 +333,7 @@ public class Mp3ListActivity extends AppCompatActivity {
     /**
      * 异步加载所有MP3
      */
-    private Runnable runnableInit = () -> run0();
+    private final Runnable runnableInit = this::run0;
 
     /**
      * 加载MP3完成
@@ -394,7 +398,7 @@ public class Mp3ListActivity extends AppCompatActivity {
             String path = musicManager.getMp3Path();
             Hymn hymn = MyFile.from(path).getHymn();
             try {
-                List<String> arr = new ArrayList<String>();
+                List<String> arr = new ArrayList<>();
                 arr.add(hymn.getId() + "");
                 CommonListDialog cl = new CommonListDialog(Mp3ListActivity.this, 2, arr, null);
                 cl.setOnDismissListener(dialogInterface -> updateLabelFlag = true);
@@ -521,7 +525,7 @@ public class Mp3ListActivity extends AppCompatActivity {
                 Logger.exception(e);
             }
         });
-        if (helper.getPath().toLowerCase().equals(path.toLowerCase())) {
+        if (helper.getPath().equalsIgnoreCase(path)) {
             playOnStart = tv;
         }
         mp3Added.add(tv);
@@ -540,6 +544,7 @@ public class Mp3ListActivity extends AppCompatActivity {
 
     private boolean firstOverSetFlag = false;
 
+    @SuppressLint("SetTextI18n")
     private void firstOverSet() {
         if (firstOverSetFlag)
             return;
@@ -582,6 +587,7 @@ public class Mp3ListActivity extends AppCompatActivity {
             }
         }
 
+        @SuppressLint("SetTextI18n")
         void update() {
             try {
                 int n = 1000 / DisplayStat.HZ;
@@ -614,9 +620,6 @@ public class Mp3ListActivity extends AppCompatActivity {
                 int pro = (int) (musicManager.getProgressPercent() * pb.getMax());
                 pb.setProgress(pro);
 
-//                if(musicManager.needUpdatePlayBtn){
-//                    ,
-//                }
                 if (musicManager.isPlaying()) {
                     binding.mp3Title.setText("正在播放：" + musicManager.getMusicName());
                     if (musicManager.needUpdateLyric) {
@@ -638,7 +641,7 @@ public class Mp3ListActivity extends AppCompatActivity {
                     tv2.setTextColor(Color.RED);
                 }
                 updateLabelCount(musicManager.getMusicName());
-            } else if (updateLabelFlag) {
+            } else if (musicManager != null && updateLabelFlag) {
                 updateLabelFlag = false;
                 updateLabelCount(musicManager.getMusicName());
             }

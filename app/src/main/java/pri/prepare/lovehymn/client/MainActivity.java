@@ -33,7 +33,6 @@ import com.github.barteksc.pdfviewer.PDFView;
 
 import java.io.File;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,7 +57,6 @@ import pri.prepare.lovehymn.client.tool.VolumeUtil;
 import pri.prepare.lovehymn.client.tool.enuCm;
 import pri.prepare.lovehymn.databinding.ActivityMainBinding;
 import pri.prepare.lovehymn.server.UpdateHistory;
-import pri.prepare.lovehymn.server.dal.SettingD;
 import pri.prepare.lovehymn.server.entity.Book;
 import pri.prepare.lovehymn.server.entity.Label;
 import pri.prepare.lovehymn.server.entity.MyFile;
@@ -75,7 +73,6 @@ import pri.prepare.lovehymn.server.entity.Hymn;
 import pri.prepare.lovehymn.server.entity.Logger;
 import pri.prepare.lovehymn.server.entity.Setting;
 import pri.prepare.lovehymn.server.function.TipTool;
-import pri.prepare.lovehymn.server.function.WebHelper;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -1275,7 +1272,7 @@ public class MainActivity extends AppCompatActivity {
             setTitleText(f);
             binding.tvbackTitle.setOnClickListener(v -> {
                 try {
-                    LableCollectDialog dialog = new LableCollectDialog(this, f, i4Lc, i4Set);
+                    LabelCollectDialog dialog = new LabelCollectDialog(this, f, i4Lc, i4Set);
                     dialog.showDialog();
                 } catch (Exception e) {
                     Logger.exception(e);

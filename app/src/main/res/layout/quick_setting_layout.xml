@@ -47,7 +47,7 @@
                 android:id="@+id/isWK"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="该手机是水滴屏或挖孔屏或刘海屏吗？" />
+                android:text="是否显示状态栏？" />
 
             <RadioGroup
                 android:layout_width="match_parent"

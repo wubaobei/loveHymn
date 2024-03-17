@@ -52,7 +52,7 @@ public class Book {
     }
 
     public static Book getByName(String name) {
-        for (Book bk : getAll())
+        for (Book bk : getAllInLoad())
             if (bk.FullName.equals(name) || bk.SimpleName.equals(name.toUpperCase()))
                 return bk;
         return new Book(-1, "找不到书", "找不到书", 3, "");

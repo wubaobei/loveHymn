@@ -57,7 +57,7 @@ public class CatalogDialog extends Dialog implements IShowDialog {
     private final I4Catalog listener;
     private final Activity activity;
     private final Hymn currentHymn;
-    private I4StopMp3 i4StopMp3;
+    private final I4StopMp3 i4StopMp3;
 
     private static String hintRecord = "";
 
@@ -367,7 +367,9 @@ public class CatalogDialog extends Dialog implements IShowDialog {
         //自动加载第一个文件夹
         if (autoOpen && showFileList.size() > 0) {
             lastChooseDirBtn = btnF;
-            btnF.setBackgroundResource(getBkRes(TOP, true));
+            if (btnF != null) {
+                btnF.setBackgroundResource(getBkRes(TOP, true));
+            }
             setDetLayout(showFileList.get(0));
         }
 

@@ -1,5 +1,6 @@
 package pri.prepare.lovehymn.client;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,13 +10,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.File;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+
+import java.io.File;
 
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.tool.I4LC;
@@ -26,7 +25,6 @@ import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.client.tool.enuCm;
 import pri.prepare.lovehymn.databinding.LabelCollectionLayoutBinding;
 import pri.prepare.lovehymn.server.Service;
-import pri.prepare.lovehymn.server.UpdateHistory;
 import pri.prepare.lovehymn.server.entity.Hymn;
 import pri.prepare.lovehymn.server.entity.Label;
 import pri.prepare.lovehymn.server.entity.LabelType;
@@ -40,15 +38,16 @@ import pri.prepare.lovehymn.server.function.SdCardTool;
 /**
  * 标签，足迹，收藏，分享页（下拉）
  */
-public class LableCollectDialog extends Dialog implements IShowDialog {
+public class LabelCollectDialog extends Dialog implements IShowDialog {
     private final I4LC _i4lc;
     private I4Set _i4Set;
     private MyFile _file;
-    private Hymn hymn = null;
+    private Hymn hymn;
 
     private LabelCollectionLayoutBinding binding ;
 
-    public LableCollectDialog(@NonNull Context context, MyFile file, I4LC i4LC, I4Set i4Set) {
+    @SuppressLint("SetTextI18n")
+    public LabelCollectDialog(@NonNull Context context, MyFile file, I4LC i4LC, I4Set i4Set) {
         super(context);
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.label_collection_layout, null, false);
         setContentView(binding.getRoot());
@@ -106,9 +105,7 @@ public class LableCollectDialog extends Dialog implements IShowDialog {
             binding.hymnStep.setText(String.join(sp, steps));
         else {
             binding.hymnStep.setText(steps[0] + sp + steps[1] + sp + steps[2] + sp + "点击查看所有");
-            binding.hymnStep.setOnClickListener(v -> {
-                Tool.ShowDialog(context, hymn.getShowName() + " 足迹(" + steps.length + ")", String.join(sp, steps));
-            });
+            binding.hymnStep.setOnClickListener(v -> Tool.ShowDialog(context, hymn.getShowName() + " 足迹(" + steps.length + ")", String.join(sp, steps)));
         }
         if (steps.length > 0 && steps[0].startsWith("今天"))
             Tool.drawableRightSet(binding.addStepBtn, context, R.drawable.step_g);
@@ -126,14 +123,14 @@ public class LableCollectDialog extends Dialog implements IShowDialog {
         });
     }
 
-    private IRefresh remarkRefresh = () -> {
+    private final IRefresh remarkRefresh = () -> {
         String s = PersonRemark.getRemark(hymn);
         if (s.trim().length() == 0)
             s = PersonRemark.NO_REMARK;
         binding.remark.setText(s);
     };
 
-    private IRefresh iRefresh = () -> {
+    private final IRefresh iRefresh = () -> {
         LabelType[] lts = LabelType.getAll();
         binding.lll1.removeAllViews();
         binding.lll2.removeAllViews();

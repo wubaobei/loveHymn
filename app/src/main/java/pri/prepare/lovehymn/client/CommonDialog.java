@@ -1,15 +1,14 @@
 package pri.prepare.lovehymn.client;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,8 +36,8 @@ import pri.prepare.lovehymn.server.function.WebHelper;
 
 public class CommonDialog extends Dialog implements IShowDialog {
     private final CommonYnDialogBinding binding;
-    private Activity activity;
-    private enuCm cm;
+    private final Activity activity;
+    private final enuCm cm;
 
     public CommonDialog(@NonNull Context context, enuCm c, IRefresh iRefresh, Activity activity, String... params) {
         super(context);
@@ -62,23 +61,19 @@ public class CommonDialog extends Dialog implements IShowDialog {
         } else if (c == enuCm.EDIT_REMARK) {
             EDIT_REMARK_init(iRefresh, params[0]);
         } else if (c == enuCm.WARM) {
-            WARN_init(iRefresh, params[0]);
+            WARN_init(params[0]);
         }
 
-        binding.cmNo.setOnClickListener(v -> {
-            dismiss();
-        });
+        binding.cmNo.setOnClickListener(v -> dismiss());
     }
 
-    private void WARN_init(IRefresh iRefresh, String param) {
+    private void WARN_init(String param) {
         binding.cmIo.setVisibility(View.VISIBLE);
         binding.cmNo.setVisibility(View.VISIBLE);
         binding.cmTitle.setText("解压完成");
         binding.cmEdit.setText(param);
         binding.cmEdit.setEnabled(false);
-        binding.cmYes.setOnClickListener(v -> {
-            dismiss();
-        });
+        binding.cmYes.setOnClickListener(v -> dismiss());
     }
 
     private void ADD_LABEL_init(IRefresh iRefresh) {
@@ -124,12 +119,12 @@ public class CommonDialog extends Dialog implements IShowDialog {
         binding.cmEdit.setText(param);
         binding.cmEdit.setEnabled(false);
         binding.cmYes.setOnClickListener(v -> {
-            if (new File(SdCardTool.getResPath() + File.separator + param).delete()) {
-            }
+            new File(SdCardTool.getResPath() + File.separator + param).delete();
             dismiss();
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void groupInit(String current) {
         TextView tv = new TextView(getContext());
         tv.setText("标签组");
@@ -146,6 +141,7 @@ public class CommonDialog extends Dialog implements IShowDialog {
 
     private String groupName = "0";
 
+    @SuppressLint("SetTextI18n")
     private void RENAME_LABEL_init(IRefresh iRefresh, String param) {
         LabelType lt = LabelType.getByShowName(param);
         binding.cmTitle.setText(" 重命名：" + lt.getName());
@@ -226,17 +222,19 @@ public class CommonDialog extends Dialog implements IShowDialog {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void LEAVE_STEP_init(IRefresh iRefresh, String param) {
         Hymn hymn = Hymn.getById(Integer.parseInt(param));
 
         binding.cmTitle.setText("留下足迹");
         binding.cmEdit.setEnabled(false);
+        assert hymn != null;
         binding.cmEdit.setText("是否在" + hymn.getShortShowName() + "留下足迹");
         binding.cmYes.setOnClickListener(v -> {
             String newStep = hymn.addStep();
             try {
                 hymn.update();
-                SdCardTool.writeToFile(SdCardTool.getResPath() + File.separator + SdCardTool.STEP_FILE_NAME, hymn.toString() + " " + newStep, SdCardTool.FILE_APPEND);
+                SdCardTool.writeToFile(SdCardTool.getResPath() + File.separator + SdCardTool.STEP_FILE_NAME, hymn + " " + newStep, SdCardTool.FILE_APPEND);
                 iRefresh.refresh();
                 dismiss();
             } catch (Exception e) {
@@ -279,16 +277,14 @@ public class CommonDialog extends Dialog implements IShowDialog {
     public void showDialog() {
         Tool.setAnim(getWindow(), Tool.ANIM_NORMAL);
         //设置触摸对话框以外的地方取消对话框
-        if (cm == enuCm.LEAVE_STEP)
-            setCanceledOnTouchOutside(false);
-        else
-            setCanceledOnTouchOutside(true);
+        setCanceledOnTouchOutside(cm != enuCm.LEAVE_STEP);
         Tool.DialogSet(this);
         show();
     }
 
     private static final String SPACE = " ";
 
+    @SuppressLint("SetTextI18n")
     private void iconSet() {
         Button[] btns = new Button[]{binding.cmYes, binding.cmNo};
         int[] dId = new int[]{R.drawable.ok_i, R.drawable.cancel_i};

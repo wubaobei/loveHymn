@@ -1,11 +1,13 @@
 package pri.prepare.lovehymn.server;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 
 import java.util.ArrayList;
 
+import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.SettingDialog;
 import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.server.entity.Logger;
@@ -24,10 +26,11 @@ public class UpdateHistory {
         return getVersionHistory(activity)[0].contains(" temp ");
     }
 
-    public static  String[] versionHistory=null;
-    public String[] getVersionHistory(Activity activity){
-        if(versionHistory==null){
-            versionHistory=  MyFile.readStream(activity.getResources().openRawResource(R.raw.history));
+    public static String[] versionHistory = null;
+
+    public static String[] getVersionHistory(Activity activity) {
+        if (versionHistory == null) {
+            versionHistory = MyFile.readStream(activity.getResources().openRawResource(R.raw.history));
         }
         return versionHistory;
     }
@@ -61,7 +64,7 @@ public class UpdateHistory {
     /**
      * 获取更新信息
      */
-    public static String[] getUpdate(Context context) throws PackageManager.NameNotFoundException {
+    public static String[] getUpdate(Activity context) throws PackageManager.NameNotFoundException {
         String currentVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
         String lastVersion = Setting.getValueS(Setting.LAST_VERSION_NAME);
         if (lastVersion.length() == 0) {
@@ -71,7 +74,7 @@ public class UpdateHistory {
         if (lastVersion.equals(currentVersion))
             return new String[0];
         ArrayList<String> res = new ArrayList<>();
-        for (String s : VERSION_HISTORY) {
+        for (String s : getVersionHistory(context)) {
             String t = getVersionStr(s);
             if (t.equals(lastVersion)) {
                 Setting.updateSetting(Setting.LAST_VERSION_NAME, currentVersion);

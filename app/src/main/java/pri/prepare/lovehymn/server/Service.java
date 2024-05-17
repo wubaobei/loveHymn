@@ -1184,7 +1184,7 @@ public class Service {
 
     /**
      * 检查版本服务，无返回值
-     *
+     *RR
      * @param ct
      */
     public void checkVersion(Activity ct) {

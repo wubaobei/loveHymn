@@ -296,13 +296,12 @@ public class Setting {
             defaultMap.put(APP_THEME, 0);
             defaultMap.put(RES_VERSION, 0);
             defaultMap.put(SCREEN_K, 0);
-            //defaultMap.put(RES_UPDATE_RECORD, "");
             defaultMap.put(MP3_COUNT_CACHE, "");
             defaultMap.put(COLLECT, "");
             defaultMap.put(LAST_OPEN, Service.getC().getFirstHymnPath());
-            defaultMap.put(LAST_BD, "https://pan.baidu.com/s/1VFuigoViOR63QDBQcAVfgw");
+            defaultMap.put(LAST_BD, "https://pan.baidu.com/s/19lkJ0nugFT-FY9hVhnE4Dg");
             defaultMap.put(SHORT_CUT1, "99]false]1]a");//默认显示所有诗歌
-            defaultMap.put(LAST_BD_PWD, "2iof");
+            defaultMap.put(LAST_BD_PWD, "n3ee");
             defaultMap.put(NEW_VERSION, "");
             defaultMap.put(OPEN_RECENT, "");
             defaultMap.put(AD_TITLE, "广告位招租");

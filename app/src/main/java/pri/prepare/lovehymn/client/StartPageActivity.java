@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,6 +58,7 @@ public class StartPageActivity extends AppCompatActivity {
 
         DBHelper.init(this);
         if (Service.getC().noPer(this)) {
+            Logger.info("没有权限，开始请求权限");
             binding = DataBindingUtil.setContentView(this, R.layout.startpage_layout_load);
 
             LoadProcess.init(this);
@@ -90,14 +92,31 @@ public class StartPageActivity extends AppCompatActivity {
                 //
                 Button btn = findViewById(R.id.clear_app_info);
                 btn.setOnClickListener(v -> Tool.openInfo(this));
+                Button forceLoad = findViewById(R.id.force_load_1);
+                forceLoad.setOnClickListener(v -> {
+                    Logger.info("开始强制同步资源");
+                    TextView tv = findViewById(R.id.force_load_res);
+                    try {
+                        if (Service.getC().noPer(this)) {
+                            throw new RuntimeException("还没有读取权限，请先给与权限");
+                        }
+                        Service.getC().forceUpdate(this);
+                        Setting.updateSetting(Setting.RES_VERSION, Setting.CURRENT_RES_VERSION);
+                        Toast.makeText(this, "加载资源成功，请重启app", Toast.LENGTH_SHORT).show();
+                        tv.setText("加载资源成功，请重启app");
+                    } catch (Exception e) {
+                        Toast.makeText(this, "加载资源失败：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        tv.setText("加载资源失败：" + e.getMessage()+"。\r\n请联系作者并将日志发送给作者");
+                    }
+                });
             } else {
                 isNormal = true;
                 setContentView(R.layout.startpage_layout);
                 int gd = Setting.getValueI(Setting.STARTPAGE_BACKGROUND);
 
-                if(gd==0){
-                    Random rd=new Random();
-                    gd=rd.nextInt(SPBGManager.bname.length-1)+1;
+                if (gd == 0) {
+                    Random rd = new Random();
+                    gd = rd.nextInt(SPBGManager.bname.length - 1) + 1;
                 }
                 findViewById(R.id.spbg_ll).setBackgroundResource(SPBGManager.ids[gd]);
                 ((TextView) findViewById(R.id.sa1)).setText(SPBGManager.j0[gd]);
@@ -162,7 +181,7 @@ public class StartPageActivity extends AppCompatActivity {
                     Logger.info("获取权限成功");
                     Service.getC().forceUpdate(StartPageActivity.this);
                     Setting.updateSetting(Setting.RES_VERSION, 1);
-                }else{
+                } else {
                     Logger.info("已有权限？？");
                 }
 

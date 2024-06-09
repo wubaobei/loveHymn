@@ -35,6 +35,7 @@ import java.util.zip.ZipInputStream;
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.MainActivity;
 import pri.prepare.lovehymn.client.SettingDialog;
+import pri.prepare.lovehymn.client.StartPageActivity;
 import pri.prepare.lovehymn.client.tool.LOAD_ENUM;
 import pri.prepare.lovehymn.client.tool.LoadProcess;
 import pri.prepare.lovehymn.server.dal.AuthorD;

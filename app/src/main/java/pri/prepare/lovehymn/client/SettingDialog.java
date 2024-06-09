@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -259,49 +257,19 @@ public class SettingDialog extends Dialog implements IShowDialog {
 
         btn.setEnabled(true);
 
-        final String finalLink = link;
-        final String finalPwd = pwd;
         btn.setOnClickListener(v -> {
             try {
-                //总是回显示链接和提取码作为保底
-                String str = "链接：" + finalLink + "  提取码：" + finalPwd;
-
                 HashMap<String, String> map = new HashMap<>();
                 map.put(Constant.LINK, link);
                 map.put(Constant.PWD, pwd);
                 SimpleTextDialog cl = new SimpleTextDialog(ct, map, SimpleTextDialog.DOWNLOAD);
                 cl.showDialog();
 
-                String disk = "com.baidu.netdisk";
-                if (isExistApp(disk)) {
-                    Service.getC().CB(str, ct);
-                    try {
-                        Intent intent = ct.getPackageManager().getLaunchIntentForPackage(disk);
-                        ct.startActivity(intent);
-                    } catch (Exception e) {
-                        Logger.exception(e);
-                    }
-                } else {
-                    Service.getC().openByIE(ct, map.get(Constant.LINK));
-                    Service.getC().CB(map.get(Constant.PWD), ct);
-                }
             } catch (Exception e) {
                 Logger.exception(e);
                 Tool.toastRestart(getContext(), e);
             }
         });
-    }
-
-    /**
-     * 方法：是否存在app
-     */
-    private boolean isExistApp(String app) {
-        try {
-            ct.getPackageManager().getApplicationInfo(app, PackageManager.MATCH_UNINSTALLED_PACKAGES);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     public static final String ALL_READ = "说明文档";

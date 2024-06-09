@@ -29,15 +29,13 @@ public class SimpleTextDialog extends Dialog implements IShowDialog {
         if (i == DOWNLOAD) {
             if (map.containsKey(Constant.LINK) && map.containsKey(Constant.PWD)) {
                 ArrayList<String> list = new ArrayList<>();
-                list.add("请通过百度网盘app下载");
-                list.add("可以长按复制");
+                list.add("方法一：");
+                list.add("加qq群 586536796 在群文件中下载安装包与mp3资源（建议通过电脑下载）");
+                list.add("方法二：");
+                list.add("百度网盘app下载安装包（mp3资源请通过加网盘好友私发）");
                 list.add("下载链接");
-                list.add(map.get(Constant.LINK));
-                list.add("提取码");
-                list.add(map.get(Constant.PWD));
-                list.add("如果你发现链接失效了，请联系作者");
+                list.add(map.get(Constant.LINK) + "?pwd=" + map.get(Constant.PWD));
                 list.add("可以截图扫描加网盘好友，或查看说明文档");
-                //list.add("这个");
                 tv.setText(String.join("\r\n", list));
             }
         } else if (i == AD) {
@@ -48,7 +46,7 @@ public class SimpleTextDialog extends Dialog implements IShowDialog {
 
     @Override
     public void showDialog() {
-        Tool.setAnim(getWindow(),Tool.ANIM_NORMAL);
+        Tool.setAnim(getWindow(), Tool.ANIM_NORMAL);
         //设置触摸对话框以外的地方取消对话框
         setCanceledOnTouchOutside(true);
         Tool.DialogSet(this);

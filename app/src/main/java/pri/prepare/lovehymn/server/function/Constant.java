@@ -19,14 +19,10 @@ public class Constant {
     public static final String AD_TEXT = "ad_text";
     public static final String COLLECT_TIG = "还没有任何收藏，点击标题栏进行收藏";
     private static String[] DEFAULT_AD_ARRAY = new String[]{
-            // "吉他、尤克里里、钢琴代理\r\n需要咨询或购买的联系作者",
             "如果你觉得好用\r\n把这个APP推荐给同伴吧"
-            // "广告位招租"
     };
     private static String[] DEFAULT_AD_CONTENT_ARRAY = new String[]{
-            //"做一个app时间精力消耗都挺大的，离不开家人的支持和所有用户的鼓励，使我能坚持到这一步。\r\n我考虑该怎么实现盈利，又不影响用户体验，于是就在这里加了个广告。",
             "如果你觉得哪些地方需要改进或有什么建议，联系作者。"
-            //"联系作者详谈，作者也从没干过这活(滑稽)"
     };
     private static int adN = 0;
 
@@ -72,8 +68,6 @@ public class Constant {
         return DEFAULT_SEARCH_STRING_ARRAY[n];
     }
 
-    public static final String
-            NO_DOWNLOAD_ADDRESS = "加作者好友获取最新版本";
     public static final int btnMinWidth = 80;
     public static final String WHITE = "white";
     public static final String ADD_FILE_NAME = "附加包";

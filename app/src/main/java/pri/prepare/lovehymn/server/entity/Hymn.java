@@ -303,8 +303,10 @@ public class Hymn {
             String dt = s.substring(ind + 1);
             try {
                 Hymn h = Hymn.search(hymnInd);
-                h.addStep(dt);
-                h.update();
+                if(h!=null) {
+                    h.addStep(dt);
+                    h.update();
+                }
             } catch (Exception e) {
                 Logger.info("加载足迹'" + s + "'失败");
                 Logger.exception(e);

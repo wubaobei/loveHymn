@@ -106,9 +106,10 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 竖屏时隐藏状态栏
+     *
      * @param activity
      */
-    public  void hideStatusBar(Activity activity) {
+    public void hideStatusBar(Activity activity) {
         if (activity == null) return;
         Window window = activity.getWindow();
         if (window == null) return;
@@ -120,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         }
         window.setAttributes(lp);
     }
+
     private void showTips() {
         TipStruct tip = TipTool.getTig();
         if (tip != null) {
@@ -494,7 +496,7 @@ public class MainActivity extends AppCompatActivity {
 
             String s = Setting.getValueS(Setting.LAST_OPEN);
             loadPdf(s);
-            catelogBtnSet();
+            catalogBtnSet();
             settingBtnSet();
 
             checkWhenOpen();
@@ -914,7 +916,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 目录按钮设置
      */
-    private void catelogBtnSet() {
+    private void catalogBtnSet() {
         try {
             ImageButton btn = binding.cataBtn;
             btn.setOnClickListener(v -> openCatalogDialog(""));
@@ -1199,10 +1201,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private int introBtnClickLock = 0;
+
     private void introBtnClick(Hymn h) {
         try {
+            if (introBtnClickLock > 0) {
+                Logger.info("重复点击，跳过");
+                return;
+            }
+            introBtnClickLock++;
             IntroDialog dialog = new IntroDialog(this, h, i4Intro);
             dialog.showDialog();
+            introBtnClickLock--;
         } catch (Exception e) {
             Logger.exception(e);
         }

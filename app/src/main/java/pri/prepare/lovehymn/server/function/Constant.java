@@ -89,7 +89,6 @@ public class Constant {
      * 显示的最大长度（强行截取）
      */
     public static final int LYRIC_SHOW_LENGTH_MAX = 40;
-//    public static final String OPEN_RECENT = "历史";
     /**
      * 搜索一次显示的数量
      */
@@ -112,14 +111,6 @@ public class Constant {
             "特别感谢姊妹@马晓可 和家人的支持",
             "如果你觉得这个APP不错，也可以给作者一点捐赠\uD83D\uDE00"};
     public static final String ADURL = "https://www.jianshu.com/p/7964f2b8de07";
-    /**
-     * 百度网盘分享链接
-     */
-    public static final String LINK = "link";
-    /**
-     * 提取码
-     */
-    public static final String PWD = "password";
 
     public static final String READ_ME = "使用说明";
     public static final String TIPS = "小贴士";

@@ -27,17 +27,10 @@ public class SimpleTextDialog extends Dialog implements IShowDialog {
         TextView title = findViewById(R.id.textView);
 
         if (i == DOWNLOAD) {
-            if (map.containsKey(Constant.LINK) && map.containsKey(Constant.PWD)) {
-                ArrayList<String> list = new ArrayList<>();
-                list.add("方法一：");
-                list.add("加qq群 586536796 在群文件中下载安装包与mp3资源（建议通过电脑下载）");
-                list.add("方法二：");
-                list.add("百度网盘app下载安装包（mp3资源请通过加网盘好友私发）");
-                list.add("下载链接");
-                list.add(map.get(Constant.LINK) + "?pwd=" + map.get(Constant.PWD));
-                list.add("可以截图扫描加网盘好友，或查看说明文档");
-                tv.setText(String.join("\r\n", list));
-            }
+            ArrayList<String> list = new ArrayList<>();
+            list.add("加qq群 586536796 在群文件中下载安装包与mp3资源（建议通过电脑下载）");
+            list.add("P.S. 之前通过百度网盘下载，但总被封，现在转用qq群。若qq群也失效，请加作者微信或qq");
+            tv.setText(String.join("\r\n", list));
         } else if (i == AD) {
             title.setText(map.get(Constant.AD));
             tv.setText(map.get(Constant.AD_TEXT));

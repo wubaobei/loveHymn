@@ -66,7 +66,7 @@ public class Setting {
     /**
      * 更新url
      */
-    public static final int LAST_BD = 13;
+    //public static final int LAST_BD = 13;
     /**
      * 已加载的资源文件
      */
@@ -96,7 +96,7 @@ public class Setting {
     /**
      * 下载地址提取码缓存
      */
-    public static final int LAST_BD_PWD = 21;
+    //public static final int LAST_BD_PWD = 21;
     /**
      * 版本缓存（用于控制版本历史显示）
      */
@@ -299,9 +299,7 @@ public class Setting {
             defaultMap.put(MP3_COUNT_CACHE, "");
             defaultMap.put(COLLECT, "");
             defaultMap.put(LAST_OPEN, Service.getC().getFirstHymnPath());
-            defaultMap.put(LAST_BD, "https://pan.baidu.com/s/19lkJ0nugFT-FY9hVhnE4Dg");
             defaultMap.put(SHORT_CUT1, "99]false]1]a");//默认显示所有诗歌
-            defaultMap.put(LAST_BD_PWD, "n3ee");
             defaultMap.put(NEW_VERSION, "");
             defaultMap.put(OPEN_RECENT, "");
             defaultMap.put(AD_TITLE, "广告位招租");

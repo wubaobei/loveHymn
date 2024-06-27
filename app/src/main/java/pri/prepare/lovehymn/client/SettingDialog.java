@@ -252,17 +252,12 @@ public class SettingDialog extends Dialog implements IShowDialog {
      */
     private void setUpdateBtn() {
         Button btn = binding.downloadAddressBtn;
-        String link = Setting.getValueS(Setting.LAST_BD);
-        String pwd = Setting.getValueS(Setting.LAST_BD_PWD);
 
         btn.setEnabled(true);
 
         btn.setOnClickListener(v -> {
             try {
-                HashMap<String, String> map = new HashMap<>();
-                map.put(Constant.LINK, link);
-                map.put(Constant.PWD, pwd);
-                SimpleTextDialog cl = new SimpleTextDialog(ct, map, SimpleTextDialog.DOWNLOAD);
+                SimpleTextDialog cl = new SimpleTextDialog(ct, new HashMap<>(), SimpleTextDialog.DOWNLOAD);
                 cl.showDialog();
 
             } catch (Exception e) {

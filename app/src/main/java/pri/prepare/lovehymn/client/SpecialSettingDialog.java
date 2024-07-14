@@ -46,7 +46,6 @@ public class SpecialSettingDialog extends Dialog implements IShowDialog {
 
         ct = context;
         btnSet();
-        setThemeBtn();
         setYbBtn();
 
         setAppInfoSetting((Activity) context);
@@ -103,21 +102,6 @@ public class SpecialSettingDialog extends Dialog implements IShowDialog {
         //endregion
     }
 
-    /**
-     * 主题显示
-     */
-    private void setThemeBtn() {
-        final Button btn = binding.alphaBtn;
-        int set = Setting.getValueI(Setting.APP_THEME);
-        btn.setText(Tool.getSpannableString("主题 当前：" + THEME[set], THEME));
-
-        btn.setOnClickListener(v -> {
-            int set1 = Setting.getValueI(Setting.APP_THEME);
-            set1 = (set1 + 1) % THEME.length;
-            btn.setText(Tool.getSpannableString("主题 当前：" + THEME[set1], THEME));
-            Setting.updateSetting(Setting.APP_THEME, set1);
-        });
-    }
     /**
      * 异步功能
      */

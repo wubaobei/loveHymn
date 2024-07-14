@@ -48,10 +48,6 @@ public class Setting {
      */
     public static final int PDF_Y_OFFSET = 15;
     /**
-     * 主题
-     */
-    public static final int APP_THEME = 16;
-    /**
      * 搜索结果的分隔符
      */
     public static final int SEARCH_RESULT_SPLIT = 17;
@@ -249,7 +245,6 @@ public class Setting {
             defaultMap.put(PDF_TIME, 0);
             defaultMap.put(DISPEAR_TIME, SettingDialog.getInitDisappearTime());
             defaultMap.put(SHOW_CHINESE_ENGLISH, show_chinese_english_default);
-            defaultMap.put(APP_THEME, 0);
             defaultMap.put(RES_VERSION, 0);
             defaultMap.put(MP3_COUNT_CACHE, "");
             defaultMap.put(COLLECT, "");

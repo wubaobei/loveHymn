@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         try {
             DBHelper.init(MainActivity.this);
-            Service.getC().setTheme(this);
             binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
             setScreenK();
 

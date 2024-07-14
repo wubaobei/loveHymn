@@ -58,7 +58,6 @@ public class Mp3ListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DBHelper.init(Mp3ListActivity.this);
-        Service.getC().setTheme(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_mp3_list);
         Tool.showStatusBar(getWindow(), this);
         volumeUtil = new VolumeUtil(this);

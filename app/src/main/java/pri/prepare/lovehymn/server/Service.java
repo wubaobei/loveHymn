@@ -1580,18 +1580,6 @@ public class Service {
         }
     }
 
-    public void setTheme(AppCompatActivity activity) {
-        int set = Setting.getValueI(Setting.APP_THEME);
-        if (set == 0)
-            activity.setTheme(R.style.BigTheme);
-        else if (set == 1)
-            activity.setTheme(R.style.AlphaTheme);
-        else if (set == 2)
-            activity.setTheme(R.style.ColorfulTheme);
-        else
-            activity.setTheme(R.style.SmallTheme);
-    }
-
     public String getDebugMsg(Activity activity) {
         //是否赋予权限
         boolean permission = !noPer(activity);

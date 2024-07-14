@@ -8,16 +8,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.tool.IRefresh;
@@ -26,16 +22,11 @@ import pri.prepare.lovehymn.client.tool.TestArrayAdapter;
 import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.client.tool.enuCm;
 import pri.prepare.lovehymn.databinding.LabelStepManagerLayoutBinding;
-import pri.prepare.lovehymn.server.Service;
-import pri.prepare.lovehymn.server.UpdateHistory;
 import pri.prepare.lovehymn.server.entity.Book;
-import pri.prepare.lovehymn.server.entity.Hymn;
 import pri.prepare.lovehymn.server.entity.Label;
 import pri.prepare.lovehymn.server.entity.LabelType;
 import pri.prepare.lovehymn.server.entity.Logger;
-import pri.prepare.lovehymn.server.entity.MyFile;
 import pri.prepare.lovehymn.server.entity.Setting;
-import pri.prepare.lovehymn.server.function.SdCardTool;
 
 /**
  * 设置-标签足迹管理页

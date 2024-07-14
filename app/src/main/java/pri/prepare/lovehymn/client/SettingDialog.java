@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -29,7 +27,6 @@ import pri.prepare.lovehymn.databinding.SettingLayoutBinding;
 import pri.prepare.lovehymn.server.UpdateHistory;
 import pri.prepare.lovehymn.server.function.Constant;
 import pri.prepare.lovehymn.server.Service;
-import pri.prepare.lovehymn.server.function.ScreenKTool;
 import pri.prepare.lovehymn.server.entity.Logger;
 import pri.prepare.lovehymn.server.entity.Setting;
 
@@ -61,7 +58,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
         setCEBtn();
         setUpdateBtn();
         setSectionEnclises();
-        setScreenKBtn();
         setSpecialSetting();
         setLabelSetting();
         setAllRead();
@@ -105,12 +101,12 @@ public class SettingDialog extends Dialog implements IShowDialog {
     private void setSettingIcons() {
         int[] btnId = new int[]{R.id.resStatBtn, R.id.all_read,
                 R.id.dispearTime, R.id.downloadAddressBtn, R.id.bibleShowChineseEnglish,
-                R.id.screenK, R.id.specialSettingBtn,
+                R.id.specialSettingBtn,
                 R.id.sectionCt, R.id.lableBtn,
                 R.id.showtoolbar, R.id.dict_show, R.id.close_tig_btn, R.id.signSettingBtn, R.id.spgb};
         int[] dId = new int[]{R.drawable.s_2, R.drawable.s_4,
                 R.drawable.s_5, R.drawable.s_6, R.drawable.book,
-                R.drawable.screen, R.drawable.special_setting,
+                R.drawable.special_setting,
                 R.drawable.ct, R.drawable.label_icon,
                 R.drawable.lan, R.drawable.spz, R.drawable.gth2, R.drawable.finger, R.drawable.pngicon};
 
@@ -142,31 +138,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
             v2 = disappearTimeArr[ind];
             Setting.updateSetting(Setting.DISPEAR_TIME, v2);
             btn.setText(getText(v2));
-        });
-    }
-
-    /**
-     * 横屏的pdf比例
-     */
-    private void setScreenKBtn() {
-        final ScreenKTool st = new ScreenKTool(_wm);
-        Button btn = binding.screenKBtn;
-        btn.setText(st.getK());
-
-        btn.setOnClickListener(v -> {
-            String[] kvs = st.getKs();
-            String kv = st.getK();
-            int ind = 0;
-            for (int i = 0; i < kvs.length; i++)
-                if (kvs[i].equals(kv)) {
-                    ind = i;
-                    break;
-                }
-
-            ind = (ind + 1) % kvs.length;
-            st.setK(kvs[ind]);
-            btn.setText(st.getK());
-            iTell.RefreshScreenK();
         });
     }
 

@@ -19,6 +19,7 @@
         android:theme="@style/SmallTheme">
         <activity
             android:name=".client.StartPageActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +27,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts"/>
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity android:name=".client.WhiteActivity" />
         <activity
@@ -34,8 +35,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize"></activity>
         <activity
             android:name=".client.Mp3ListActivity"
-            android:theme="@android:style/Theme.Holo.Light"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light" />
         <activity android:name=".client.ReadMeActivity" />
         <activity
             android:name=".client.AddPdfActivity"

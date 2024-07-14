@@ -66,7 +66,6 @@ import pri.prepare.lovehymn.server.function.CollectTool;
 import pri.prepare.lovehymn.server.function.Constant;
 import pri.prepare.lovehymn.server.function.DBHelper;
 import pri.prepare.lovehymn.server.function.MusicManager;
-import pri.prepare.lovehymn.server.function.ScreenKTool;
 import pri.prepare.lovehymn.server.function.SdCardTool;
 import pri.prepare.lovehymn.server.Service;
 import pri.prepare.lovehymn.server.entity.Hymn;
@@ -133,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
     private long createTime;
     public static TimeStatTool timeTool;
 
-
     /**
      * 显示版本更新历史（如果更新了版本）
      */
@@ -146,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         new QucikSettingDialog(this, vs[1]).showDialog();
                     } catch (Exception e) {
-                        Logger.info("qucik errrp");
+                        Logger.info("quick error");
                         Logger.exception(e);
                     }
                 } else
@@ -204,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 过渡动画完成，交换pdfView
      */
-    private void switchPdfvFinish() {
+    private void switchPdfViewFinish() {
         isPdf0 = !isPdf0;
     }
 
@@ -213,14 +211,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setScreenK() {
         try {
-            ScreenKTool sk = new ScreenKTool(this.getWindowManager());
-            PDFView pdfView = getPdfV0();
-            ViewGroup.LayoutParams lp = pdfView.getLayoutParams();
-            if (lp != null) {
-                lp.width = sk.getWidth();
-                pdfView.setLayoutParams(lp);
-                getPdfV1().setLayoutParams(lp);
-            }
             boolean showTime = Setting.getValueB(Setting.AUTO_STEP_TIME);
 
             if (isLandscape()) {
@@ -229,6 +219,18 @@ public class MainActivity extends AppCompatActivity {
                 Tool.showStatusBar(getWindow(), this);
             } else {
                 hideStatusBar();
+            }
+
+            if(isLandscape()){
+                getPdfV0().setMinZoom(0.6f);
+                getPdfV1().setMinZoom(0.6f);
+            }else{
+                getPdfV0().setMinZoom(1f);
+                getPdfV1().setMinZoom(1f);
+                if(getPdfV0().getZoom()<1f){
+                    getPdfV0().resetZoom();
+                    getPdfV1().resetZoom();
+                }
             }
 
         } catch (Exception e) {
@@ -255,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 持续(time/60)s
      */
-    public void ToastInTimerH(String s, int time) {
+    public void toastInTimerH(String s, int time) {
         try {
             lastInToast = time;
             if (time > 60 * 10) {
@@ -276,8 +278,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 持续3s
      */
-    public void ToastInTimerH(String s) {
-        ToastInTimerH(s, 180);
+    public void toastInTimerH(String s) {
+        toastInTimerH(s, 180);
     }
 
     boolean toastHasValue = false;
@@ -336,21 +338,21 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (tr == TouchUtil.THREE_LEFT) {
-                ToastInTimerH("请使用双指滑动代替三指滑动");
+                toastInTimerH("请使用双指滑动代替三指滑动");
             } else if (tr == TouchUtil.THREE_RIGHT) {
-                ToastInTimerH("请使用双指滑动代替三指滑动");
+                toastInTimerH("请使用双指滑动代替三指滑动");
             } else if (dr == TouchUtil.DOUBLE_LEFT) {
                 MyFile f = HistoryTool.getNext();
                 if (f != null) {
                     loadPdf(f, false);
                 } else
-                    ToastInTimerH("没有下一首");
+                    toastInTimerH("没有下一首");
             } else if (dr == TouchUtil.DOUBLE_RIGHT) {
                 MyFile f = HistoryTool.getPreview();
                 if (f != null) {
                     loadPdf(f, false);
                 } else
-                    ToastInTimerH("没有上一首");
+                    toastInTimerH("没有上一首");
             } else if (dr == TouchUtil.DOUBLE_UP) {
                 quickSign(Setting.getValueI(Setting.DOUBLE_FINGER_UP));
             } else if (dr == TouchUtil.DOUBLE_DOWN) {
@@ -360,13 +362,13 @@ public class MainActivity extends AppCompatActivity {
                     if (fn != null)
                         loadPdf(fn);
                     else {
-                        ToastInTimerH("没有下一首");
+                        toastInTimerH("没有下一首");
                     }
                 } else {
                     if (fp != null)
                         loadPdf(fp);
                     else {
-                        ToastInTimerH("没有上一首");
+                        toastInTimerH("没有上一首");
                     }
                 }
             } else if (lp) {
@@ -378,7 +380,7 @@ public class MainActivity extends AppCompatActivity {
             Logger.exception(e);
             //当加载失败时，可能需要通过长按查看教程，屏蔽此时的错误提示
             if (loadPdfSuccess)
-                ToastInTimerH("出了点小问题：" + e.getMessage());
+                toastInTimerH("出了点小问题：" + e.getMessage());
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -437,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
                 CommonListDialog cl = new CommonListDialog(MainActivity.this, 1, mp3List, i4StopMp3, lastFile.getHymn());
                 cl.showDialog();
             } else {
-                ToastInTimerH("未找到mp3资源");
+                toastInTimerH("未找到mp3资源");
                 binding.trList.removeView(binding.cataMp3);
             }
         } catch (Exception e) {
@@ -623,9 +625,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (msgWait.length() > 0) {
                         if (msgWait.startsWith("解压")) {
-                            ToastInTimerH(msgWait, 60 * 60);
+                            toastInTimerH(msgWait, 60 * 60);
                         } else {
-                            ToastInTimerH(msgWait);
+                            toastInTimerH(msgWait);
                         }
                         msgWait = "";
                         //if (bgMsg.length() > 0)
@@ -765,7 +767,7 @@ public class MainActivity extends AppCompatActivity {
                     if (pdfPro >= 1f) {
                         getPdfV1().setAlpha(1f);
                         getPdfV0().setAlpha(0f);
-                        switchPdfvFinish();
+                        switchPdfViewFinish();
                         isSwitchPdf = false;
                     } else {
                         getPdfV1().setAlpha(pdfPro);
@@ -1021,15 +1023,15 @@ public class MainActivity extends AppCompatActivity {
             setTitleText(file);
             if (mod == I4LC.MOD_COLLECT) {
                 if (CollectTool.hasFile(file))
-                    ToastInTimerH("已加入收藏夹");
+                    toastInTimerH("已加入收藏夹");
                 else
-                    ToastInTimerH("已移出收藏夹");
+                    toastInTimerH("已移出收藏夹");
             } else if (mod == I4LC.ADD_STEP) {
-                ToastInTimerH("已留下足迹");
+                toastInTimerH("已留下足迹");
             } else if (mod == I4LC.CLEAR_COLLECT) {
-                ToastInTimerH("已清空收藏夹");
+                toastInTimerH("已清空收藏夹");
             } else if (mod == I4LC.CLEAR_HISTORY) {
-                ToastInTimerH("已清空历史记录");
+                toastInTimerH("已清空历史记录");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1119,7 +1121,7 @@ public class MainActivity extends AppCompatActivity {
                     Logger.info("click random");
                     MyFile f1 = Service.getC().getRandomMp3File();
                     if (f1 == null)
-                        ToastInTimerH("出了点小问题，找不到随机MP3");
+                        toastInTimerH("出了点小问题，找不到随机MP3");
                     else
                         loadPdf(f1);
                 });
@@ -1242,7 +1244,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             String remark = PersonRemark.getRemark(f.getHymn());
             if (remark.length() > 0)
-                ToastInTimerH(remark);
+                toastInTimerH(remark);
 
             Logger.info("lodfpdf:" + f.getAbsolutePath());
             HistoryTool.add(f, modifyHis);
@@ -1275,7 +1277,7 @@ public class MainActivity extends AppCompatActivity {
                     dialog.showDialog();
                 } catch (Exception e) {
                     Logger.exception(e);
-                    ToastInTimerH("错误：该pdf缺失必要的信息");
+                    toastInTimerH("错误：该pdf缺失必要的信息");
                 }
             });
         } catch (Exception e) {
@@ -1292,15 +1294,15 @@ public class MainActivity extends AppCompatActivity {
                 CollectTool.modCollect(lastFile);
                 setTitleText(lastFile);
                 if (CollectTool.hasFile(lastFile))
-                    ToastInTimerH("已加入收藏夹");
+                    toastInTimerH("已加入收藏夹");
                 else
-                    ToastInTimerH("已移出收藏夹");
+                    toastInTimerH("已移出收藏夹");
                 break;
             case Setting.DETAIL_QUICK:
                 if (binding.introBtn.isClickable())
                     binding.introBtn.callOnClick();
                 else
-                    ToastInTimerH("没有详情内容");
+                    toastInTimerH("没有详情内容");
                 break;
             case Setting.LABLE_COLLECT_QUICK:
                 binding.tvbackTitle.callOnClick();
@@ -1309,7 +1311,7 @@ public class MainActivity extends AppCompatActivity {
                 binding.mp3PlayerBtn.callOnClick();
                 break;
             default:
-                ToastInTimerH("未能识别手势内容");
+                toastInTimerH("未能识别手势内容");
         }
     }
 }

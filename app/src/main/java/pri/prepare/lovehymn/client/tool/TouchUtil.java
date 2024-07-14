@@ -182,11 +182,14 @@ public class TouchUtil {
     private boolean firstDouble = false;
     private boolean doubleAct = false;
     private double xtD, ytD;
+    private double xz0, xz1, yz0, yz1;
 
     public static final int DOUBLE_UP = 210;
     public static final int DOUBLE_DOWN = 211;
     public static final int DOUBLE_LEFT = 212;
     public static final int DOUBLE_RIGHT = 213;
+    public static final int ZOOM_SMALL = 220;
+    public static final int ZOOM_BIG = 221;
 
     /**
      * 双指滑动
@@ -206,9 +209,18 @@ public class TouchUtil {
                 firstDouble = true;
                 xtD = ev.getX(0) + ev.getX(1);
                 ytD = ev.getY(0) + ev.getY(1);
+                xz0 = ev.getX(0);
+                xz1 = ev.getX(1);
+                yz0 = ev.getY(0);
+                yz1 = ev.getY(1);
             } else if (!doubleAct) {
                 double xTemp = ev.getX(0) + ev.getX(1);
                 double yTemp = ev.getY(0) + ev.getY(1);
+
+                double xz0N = ev.getX(0);
+                double xz1N = ev.getX(1);
+                double yz0N = ev.getY(0);
+                double yz1N = ev.getY(1);
                 if (xTemp - xtD > getMinHW() * t3K * 3) {
                     doubleAct = true;
                     firstDouble = false;
@@ -225,6 +237,15 @@ public class TouchUtil {
                     doubleAct = true;
                     firstDouble = false;
                     return DOUBLE_DOWN;
+                } else {
+                    double zk = 2d;
+                    double dSqr = (xz0 - xz1) * (xz0 - xz1) + (yz0 - yz1) * (yz0 - yz1);
+                    double dNSqr = (xz0N - xz1N) * (xz0N - xz1N) + (yz0N - yz1N) * (yz0N - yz1N);
+                    if (dSqr > dNSqr * zk) {
+                        return ZOOM_SMALL;
+                    } else if (dSqr * zk < dNSqr) {
+                        return ZOOM_BIG;
+                    }
                 }
             }
         }

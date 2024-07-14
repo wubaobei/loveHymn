@@ -39,6 +39,7 @@ public class WhiteActivity extends AppCompatActivity {
         int page = intent.getIntExtra("page", 0);
         PDFView pdfv = binding.pdfv2;
         pdfv.fromFile(new File(path)).defaultPage(page).load();
+        pdfv.setMinZoom(0.6f);
         handler.post(runnable);
         lockBtnSet();
         new Thread(r).start();

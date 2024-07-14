@@ -40,10 +40,6 @@ public class Setting {
      */
     public static final int SECTION_CT = 10;
     /**
-     * 屏幕比例
-     */
-    public static final int SCREEN_K = 11;
-    /**
      * 收藏夹
      */
     public static final int COLLECT = 12;
@@ -255,7 +251,6 @@ public class Setting {
             defaultMap.put(SHOW_CHINESE_ENGLISH, show_chinese_english_default);
             defaultMap.put(APP_THEME, 0);
             defaultMap.put(RES_VERSION, 0);
-            defaultMap.put(SCREEN_K, 0);
             defaultMap.put(MP3_COUNT_CACHE, "");
             defaultMap.put(COLLECT, "");
             defaultMap.put(LAST_OPEN, Service.getC().getFirstHymnPath());

@@ -56,34 +56,6 @@
                     android:layout_height="match_parent">
 
                     <Button
-                        android:id="@+id/screenK"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/set_padding"
-                        android:layout_marginRight="@dimen/set_padding"
-                        android:layout_toStartOf="@+id/screenKBtn"
-                        android:background="@drawable/btn_white"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/setting_btn_min_height"
-                        android:text="横屏比例" />
-
-                    <Button
-                        android:id="@+id/screenKBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/set_padding"
-                        android:background="@drawable/btn_white"
-                        android:minHeight="@dimen/setting_btn_min_height" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <Button
                         android:id="@+id/spgb"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

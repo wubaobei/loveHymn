@@ -2,8 +2,6 @@ package pri.prepare.lovehymn.server.function;
 
 import java.util.Random;
 
-import pri.prepare.lovehymn.server.entity.Setting;
-
 public class Constant {
 
     /**
@@ -15,42 +13,11 @@ public class Constant {
     public static final String SUBJOIN_DIR_RENAME = "附";
     public static final String UPDATING = "正在更新资源，请耐心等待";
     public static final String AD = "ad";
-    public static final String AD_ADDRESS = "ad_url";
     public static final String AD_TEXT = "ad_text";
     public static final String COLLECT_TIG = "还没有任何收藏，点击标题栏进行收藏";
-    private static String[] DEFAULT_AD_ARRAY = new String[]{
-            "如果你觉得好用\r\n把这个APP推荐给同伴吧"
-    };
-    private static String[] DEFAULT_AD_CONTENT_ARRAY = new String[]{
-            "如果你觉得哪些地方需要改进或有什么建议，联系作者。"
-    };
-    private static int adN = 0;
 
-    public static String getStartPageAd() {
-        String s;
-        if ((s = Setting.getValueS(Setting.AD_TITLE)).length() > 0) {
-            String s2 = Setting.getValueS(Setting.AD_CONTENT);
-            if (s2.length() > 30)
-                s2 = s2.substring(0, 28) + "...";
-            return s + "\r\n" + s2;
-        }
+    public static String getStartPageMsg() {
         return "By PrepareWu";
-    }
-
-    public static String getRandomAd() {
-        String t1 = Setting.getValueS(Setting.AD_TITLE);
-        String t2 = Setting.getValueS(Setting.AD_CONTENT);
-        if (!t1.equals("广告位招租")) {
-            DEFAULT_AD_ARRAY = new String[]{t1};
-            DEFAULT_AD_CONTENT_ARRAY = new String[]{t2};
-        }
-        Random rd = new Random();
-        adN = rd.nextInt(Constant.DEFAULT_AD_ARRAY.length);
-        return DEFAULT_AD_ARRAY[adN];
-    }
-
-    public static String getDefaultAdValue() {
-        return DEFAULT_AD_CONTENT_ARRAY[adN];
     }
 
     public static final String[] DEFAULT_SEARCH_STRING_ARRAY = new String[]{
@@ -102,13 +69,11 @@ public class Constant {
     public static final String LB_DIR_NAME = "诗歌蓝版";
     public static final String RES_NAME = "res";
 
-    public static final String[] AUTHOR = new String[]{"作者：吴预备-杭州召会\r\n他很懒，只留下了联系方式\r\nQQ：843439261\r\n微信：prepareWu",
-            "感谢所有搜集整理蓝版和MP3等资料的同伴们",
-            "感谢@heetisn @canlinkj @yls863699912 @ymll31 @weixinyedelu提供的pdf和mp3资源",
-            "感谢@qpzmhyn8 @x03140501 @ymll31 的测试反馈和建议",
-            "感谢@C18857836876 设计的界面",
-            "感谢@Daniel198717 @miaomiao1989127 @伟www @火烧荆棘 整理的‘思路’‘背景’等资料",
-            "特别感谢姊妹@马晓可 和家人的支持",
+    public static final String[] AUTHOR = new String[]{"作者：吴预备-杭州召会\r\n" +
+            "他很懒，只留下了联系方式\r\n" +
+            "QQ：843439261\r\n" +
+            "微信：prepareWu",
+            "感谢所有搜集整理蓝版和MP3等资料的同伴们和家人的支持",
             "如果你觉得这个APP不错，也可以给作者一点捐赠\uD83D\uDE00"};
     public static final String ADURL = "https://www.jianshu.com/p/7964f2b8de07";
 

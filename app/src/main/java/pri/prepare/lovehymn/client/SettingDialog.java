@@ -60,7 +60,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
         setDisappearBtn();
         setCEBtn();
         setUpdateBtn();
-        setAdBtn();
         setSectionEnclises();
         setScreenKBtn();
         setSpecialSetting();
@@ -70,7 +69,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
         setDictSetting();
         setTigSetting();
         setSignSetting();
-        setSmallToolSetting();
         setSPBGSetting();
     }
 
@@ -109,12 +107,12 @@ public class SettingDialog extends Dialog implements IShowDialog {
                 R.id.dispearTime, R.id.downloadAddressBtn, R.id.bibleShowChineseEnglish,
                 R.id.screenK, R.id.specialSettingBtn,
                 R.id.sectionCt, R.id.lableBtn,
-                R.id.showtoolbar, R.id.dict_show, R.id.close_tig_btn, R.id.signSettingBtn, R.id.small_tool_btn, R.id.spgb};//R.id.alpha,
+                R.id.showtoolbar, R.id.dict_show, R.id.close_tig_btn, R.id.signSettingBtn, R.id.spgb};
         int[] dId = new int[]{R.drawable.s_2, R.drawable.s_4,
                 R.drawable.s_5, R.drawable.s_6, R.drawable.book,
                 R.drawable.screen, R.drawable.special_setting,
                 R.drawable.ct, R.drawable.label_icon,
-                R.drawable.lan, R.drawable.spz, R.drawable.gth2, R.drawable.finger, R.drawable.small_tool, R.drawable.pngicon};//R.drawable.theme,
+                R.drawable.lan, R.drawable.spz, R.drawable.gth2, R.drawable.finger, R.drawable.pngicon};
 
         for (int i = 0; i < btnId.length; i++) {
             Button btn1 = findViewById(btnId[i]);
@@ -303,17 +301,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
     }
 
     /**
-     * 小工具
-     */
-    private void setSmallToolSetting() {
-        binding.smallToolBtn.setOnClickListener(v -> {
-            SmallToolDialog cl = new SmallToolDialog(ct, activity);
-            cl.showDialog();
-            dismiss();
-        });
-    }
-
-    /**
      * 手势设置
      */
     private void setSignSetting() {
@@ -344,41 +331,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
             });
             alterDialog.show();
         });
-    }
-
-    /**
-     * 广告
-     */
-    private void setAdBtn() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put(Constant.AD, Constant.getRandomAd());
-        map.put(Constant.AD_TEXT, Constant.getDefaultAdValue());
-
-        if (map.containsKey(Constant.AD)) {
-            LinearLayout ll = binding.detLayout;
-            RelativeLayout rl = binding.rLayout;
-            int ind = ll.indexOfChild(rl);
-            Button btn = new Button(ct);
-            btn.setText(map.get(Constant.AD));
-            btn.setBackgroundResource(R.drawable.btn_white);
-            btn.setCompoundDrawablePadding(10);
-            Tool.drawableLeftRightSet(btn, ct, R.drawable.ad_1, R.drawable.ad_2);
-            ll.addView(btn, ind);
-
-            if (map.containsKey(Constant.AD_ADDRESS)) {
-                final HashMap<String, String> finalMap = map;
-                btn.setOnClickListener(v -> Service.getC().openByIE(ct, finalMap.get(Constant.AD_ADDRESS)));
-
-            } else if (map.containsKey(Constant.AD_TEXT)) {
-                final HashMap<String, String> finalMap1 = map;
-                btn.setOnClickListener(v -> {
-                    SimpleTextDialog cl = new SimpleTextDialog(ct, finalMap1, SimpleTextDialog.AD);
-                    cl.showDialog();
-                });
-            } else {
-                btn.setEnabled(false);
-            }
-        }
     }
 
     /**

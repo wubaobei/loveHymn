@@ -20,10 +20,6 @@ public class Setting {
      */
     public static final int LAST_OPEN = 1;
     /**
-     * 蓝版诗歌所在目录
-     */
-    //public static final int FILE_PATH = 2;
-    /**
      * 最近打开（列表）
      */
     public static final int OPEN_RECENT = 3;
@@ -36,21 +32,9 @@ public class Setting {
      */
     public static final int MP3_LOOP = 5;
     /**
-     * 目录界面是否显示歌词
-     */
-    //public static final int SHOW_LYRIC = 6;
-    /**
      * 相关经节中英显示
      */
     public static final int SHOW_CHINESE_ENGLISH = 7;
-    /**
-     * 段落间是否加空格
-     */
-//    public static final int LINE_SHOW = 8;
-    /**
-     * 作者显示英文名
-     */
-    //public static final int AUTHOR_ENGLISH_NAME = 9;
     /**
      * 经节连续显示
      */
@@ -63,14 +47,6 @@ public class Setting {
      * 收藏夹
      */
     public static final int COLLECT = 12;
-    /**
-     * 更新url
-     */
-    //public static final int LAST_BD = 13;
-    /**
-     * 已加载的资源文件
-     */
-    //public static final int RES_UPDATE_RECORD = 14;
     /**
      * pdf阅读进度
      */
@@ -93,10 +69,6 @@ public class Setting {
      */
     public static final int RES_VERSION = 19;
     public static final int CURRENT_RES_VERSION = 1;
-    /**
-     * 下载地址提取码缓存
-     */
-    //public static final int LAST_BD_PWD = 21;
     /**
      * 版本缓存（用于控制版本历史显示）
      */
@@ -162,14 +134,6 @@ public class Setting {
      */
     public static final int MP3_COUNT_CACHE = 37;
     /**
-     * 广告标题
-     */
-    public static final int AD_TITLE = 38;
-    /**
-     * 广告内容
-     */
-    public static final int AD_CONTENT = 39;
-    /**
      * 最新版本（用于更新app的提醒显示）
      */
     public static final int NEW_VERSION = 40;
@@ -225,10 +189,6 @@ public class Setting {
      * 启动页背景
      */
     public static final int STARTPAGE_BACKGROUND = 53;
-    /**
-     * 隐藏青年诗歌
-     */
-    public static final int HIDE_QING = 54;
 
     public static final int CATELOG_QUICK = 1;
     public static final int DETAIL_QUICK = 3;
@@ -302,8 +262,6 @@ public class Setting {
             defaultMap.put(SHORT_CUT1, "99]false]1]a");//默认显示所有诗歌
             defaultMap.put(NEW_VERSION, "");
             defaultMap.put(OPEN_RECENT, "");
-            defaultMap.put(AD_TITLE, "广告位招租");
-            defaultMap.put(AD_CONTENT, "联系作者详谈，作者也从没干过这活(滑稽)");
             defaultMap.put(LAST_VERSION_NAME, "");
             defaultMap.put(PAUSE_TIME, "");
             defaultMap.put(EASY_SCHEDULE_RECORD, "");
@@ -316,9 +274,8 @@ public class Setting {
             defaultMap.put(LOAD_QITA, false);
             defaultMap.put(LOAD_STEP, false);
             defaultMap.put(USE_WEB_DAILY_BIBLE, false);
-            defaultMap.put(USE_ASYNC, true);
+            defaultMap.put(USE_ASYNC, false);
             defaultMap.put(STARTPAGE_BACKGROUND, 0);
-            defaultMap.put(HIDE_QING, true);
         }
         return defaultMap.get(key);
     }

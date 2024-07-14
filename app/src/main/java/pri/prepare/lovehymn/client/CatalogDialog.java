@@ -333,9 +333,6 @@ public class CatalogDialog extends Dialog implements IShowDialog {
         MyFile[] fileList = f.listFiles();
         ArrayList<MyFile> showFileList = new ArrayList<>();
         for (MyFile file : Service.getC().orderFiles(fileList)) {
-            if (Setting.getValueB(Setting.HIDE_QING) && file.getName().equals(Book.Qing.FullName)) {
-                continue;
-            }
             //跳过资源文件 隐藏文件 MP3 白版
             if (!file.getName().equals(Constant.RES_NAME) && !(file.getName().startsWith("."))
                     && !(file.getName().endsWith("mp3")) && !(file.getName().equals(Constant.WHITE))

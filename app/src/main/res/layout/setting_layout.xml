@@ -312,6 +312,19 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:id="@+id/all_read"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="说明文档" />
+
+                    <Button
                         android:id="@+id/specialSettingBtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -324,19 +337,6 @@
                         android:minHeight="@dimen/setting_btn_min_height"
                         android:text="其他设置" />
 
-                    <Button
-                        android:id="@+id/small_tool_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/set_padding"
-                        android:layout_marginRight="@dimen/set_padding"
-                        android:layout_weight="1"
-                        android:background="@drawable/btn_white"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/setting_btn_min_height"
-                        android:text="小工具" />
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -344,18 +344,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/all_read"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/set_padding"
-                        android:layout_marginRight="@dimen/set_padding"
-                        android:layout_weight="1"
-                        android:background="@drawable/btn_white"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/setting_btn_min_height"
-                        android:text="说明文档" />
 
                     <Button
                         android:id="@+id/close_tig_btn"

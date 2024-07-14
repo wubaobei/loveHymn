@@ -228,9 +228,6 @@ public class SdCardTool {
                             Logger.info("has same path");
                             continue;
                         }
-                        if (Setting.getValueB(Setting.HIDE_QING) && p.contains(Book.Qing.FullName)) {
-                            continue;
-                        }
                         searchTemp0.add(p);
                         n++;
                         if (n == Constant.SEARCH_RESULT_SHOW_MAX_COUNT + 1)

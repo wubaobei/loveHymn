@@ -133,20 +133,12 @@ public class MainActivity extends AppCompatActivity {
     private long createTime;
     public static TimeStatTool timeTool;
 
-    public static boolean showAd = false;
 
     /**
      * 显示版本更新历史（如果更新了版本）
      */
     private boolean showVersionUpdateHistory() {
         try {
-            if (showAd) {
-                showAd = false;
-                String k = Setting.getValueS(Setting.AD_TITLE);
-                String v = Setting.getValueS(Setting.AD_CONTENT);
-                Tool.ShowDialog(this, k, v);
-                return true;
-            }
             String[] vs = UpdateHistory.getUpdate(this);
             if (vs.length > 0) {
                 if (vs[0].equals(UpdateHistory.WELCOME)) {
@@ -172,9 +164,6 @@ public class MainActivity extends AppCompatActivity {
     //全屏并且隐藏状态栏
     private void hideStatusBar() {
         hideStatusBar(this);
-//        WindowManager.LayoutParams attrs = getWindow().getAttributes();
-//        attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-//        getWindow().setAttributes(attrs);
     }
 
     //endregion

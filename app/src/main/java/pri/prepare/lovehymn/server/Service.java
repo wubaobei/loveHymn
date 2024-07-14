@@ -658,9 +658,9 @@ public class Service {
 
     public void loadResDir(Activity activity) {
         MyFile qitaFile = SdCardTool.getQitaFile();
-        int[] resource = new int[]{R.raw.a101, R.raw.a102, R.raw.a103, R.raw.a104, R.raw.a105, R.raw.a106};
-        String[] rn = new String[]{"大本", "补充本", "唱诗人", "新歌颂咏", "青年诗歌", "儿童诗歌"};
-        //数量 6本诗歌本+作者+书名+其他(如果有)
+        int[] resource = new int[]{R.raw.a101, R.raw.a102, R.raw.a103, R.raw.a104,  R.raw.a106};
+        String[] rn = new String[]{"大本", "补充本", "唱诗人", "新歌颂咏",  "儿童诗歌"};
+        //数量 5本诗歌本+作者+书名+其他(如果有)
         LoadProcess.RES_SUM = resource.length + 2 + (qitaFile != null ? 1 : 0);
         if (qitaFile != null) {
             LoadProcess.RES_COUNT++;

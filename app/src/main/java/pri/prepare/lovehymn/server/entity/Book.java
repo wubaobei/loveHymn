@@ -27,19 +27,15 @@ public class Book {
     public static final Book BuChong = new Book(2, "B", "补充本", 4, "buchongben");
     public static final Book Chang = new Book(3, "C", "唱诗人", 3, "changshiren");
     public static final Book Xin = new Book(4, "X", "新歌颂咏", 3, "xingesongyong");
-    public static final Book Qing = new Book(5, "Q", "青年诗歌", 3, "qingnianshige");
     public static final Book ErTong = new Book(6, "E", "儿童诗歌", 4, "ertongshige");
     public static final Book Other = new Book(7, "O", "其它", 3, "qita");
 
     public static final Book[] getAllInLoad(){
-        return new Book[]{DaBen, BuChong, Chang, Xin, Qing, ErTong, Other};
+        return new Book[]{DaBen, BuChong, Chang, Xin,  ErTong, Other};
     }
 
     public static final Book[] getAll() {
-        if (Setting.getValueB(Setting.HIDE_QING)) {
-            return new Book[]{DaBen, BuChong, Chang, Xin, ErTong, Other};
-        }
-        return new Book[]{DaBen, BuChong, Chang, Xin, Qing, ErTong, Other};
+        return new Book[]{DaBen, BuChong, Chang, Xin,  ErTong, Other};
     }
 
     public static Book getById(int bookId) {

@@ -37,13 +37,11 @@ import pri.prepare.lovehymn.server.Service;
 import pri.prepare.lovehymn.server.UpdateHistory;
 import pri.prepare.lovehymn.server.entity.Logger;
 import pri.prepare.lovehymn.server.entity.MusicSearch;
-import pri.prepare.lovehymn.server.entity.MyFile;
 import pri.prepare.lovehymn.server.entity.PersonRemark;
 import pri.prepare.lovehymn.server.entity.Setting;
 import pri.prepare.lovehymn.server.function.BibleTool;
 import pri.prepare.lovehymn.server.function.Constant;
 import pri.prepare.lovehymn.server.function.DBHelper;
-import pri.prepare.lovehymn.server.function.SdCardTool;
 import pri.prepare.lovehymn.server.function.TipTool;
 
 /**
@@ -110,7 +108,6 @@ public class StartPageActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                isNormal = true;
                 setContentView(R.layout.startpage_layout);
                 int gd = Setting.getValueI(Setting.STARTPAGE_BACKGROUND);
 
@@ -126,7 +123,7 @@ public class StartPageActivity extends AppCompatActivity {
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
                 getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
                 TextView tvs = findViewById(R.id.sa3);
-                tvs.setText(Constant.getStartPageAd());
+                tvs.setText(Constant.getStartPageMsg());
                 TextView mode = findViewById(R.id.testMode);
                 if (UpdateHistory.isTestMode(this)) {
                     mode.setText("内测版");
@@ -144,13 +141,8 @@ public class StartPageActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isNormal = false;
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (isNormal) {
-            MainActivity.showAd = true;
-        }
         return super.dispatchTouchEvent(ev);
     }
 

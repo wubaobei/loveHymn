@@ -8,7 +8,7 @@ public class ResFileManager {
         return new int[]{R.raw.b111,R.raw.b112};
     }
 
-    private static String[] jumpList = new String[]{"letter", "字典", "dict", "bible", "三旧一新", "旋律"};
+    private static String[] jumpList = new String[]{"letter", "字典", "dict", "bible",  "旋律"};
 
     public static boolean jumpRes(MyFile res) {
         for (String jumpName : jumpList) {

@@ -130,30 +130,6 @@ public class Setting {
      */
     public static final int SHORT_CUT1 = 41;
     /**
-     * 简易时间表记录
-     */
-    public static final int EASY_SCHEDULE_RECORD = 42;
-    /**
-     * 三旧一新字体大小
-     */
-    public static final int DAILY_BIBLE_TEXT_SIZE = 43;
-    /**
-     * 三旧一新连续显示
-     */
-    public static final int DAILY_BIBLE_CT = 44;
-    /**
-     * 三旧一新播放速度
-     */
-    public static final int DAILY_BIBLE_SPEECH = 45;
-    /**
-     * 三旧一新播放音色
-     */
-    public static final int DAILY_BIBLE_YINSE = 46;
-    /**
-     * 三旧一新播放自动滚动
-     */
-    public static final int DAILY_BIBLE_AUTO_SCR = 47;
-    /**
      * 是否加载其他
      */
     public static final int LOAD_QITA = 48;
@@ -165,10 +141,6 @@ public class Setting {
      * 是否加载足迹
      */
     public static final int LOAD_STEP = 50;
-    /**
-     * 默认使用网页版三旧一新
-     */
-    public static final int USE_WEB_DAILY_BIBLE = 51;
     /**
      * 关闭异步功能
      */
@@ -246,16 +218,9 @@ public class Setting {
             defaultMap.put(OPEN_RECENT, "");
             defaultMap.put(LAST_VERSION_NAME, "");
             defaultMap.put(PAUSE_TIME, "");
-            defaultMap.put(EASY_SCHEDULE_RECORD, "");
-            defaultMap.put(DAILY_BIBLE_TEXT_SIZE, 20);
-            defaultMap.put(DAILY_BIBLE_CT, false);
-            defaultMap.put(DAILY_BIBLE_SPEECH, 2);
-            defaultMap.put(DAILY_BIBLE_YINSE, 2);
-            defaultMap.put(DAILY_BIBLE_AUTO_SCR, true);
             defaultMap.put(LOAD_LABEL, false);
             defaultMap.put(LOAD_QITA, false);
             defaultMap.put(LOAD_STEP, false);
-            defaultMap.put(USE_WEB_DAILY_BIBLE, false);
             defaultMap.put(USE_ASYNC, false);
             defaultMap.put(STARTPAGE_BACKGROUND, 0);
         }

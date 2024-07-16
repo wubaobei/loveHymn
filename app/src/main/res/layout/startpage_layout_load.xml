@@ -89,7 +89,7 @@
             android:paddingLeft="@dimen/sat2"
             android:paddingTop="20dp"
             android:paddingRight="@dimen/sat2"
-            android:text="欢迎使用唱诗歌app\n\n这里，集成了六本诗歌本\n\n这里，你可以快速搜索到你想找的诗歌\n\n这里，你可以了解诗歌的作者与背景\n\n这里，你可以方便的分享给同伴\n\n这里，享受诗歌，享受主"
+            android:text="欢迎使用唱诗歌app\n\n这里，集成了五本诗歌本\n\n这里，你可以快速搜索到你想找的诗歌\n\n这里，你可以了解诗歌的作者与背景\n\n这里，你可以方便的分享给同伴\n\n这里，享受诗歌，享受主"
             android:textSize="15sp" />
 
         <TextView

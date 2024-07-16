@@ -16,18 +16,4 @@
         <categories android:name="android.shortcut.conversation"/>
     </shortcut>
 
-    <shortcut
-        android:shortcutId="background_settings2"
-        android:enabled="true"
-        android:icon="@drawable/bible"
-        android:shortcutShortLabel="@string/db1"
-        android:shortcutLongLabel="@string/db2"
-        android:shortcutDisabledMessage="@string/db3">
-
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:targetPackage="pri.prepare.lovehymn"
-            android:targetClass="pri.prepare.lovehymn.client.DailyBibleActivity" />
-        <categories android:name="android.shortcut.conversation"/>
-    </shortcut>
 </shortcuts>

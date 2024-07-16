@@ -41,9 +41,6 @@
         <activity
             android:name=".client.AddPdfActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".client.EasyScheduleActivity"
-            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

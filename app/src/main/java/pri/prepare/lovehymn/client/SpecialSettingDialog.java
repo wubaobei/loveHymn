@@ -24,7 +24,6 @@ public class SpecialSettingDialog extends Dialog implements IShowDialog {
 
     private final SpecialSettingLayoutBinding binding;
     private Activity activity;
-    private final String[] THEME = new String[]{"标准", "透明", "彩色", "小图标"};
 
     public SpecialSettingDialog(@NonNull Context context, Activity activity) {
         super(context);
@@ -33,7 +32,7 @@ public class SpecialSettingDialog extends Dialog implements IShowDialog {
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.special_setting_layout, null, false);
         setContentView(binding.getRoot());
 
-        Tool.setListDialogLayout(binding.specialSettingTitle, context, R.drawable.special_setting,binding.button3, binding.button4, binding.alphaBtn,
+        Tool.setListDialogLayout(binding.specialSettingTitle, context, R.drawable.special_setting,binding.button3, binding.button4,
                 binding.clearData, binding.addPdfBtn, binding.clearCache, binding.secretCode);
 
         ct = context;

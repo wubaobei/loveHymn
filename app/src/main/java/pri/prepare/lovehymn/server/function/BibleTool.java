@@ -66,7 +66,7 @@ public class BibleTool {
     }
 
     public static String dealStr(String s, Activity activity) {
-        return dealStr(s, Setting.getValueB(Setting.SECTION_CT), activity);
+        return dealStr(s, false, activity);
     }
 
     private static List<Section[]> getSections(String s, Activity activity) {

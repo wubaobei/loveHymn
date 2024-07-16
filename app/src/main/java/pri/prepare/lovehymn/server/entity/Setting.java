@@ -36,10 +36,6 @@ public class Setting {
      */
     public static final int SHOW_CHINESE_ENGLISH = 7;
     /**
-     * 经节连续显示
-     */
-    public static final int SECTION_CT = 10;
-    /**
      * 收藏夹
      */
     public static final int COLLECT = 12;
@@ -190,11 +186,8 @@ public class Setting {
     public static final int LABLE_COLLECT_QUICK = 4;
     public static final int double_finger_down_default = LABLE_COLLECT_QUICK;
     public static final int lyric_default_text_size = 15;
-    public static final boolean section_ct_default = true;
-    //public static final boolean show_lyric_default = true;
 
     public static final boolean line_show_default = true;
-    //public static final boolean author_english_name_default = true;
     public static final int show_chinese_english_default = 1;
 
     public static final String TABLE = SettingD.class.getSimpleName();
@@ -231,7 +224,6 @@ public class Setting {
             defaultMap.put(MP3_LOOP, false);
             defaultMap.put(SHOW_TOOL_BAR_ON_LOAD, true);
             defaultMap.put(SHOW_LYRIC, false);
-            defaultMap.put(SECTION_CT, section_ct_default);
             defaultMap.put(SHOW_DICT, true);
             defaultMap.put(SEARCH_RESULT_SPLIT, 0);
             defaultMap.put(STEP_FORMAT_TYPE, 1);

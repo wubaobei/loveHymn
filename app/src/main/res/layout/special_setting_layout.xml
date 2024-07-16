@@ -49,18 +49,6 @@
                 android:textSize="@dimen/tip_size" />
 
             <Button
-                android:id="@+id/alpha_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="主题" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="随着版本的更新，主题样式没有同步更新，后续UI都是以标准主题设计的，其他主题都没有维护了，就移到这里终老孤身了。修改重启生效"
-                android:textSize="@dimen/tip_size" />
-            <Button
                 android:id="@+id/clear_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -57,7 +57,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
         setDisappearBtn();
         setCEBtn();
         setUpdateBtn();
-        setSectionEnclises();
         setSpecialSetting();
         setLabelSetting();
         setAllRead();
@@ -102,12 +101,12 @@ public class SettingDialog extends Dialog implements IShowDialog {
         int[] btnId = new int[]{R.id.resStatBtn, R.id.all_read,
                 R.id.dispearTime, R.id.downloadAddressBtn, R.id.bibleShowChineseEnglish,
                 R.id.specialSettingBtn,
-                R.id.sectionCt, R.id.lableBtn,
+                R.id.lableBtn,
                 R.id.showtoolbar, R.id.dict_show, R.id.close_tig_btn, R.id.signSettingBtn, R.id.spgb};
         int[] dId = new int[]{R.drawable.s_2, R.drawable.s_4,
                 R.drawable.s_5, R.drawable.s_6, R.drawable.book,
                 R.drawable.special_setting,
-                R.drawable.ct, R.drawable.label_icon,
+                R.drawable.label_icon,
                 R.drawable.lan, R.drawable.spz, R.drawable.gth2, R.drawable.finger, R.drawable.pngicon};
 
         for (int i = 0; i < btnId.length; i++) {
@@ -193,13 +192,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
         if (t == 3)
             return "中英";
         return "中文";
-    }
-
-    /**
-     * 显示经节连续显示
-     */
-    private void setSectionEnclises() {
-        commonSwitchSet(binding.sectionCtBtn, Setting.SECTION_CT);
     }
 
     /**

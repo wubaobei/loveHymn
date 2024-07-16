@@ -1,7 +1,5 @@
 package pri.prepare.lovehymn.server.entity;
 
-import android.text.style.ForegroundColorSpan;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;

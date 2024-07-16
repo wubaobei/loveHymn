@@ -33,7 +33,6 @@ import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.CatalogDialog;
 import pri.prepare.lovehymn.client.CommonListDialog;
 import pri.prepare.lovehymn.server.entity.Logger;
-import pri.prepare.lovehymn.server.entity.MyFile;
 
 public class Tool {
 

@@ -25,7 +25,6 @@ import pri.prepare.lovehymn.client.tool.IShowDialog;
 import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.databinding.DialogGnBinding;
 import pri.prepare.lovehymn.server.entity.Hymn;
-import pri.prepare.lovehymn.server.entity.Logger;
 import pri.prepare.lovehymn.server.entity.MyFile;
 import pri.prepare.lovehymn.server.entity.Setting;
 import pri.prepare.lovehymn.server.function.CollectTool;
@@ -37,7 +36,7 @@ import pri.prepare.lovehymn.server.function.Constant;
 public class CollectHistoryDialog extends Dialog implements IShowDialog {
     private final DialogGnBinding binding;
     private final I4LC _i4lc;
-    MyFile myFile;
+    private final MyFile myFile;
     private boolean loadPdf = false;
 
     public CollectHistoryDialog(@NonNull Context context, MyFile file, Hymn hymn, I4Set i4Set, I4LC i4LC) {

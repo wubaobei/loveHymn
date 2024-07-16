@@ -1,6 +1,5 @@
 package pri.prepare.lovehymn.client.tool;
 
-import pri.prepare.lovehymn.client.SettingDialog;
 import pri.prepare.lovehymn.server.entity.Logger;
 import pri.prepare.lovehymn.server.entity.Setting;
 

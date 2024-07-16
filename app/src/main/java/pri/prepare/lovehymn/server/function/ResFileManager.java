@@ -1,8 +1,5 @@
 package pri.prepare.lovehymn.server.function;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.server.entity.MyFile;
 

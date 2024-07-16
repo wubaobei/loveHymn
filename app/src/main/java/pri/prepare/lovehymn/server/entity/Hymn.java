@@ -74,7 +74,7 @@ public class Hymn {
                 s = "0";
             else if (n == 2)
                 s = "00";
-            return a.substring(0, 1) + s + a.substring(1);
+            return a.charAt(0) + s + a.substring(1);
         }
         return a;
     }
@@ -815,8 +815,8 @@ public class Hymn {
     }
 
     //所有诗歌实体只获取一遍，全部缓存起来
-    private static HashMap<String, Hymn> hymnMap = new HashMap<>();
-    private static HashMap<Integer, Hymn> hymnMap2 = new HashMap<>();
+    private static final HashMap<String, Hymn> hymnMap = new HashMap<>();
+    private static final HashMap<Integer, Hymn> hymnMap2 = new HashMap<>();
 
     private static void addCache(Hymn hymn) {
         if (hymn != null)

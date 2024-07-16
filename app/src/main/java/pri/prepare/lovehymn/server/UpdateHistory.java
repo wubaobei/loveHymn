@@ -1,16 +1,13 @@
 package pri.prepare.lovehymn.server;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 
 import java.util.ArrayList;
 
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.SettingDialog;
 import pri.prepare.lovehymn.client.tool.Tool;
-import pri.prepare.lovehymn.server.entity.Logger;
 import pri.prepare.lovehymn.server.entity.MyFile;
 import pri.prepare.lovehymn.server.entity.Setting;
 

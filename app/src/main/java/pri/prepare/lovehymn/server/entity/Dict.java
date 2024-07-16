@@ -2,12 +2,10 @@ package pri.prepare.lovehymn.server.entity;
 
 import android.app.Activity;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import pri.prepare.lovehymn.R;
-import pri.prepare.lovehymn.server.function.SdCardTool;
 
 public class Dict {
     private static HashMap<String, String> dict = null;

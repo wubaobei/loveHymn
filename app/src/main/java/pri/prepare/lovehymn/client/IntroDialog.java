@@ -3,7 +3,6 @@ package pri.prepare.lovehymn.client;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Paint;
 import android.view.Gravity;
 import android.view.View;
@@ -21,15 +20,15 @@ import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.tool.I4Intro;
 import pri.prepare.lovehymn.client.tool.IShowDialog;
 import pri.prepare.lovehymn.client.tool.Tool;
-import pri.prepare.lovehymn.server.entity.Dict;
-import pri.prepare.lovehymn.server.function.BibleTool;
 import pri.prepare.lovehymn.server.Service;
 import pri.prepare.lovehymn.server.dal.AuthorRelatedD;
 import pri.prepare.lovehymn.server.dal.ContentTypeD;
 import pri.prepare.lovehymn.server.entity.Author;
 import pri.prepare.lovehymn.server.entity.Content;
+import pri.prepare.lovehymn.server.entity.Dict;
 import pri.prepare.lovehymn.server.entity.Hymn;
 import pri.prepare.lovehymn.server.entity.Logger;
+import pri.prepare.lovehymn.server.function.BibleTool;
 
 /**
  * 详情
@@ -106,13 +105,10 @@ public class IntroDialog extends Dialog implements IShowDialog {
             tv2.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
             final String finalIt = it;
             tv2.setOnClickListener(v -> Tool.ShowDialog(ct, author.getName() + "简介", finalIt));
-            tv2.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Service.getC().CB(author.getName() + "简介：\r\n" + finalIt, ct);
-                    Toast.makeText(ct, "已复制作者简介", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
+            tv2.setOnLongClickListener(v -> {
+                Service.getC().CB(author.getName() + "简介：\r\n" + finalIt, ct);
+                Toast.makeText(ct, "已复制作者简介", Toast.LENGTH_SHORT).show();
+                return true;
             });
         }
     }

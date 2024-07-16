@@ -22,7 +22,7 @@ public class LetterD extends DaoBase {
             }
         }
         if (deleteList.size() % 66 == 0) {
-            deleteList.forEach(a -> a.delete());
+            deleteList.forEach(LetterD::delete);
         }
     }
 

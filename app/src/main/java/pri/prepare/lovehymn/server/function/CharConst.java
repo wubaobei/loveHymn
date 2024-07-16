@@ -14,14 +14,6 @@ public class CharConst {
      */
     public static final String LABEL = "🏷";
     /**
-     * 吉他
-     */
-    public static final String GUITAR = "🎸";
-    /**
-     * 钢琴
-     */
-    public static final String PIANO = "🎹";
-    /**
      * 音符
      */
     public static final String MUSIC="\uD83C\uDFB5";
@@ -29,6 +21,4 @@ public class CharConst {
      * 星星
      */
     public static final String STAR="\uD83C\uDF1F";
-
-    public static final String NO_LABEL="⭕";
 }

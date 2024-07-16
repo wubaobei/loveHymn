@@ -36,7 +36,6 @@ import pri.prepare.lovehymn.client.tool.ImmTool;
 import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.databinding.CatelogLayoutBinding;
 import pri.prepare.lovehymn.server.entity.MyFile;
-import pri.prepare.lovehymn.server.entity.Setting;
 import pri.prepare.lovehymn.server.function.CharConst;
 import pri.prepare.lovehymn.server.function.Constant;
 import pri.prepare.lovehymn.server.result.ShowResult;
@@ -241,7 +240,7 @@ public class CatalogDialog extends Dialog implements IShowDialog {
         }
     }
 
-    View.OnClickListener backListener = v -> {
+    final View.OnClickListener backListener = v -> {
         EditText et = binding.etSearch;
         et.setText("");
     };
@@ -262,7 +261,7 @@ public class CatalogDialog extends Dialog implements IShowDialog {
         }
     }
 
-    View.OnClickListener mp3Listener = v -> {
+    final View.OnClickListener mp3Listener = v -> {
         try {
             CatalogDialog.this.dismiss();
             startMp3();

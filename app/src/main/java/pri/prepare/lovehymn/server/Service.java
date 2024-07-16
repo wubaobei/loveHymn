@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.text.ClipboardManager;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import java.io.File;
@@ -19,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,7 +35,6 @@ import java.util.zip.ZipInputStream;
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.MainActivity;
 import pri.prepare.lovehymn.client.SettingDialog;
-import pri.prepare.lovehymn.client.StartPageActivity;
 import pri.prepare.lovehymn.client.tool.LOAD_ENUM;
 import pri.prepare.lovehymn.client.tool.LoadProcess;
 import pri.prepare.lovehymn.server.dal.AuthorD;
@@ -54,7 +53,6 @@ import pri.prepare.lovehymn.server.entity.Letter;
 import pri.prepare.lovehymn.server.entity.Logger;
 import pri.prepare.lovehymn.server.entity.MyFile;
 import pri.prepare.lovehymn.server.entity.SearchIndex;
-import pri.prepare.lovehymn.server.entity.Setting;
 import pri.prepare.lovehymn.server.entity.TC;
 import pri.prepare.lovehymn.server.function.Constant;
 import pri.prepare.lovehymn.server.function.DBHelper;
@@ -1103,7 +1101,7 @@ public class Service {
         }
 
         ZipFile zipFile = new ZipFile(file);
-        ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(file));
+        ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(file.toPath()));
         ZipEntry zipEntry;
         while ((zipEntry = zipInputStream.getNextEntry()) != null) {
             String fileName = zipEntry.getName();
@@ -1121,7 +1119,7 @@ public class Service {
                 continue;
             }
             byte[] buffer = new byte[1024];
-            try (OutputStream os = new FileOutputStream(temp);
+            try (OutputStream os = Files.newOutputStream(temp.toPath());
                  InputStream is = zipFile.getInputStream(zipEntry)) {
                 int len;
                 while ((len = is.read(buffer)) != -1) {

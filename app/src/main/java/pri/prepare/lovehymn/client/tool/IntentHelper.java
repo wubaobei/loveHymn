@@ -38,10 +38,10 @@ public class IntentHelper {
         return intent;
     }
 
-    private int id;
-    private boolean isLabel;
-    private int type;
-    private String param;
+    private final int id;
+    private final boolean isLabel;
+    private final int type;
+    private final String param;
     private String path;
 
     public boolean error = false;

@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.databinding.ActicityAddPdfBinding;
@@ -70,7 +71,7 @@ public class AddPdfActivity extends AppCompatActivity {
         ans[0] = NULL;
         for (int i = 1; i <= as.length; i++)
             ans[i] = as[i - 1].getName();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ans);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ans);
         binding.authorSpinner.setAdapter(adapter);
         binding.authorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -236,7 +237,7 @@ public class AddPdfActivity extends AppCompatActivity {
     private boolean copyFileUsingFileStreams(File source, File dest) {
         requestManagerPermission();
         dest.getParentFile().mkdirs();
-        try (InputStream input = new FileInputStream(source); OutputStream output = new FileOutputStream(dest)) {
+        try (InputStream input = Files.newInputStream(source.toPath()); OutputStream output = Files.newOutputStream(dest.toPath())) {
             byte[] buf = new byte[1024];
             int bytesRead;
             while ((bytesRead = input.read(buf)) != -1) {

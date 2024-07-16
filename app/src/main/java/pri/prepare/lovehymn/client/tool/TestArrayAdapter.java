@@ -2,8 +2,6 @@ package pri.prepare.lovehymn.client.tool;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Shader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

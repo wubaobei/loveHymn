@@ -2,11 +2,8 @@ package pri.prepare.lovehymn.client;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Window;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -22,7 +19,6 @@ import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.databinding.SpecialMp3ListLayoutBinding;
 import pri.prepare.lovehymn.server.entity.Book;
 import pri.prepare.lovehymn.server.entity.LabelType;
-import pri.prepare.lovehymn.server.entity.Logger;
 import pri.prepare.lovehymn.server.entity.Setting;
 import pri.prepare.lovehymn.server.function.CharConst;
 

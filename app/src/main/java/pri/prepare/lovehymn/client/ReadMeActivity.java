@@ -43,11 +43,6 @@ public class ReadMeActivity extends AppCompatActivity {
         binding.title2.setText(h2);
 
         TipTool.addTips(this, str, binding.readLl);
-        binding.readLl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Logger.info("click readLL");
-            }
-        });
+        binding.readLl.setOnClickListener(view -> Logger.info("click readLL"));
     }
 }

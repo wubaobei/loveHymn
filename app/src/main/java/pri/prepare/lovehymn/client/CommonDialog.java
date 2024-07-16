@@ -114,16 +114,6 @@ public class CommonDialog extends Dialog implements IShowDialog {
         });
     }
 
-    private void DELETE_RES_FILE_init(String param) {
-        binding.cmTitle.setText("删除资源文件");
-        binding.cmEdit.setText(param);
-        binding.cmEdit.setEnabled(false);
-        binding.cmYes.setOnClickListener(v -> {
-            new File(SdCardTool.getResPath() + File.separator + param).delete();
-            dismiss();
-        });
-    }
-
     @SuppressLint("SetTextI18n")
     private void groupInit(String current) {
         TextView tv = new TextView(getContext());
@@ -287,44 +277,6 @@ public class CommonDialog extends Dialog implements IShowDialog {
 
     private void toast(String s) {
         Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
-    }
-
-    private String easySchedule(String source) {
-        StringBuilder sb = new StringBuilder();
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("HH:mm");
-
-        String[] sp = source.split(" ");
-        LocalTime lt = null;
-        boolean isTime = true;
-        int min = 0;
-        for (String s : sp) {
-            s = s.trim();
-            Logger.info("deal " + s);
-            if (lt == null) {
-                if (s.length() == 4)
-                    s = "0" + s;
-                lt = LocalTime.parse(s, df);
-                continue;
-            }
-            if (isTime) {
-                min = Integer.parseInt(s);
-                if (s.equals("0")) {
-                    sb.append(df.format(lt)).append("\t");
-                } else {
-                    sb.append(df.format(lt)).append("-");
-                    lt = lt.plusMinutes(min);
-                    sb.append(df.format(lt)).append("\t");
-                }
-            } else {
-                if (min == 0)
-                    sb.append(s).append("\r\n");
-                else
-                    sb.append(s).append("\t").append(min).append("\r\n");
-            }
-            isTime = !isTime;
-        }
-
-        return sb.toString().trim();
     }
 }
 

@@ -180,7 +180,6 @@ public class StartPageActivity extends AppCompatActivity {
                 String s = Service.getC().checkSelf();
                 if (s.length() > 0) {
                     MainActivity.msgWait = s;
-                    MainActivity.bgMsg = s;
                 }
                 try {
                     long t1 = System.currentTimeMillis();

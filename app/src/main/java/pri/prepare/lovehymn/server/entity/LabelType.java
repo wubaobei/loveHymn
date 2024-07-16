@@ -179,21 +179,6 @@ public class LabelType {
 
     private static HashMap<Integer, Integer> _mp3CountCache = new HashMap<>();
 
-    /**
-     * 获取该标签的mp3数量
-     */
-    public int getMp3Count() {
-        if (!_mp3CountCache.containsKey(getId())) {
-            int n = 0;
-            List<Hymn> hs = getHymns();
-            for (Hymn h : hs)
-                if (h.getMp3File() != null)
-                    n++;
-            _mp3CountCache.put(getId(), n);
-        }
-        return _mp3CountCache.get(getId());
-    }
-
     public static List<String> getAllGroups() {
         LabelType[] ts = getAll();
         List<String> res = new ArrayList<>();

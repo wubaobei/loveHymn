@@ -9,8 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import pri.prepare.lovehymn.client.MainActivity;
-import pri.prepare.lovehymn.client.Mp3ListActivity;
 import pri.prepare.lovehymn.server.dal.AuthorD;
 import pri.prepare.lovehymn.server.dal.AuthorRelatedD;
 import pri.prepare.lovehymn.server.dal.ContentD;
@@ -30,9 +28,9 @@ public class DBHelper extends SQLiteOpenHelper {
         if (oldV == 0)
             return "";
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < updateVs.length; i++) {
-            int updateV = Integer.parseInt(updateVs[i].split(" ")[0]);
-            String vs = updateVs[i].substring(7);
+        for (String v : updateVs) {
+            int updateV = Integer.parseInt(v.split(" ")[0]);
+            String vs = v.substring(7);
             if (updateV == DB_VERSION)
                 sb.append("\r\n").append("当前版本更新：").append(vs);
             else if (updateV > oldV)
@@ -41,7 +39,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return sb.toString();
     }
 
-    private static String[] updateVs = new String[]{
+    private static final String[] updateVs = new String[]{
             "211221 新增了许多作者信息，推荐清空app数据使之重新加载",
             "211223 作者信息终于补完了，摘自诗歌背景或https://hymnary.org/",
             "220106 一本诗歌本支持多个白版pdf",

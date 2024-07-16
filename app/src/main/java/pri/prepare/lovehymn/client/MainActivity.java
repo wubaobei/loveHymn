@@ -32,7 +32,6 @@ import android.widget.Toast;
 import com.github.barteksc.pdfviewer.PDFView;
 
 import java.io.File;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -104,8 +103,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 竖屏时隐藏状态栏
-     *
-     * @param activity
      */
     public void hideStatusBar(Activity activity) {
         if (activity == null) return;
@@ -248,10 +245,6 @@ public class MainActivity extends AppCompatActivity {
     public static int lastInToast = 10;
 
     public static String msgWait = "";
-    /**
-     * 用于更新bgMsg（配合msgWait使用）
-     */
-    public static String bgMsg = "";
 
     /**
      * 持续(time/60)s
@@ -386,9 +379,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void mp3StateSet() {
         try {
-            binding.mp3PlayerBtn.setOnClickListener(v -> {
-                startMp3();
-            });
+            binding.mp3PlayerBtn.setOnClickListener(v -> startMp3());
             binding.mp3PlayerTv.setOnClickListener(v -> binding.mp3PlayerBtn.callOnClick());
 
             if (musicManager == null) {
@@ -478,8 +469,6 @@ public class MainActivity extends AppCompatActivity {
             resumeToSetPdfFlag = 50;
             Logger.info("onResume");
 
-            LocalDateTime ldt = Setting.getValueT(Setting.PAUSE_TIME);
-
             DisplayStat.getC().resetToolBar();
             isRun = true;
             new Thread(timerR).start();
@@ -513,15 +502,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (DBHelper.updateStr.length() > 0) {
-            final AlertDialog.Builder alterDiaglog = new AlertDialog.Builder(MainActivity.this);
-            alterDiaglog.setTitle("警告");
-            alterDiaglog.setMessage("由于数据库版本更新：" + DBHelper.updateStr +
+            final AlertDialog.Builder alterDialog = new AlertDialog.Builder(MainActivity.this);
+            alterDialog.setTitle("警告");
+            alterDialog.setMessage("由于数据库版本更新：" + DBHelper.updateStr +
                     "，可能导致错误数据。如果发现数据异常，例如标题显示错误等，请清除app数据。\r\n"
                     + DBHelper.getCurrentHistory());
-            alterDiaglog.setPositiveButton("现在不清除", (dialog, which) -> {
+            alterDialog.setPositiveButton("现在不清除", (dialog, which) -> {
             });
-            alterDiaglog.setNegativeButton("清除app数据", (dialog, which) -> Tool.openInfo(this));
-            alterDiaglog.show();
+            alterDialog.setNegativeButton("清除app数据", (dialog, which) -> Tool.openInfo(this));
+            alterDialog.show();
             DBHelper.updateStr = "";
         }
 
@@ -629,8 +618,6 @@ public class MainActivity extends AppCompatActivity {
                             toastInTimerH(msgWait);
                         }
                         msgWait = "";
-                        //if (bgMsg.length() > 0)
-                        //    binding.bgMsg.setText(bgMsg);
                     }
 
                     //播放列表跳转到pdf
@@ -968,19 +955,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void RefreshScreenK() {
-            setScreenK();
-        }
-
-        @Override
         public void loadPdfCall(String text) {
             loadPdf(text);
         }
     };
 
-    private final I4Catalog i4Catalog = text -> loadPdf(text);
+    private final I4Catalog i4Catalog = this::loadPdf;
 
-    private final I4Intro i4Intro = s -> openCatalogDialog(s);
+    private final I4Intro i4Intro = this::openCatalogDialog;
 
     public static MyFile lastFile = null;
     public static Hymn lastHymn = null;

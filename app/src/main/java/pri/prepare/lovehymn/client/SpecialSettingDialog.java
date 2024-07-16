@@ -5,27 +5,19 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.tool.IShowDialog;
-import pri.prepare.lovehymn.client.tool.TestArrayAdapter;
 import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.client.tool.enuCm;
 import pri.prepare.lovehymn.databinding.SpecialSettingLayoutBinding;
 import pri.prepare.lovehymn.server.Service;
 import pri.prepare.lovehymn.server.entity.Setting;
-import pri.prepare.lovehymn.server.function.SdCardTool;
 
 public class SpecialSettingDialog extends Dialog implements IShowDialog {
     private final Context ct;

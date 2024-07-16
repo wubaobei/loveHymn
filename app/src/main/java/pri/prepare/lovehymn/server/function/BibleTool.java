@@ -1,11 +1,6 @@
 package pri.prepare.lovehymn.server.function;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.text.style.ForegroundColorSpan;
-
-import androidx.core.app.NotificationCompatSideChannelService;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

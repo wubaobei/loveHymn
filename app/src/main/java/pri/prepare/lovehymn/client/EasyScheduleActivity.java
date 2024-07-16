@@ -1,18 +1,11 @@
 package pri.prepare.lovehymn.client;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 
 import java.time.LocalTime;

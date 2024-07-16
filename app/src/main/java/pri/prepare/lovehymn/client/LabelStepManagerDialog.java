@@ -62,7 +62,7 @@ public class LabelStepManagerDialog extends Dialog implements IShowDialog {
         show();
     }
 
-    private IRefresh iRefresh = () -> init();
+    private IRefresh iRefresh = this::init;
     private static final String SPACE = " ";
     private boolean isFirst = true;
 

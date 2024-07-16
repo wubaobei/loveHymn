@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import pri.prepare.lovehymn.server.entity.Book;
-import pri.prepare.lovehymn.server.entity.Hymn;
-import pri.prepare.lovehymn.server.entity.LabelType;
 import pri.prepare.lovehymn.server.entity.MyFile;
 import pri.prepare.lovehymn.server.entity.Setting;
 

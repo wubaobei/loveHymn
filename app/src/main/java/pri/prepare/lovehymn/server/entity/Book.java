@@ -63,7 +63,7 @@ public class Book {
 
     public MyFile getMp3Directory() {
         for (MyFile f : MyFile.from(SdCardTool.getLbPath()).listFiles()) {
-            if (f.getName().toLowerCase().equals(SimpleName.toLowerCase()))
+            if (f.getName().equalsIgnoreCase(SimpleName))
                 return f;
         }
         return null;

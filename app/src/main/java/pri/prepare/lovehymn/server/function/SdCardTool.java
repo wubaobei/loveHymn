@@ -20,7 +20,6 @@ import pri.prepare.lovehymn.server.entity.Logger;
 import pri.prepare.lovehymn.server.entity.MusicSearch;
 import pri.prepare.lovehymn.server.entity.MyFile;
 import pri.prepare.lovehymn.server.entity.SearchIndex;
-import pri.prepare.lovehymn.server.entity.Setting;
 import pri.prepare.lovehymn.server.result.ShowResult;
 
 public class SdCardTool {
@@ -120,7 +119,7 @@ public class SdCardTool {
     }
 
     private static boolean isInteger(String str) {
-        Pattern pattern = Pattern.compile("^[-+]?[\\d]*$");
+        Pattern pattern = Pattern.compile("^[-+]?\\d*$");
         return pattern.matcher(str).matches();
     }
 

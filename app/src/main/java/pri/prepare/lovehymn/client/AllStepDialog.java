@@ -15,7 +15,6 @@ import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.tool.IShowDialog;
 import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.databinding.AllStepDialogBinding;
-import pri.prepare.lovehymn.databinding.CommonListDialogBinding;
 import pri.prepare.lovehymn.server.entity.Book;
 import pri.prepare.lovehymn.server.entity.Hymn;
 import pri.prepare.lovehymn.server.entity.Logger;

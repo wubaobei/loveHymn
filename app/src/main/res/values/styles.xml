@@ -9,7 +9,7 @@
         <item name="colorAlpha">@color/mainpagebtnback</item>
         <item name="colorChoose">@color/colorChoose</item>
         <item name="colorWhite">@color/colorWhite</item>
-        <item name="mapCata">@drawable/cata</item>
+        <item name="mapCata">@drawable/catalog</item>
         <item name="mapMore">@drawable/more</item>
         <item name="mapRandom">@drawable/random_play</item>
         <item name="mapPreview">@drawable/preview</item>
@@ -34,7 +34,7 @@
         <item name="colorAlpha">@color/mainpagebtnback</item>
         <item name="colorChoose">@color/colorChoose</item>
         <item name="colorWhite">@color/colorWhite</item>
-        <item name="mapCata">@drawable/cata</item>
+        <item name="mapCata">@drawable/catalog</item>
         <item name="mapMore">@drawable/more</item>
         <item name="mapRandom">@drawable/random_play</item>
         <item name="mapPreview">@drawable/preview</item>
@@ -59,7 +59,7 @@
         <item name="colorAlpha">@color/mainpagebtnbackA</item>
         <item name="colorChoose">@color/colorChooseA</item>
         <item name="colorWhite">@color/colorWhiteA</item>
-        <item name="mapCata">@drawable/cata</item>
+        <item name="mapCata">@drawable/catalog</item>
         <item name="mapMore">@drawable/more</item>
         <item name="mapRandom">@drawable/random_play</item>
         <item name="mapPreview">@drawable/preview</item>

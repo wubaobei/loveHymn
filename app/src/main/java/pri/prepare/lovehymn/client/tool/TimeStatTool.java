@@ -1,7 +1,5 @@
 package pri.prepare.lovehymn.client.tool;
 
-import pri.prepare.lovehymn.server.entity.Logger;
-
 public class TimeStatTool {
     /**
      * @param maxStatTime 最大统计时间间隔 单位ms

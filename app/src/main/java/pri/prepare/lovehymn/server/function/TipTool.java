@@ -50,9 +50,9 @@ public class TipTool {
     public static TipStruct[] getAll(boolean hideSpecial) {
         int[] arr = Tool.randomList(commonTig.length);
         List<TipStruct> res = new ArrayList<>();
-        for (int i = 0; i < arr.length; i++)
-            if (!commonTig[arr[i]].hideInReadMe || !hideSpecial)
-                res.add(commonTig[arr[i]]);
+        for (int j : arr)
+            if (!commonTig[j].hideInReadMe || !hideSpecial)
+                res.add(commonTig[j]);
         return res.toArray(new TipStruct[0]);
     }
 

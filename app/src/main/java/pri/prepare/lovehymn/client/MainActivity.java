@@ -92,8 +92,9 @@ public class MainActivity extends AppCompatActivity {
             tt = new TouchUtil(this.getWindowManager());
 
             boolean showHis = showVersionUpdateHistory();
-            if (!showHis && Setting.getValueB(Setting.SHOW_TIG))
+            if (!showHis && Setting.getValueB(Setting.SHOW_TIG)) {
                 showTips();
+            }
             timeTool = new TimeStatTool(300, 300);
         } catch (Exception e) {
             Logger.info("onCreate 出现bug");
@@ -217,13 +218,13 @@ public class MainActivity extends AppCompatActivity {
                 hideStatusBar();
             }
 
-            if(isLandscape()){
+            if (isLandscape()) {
                 getPdfV0().setMinZoom(0.6f);
                 getPdfV1().setMinZoom(0.6f);
-            }else{
+            } else {
                 getPdfV0().setMinZoom(1f);
                 getPdfV1().setMinZoom(1f);
-                if(getPdfV0().getZoom()<1f){
+                if (getPdfV0().getZoom() < 1f) {
                     getPdfV0().resetZoom();
                     getPdfV1().resetZoom();
                 }
@@ -947,8 +948,9 @@ public class MainActivity extends AppCompatActivity {
                 if (share.resolveActivity(MainActivity.this.getPackageManager()) != null) {
                     startActivity(share);
                     Logger.info("分享文件成功");
-                } else
+                } else {
                     Logger.info("分享文件出错");
+                }
             } catch (Exception e) {
                 Logger.exception(e);
             }
@@ -1048,8 +1050,7 @@ public class MainActivity extends AppCompatActivity {
             SeekBar progressBar = binding.seekBar;
             ImageButton randomBtn = binding.randomBtn;
             TextView randomTv = binding.randomBtnT;
-            //progress text
-            //final TextView progressTV = binding.progressTV);
+
             if (musicManager != null) {
                 if (!(musicManager.isPlaying() && musicManager.isFile(mp3))) {
                     musicManager.release();
@@ -1205,8 +1206,9 @@ public class MainActivity extends AppCompatActivity {
     private void loadPdf(String path) {
         if (Service.isInteger(path)) {
             loadPdf(Integer.parseInt(path));
-        } else
+        } else {
             loadPdf(MyFile.from(path));
+        }
     }
 
     private void loadPdf(MyFile f) {
@@ -1227,7 +1229,7 @@ public class MainActivity extends AppCompatActivity {
             if (remark.length() > 0)
                 toastInTimerH(remark);
 
-            Logger.info("lodfpdf:" + f.getAbsolutePath());
+            Logger.info("load pdf:" + f.getAbsolutePath());
             HistoryTool.add(f, modifyHis);
             if (tt != null)
                 tt.set(0, 0);

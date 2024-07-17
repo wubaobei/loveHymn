@@ -129,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
     private long createTime;
     public static TimeStatTool timeTool;
 
+    public static boolean screenCastingMode=false;
+
     /**
      * 显示版本更新历史（如果更新了版本）
      */
@@ -212,10 +214,13 @@ public class MainActivity extends AppCompatActivity {
 
             if (isLandscape()) {
                 hideStatusBar();
+                screenCastingMode=true;
             } else if (Setting.getValueB(Setting.STATUS_BAR_SHOW) && !showTime) {
                 Tool.showStatusBar(getWindow(), this);
+                screenCastingMode=false;
             } else {
                 hideStatusBar();
+                screenCastingMode=false;
             }
 
             if (isLandscape()) {
@@ -325,6 +330,14 @@ public class MainActivity extends AppCompatActivity {
             int dr = tt.PressDouble(ev);
             boolean lp = tt.LongPress(ev);
 
+            if(screenCastingMode){
+                if(tt.clickZoneInd(ev,0,0,1,2)){
+                    toastInTimerH("上翻");
+                }
+                if(tt.clickZoneInd(ev,0,1,1,2)){
+                    toastInTimerH("下翻");
+                }
+            }
             if (tt.clickCenter(ev)) {
                 hideBtnClickEvent();
                 return true;

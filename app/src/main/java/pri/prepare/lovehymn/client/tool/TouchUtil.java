@@ -63,7 +63,6 @@ public class TouchUtil {
             y = ev.getY();
             isCenter = getCenter();
         } else if (ev.getAction() == MotionEvent.ACTION_UP) {
-            //tn--;
             if (isCenter && System.currentTimeMillis() - time < td) {
                 time = System.currentTimeMillis();
 
@@ -77,6 +76,37 @@ public class TouchUtil {
             }
         }
         return false;
+    }
+
+    //endregion
+
+    //region zone click
+
+    private long timeZ = 0L;
+    private float xZ,yZ;
+
+    public boolean clickZoneInd(MotionEvent ev, int xInd, int yInd, int maxX, int maxY) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            timeZ = System.currentTimeMillis();
+            xZ=ev.getX();
+            yZ=ev.getY();
+        } else if (ev.getAction() == MotionEvent.ACTION_UP) {
+            if (System.currentTimeMillis() - timeZ < td) {
+                timeZ = System.currentTimeMillis();
+
+                if (Math.abs(xZ - ev.getX()) > dxy || Math.abs(yZ - ev.getY()) > dxy)
+                    return false;
+
+                return getZone(ev.getX(),ev.getY(), xInd, yInd, maxX, maxY);
+            }
+        }
+        return false;
+    }
+
+    private boolean getZone(float x,float y,int xInd, int yInd, int maxX, int maxY) {
+        assert maxX>0;
+        assert maxY>0;
+        return x>=xInd*width/maxX && x<=(xInd+1)*width/maxX && y>=yInd*height/maxY && y<=(yInd+1)*height/maxY;
     }
 
     //endregion

@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -47,6 +48,7 @@ import pri.prepare.lovehymn.client.tool.I4Set;
 import pri.prepare.lovehymn.client.tool.I4Catalog;
 import pri.prepare.lovehymn.client.tool.I4LC;
 import pri.prepare.lovehymn.client.tool.I4StopMp3;
+import pri.prepare.lovehymn.client.tool.ScreenUtils;
 import pri.prepare.lovehymn.client.tool.ThemeManager;
 import pri.prepare.lovehymn.client.tool.TimeStatTool;
 import pri.prepare.lovehymn.client.tool.TipStruct;
@@ -82,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
         try {
             DBHelper.init(MainActivity.this);
             binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-            setScreenK();
 
             Logger.info("onCreate " + Service.getC().getVersionStr(this));
+            setScreenK();
             volumeUtil = new VolumeUtil(this);
 
             createTime = System.currentTimeMillis();
@@ -129,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
     private long createTime;
     public static TimeStatTool timeTool;
 
-    public static boolean screenCastingMode=false;
+    public static boolean screenCastingMode = false;
 
     /**
      * 显示版本更新历史（如果更新了版本）
@@ -205,6 +207,8 @@ public class MainActivity extends AppCompatActivity {
         isPdf0 = !isPdf0;
     }
 
+    private long updateKAfterTime = Long.MAX_VALUE;
+
     /**
      * 调整长宽比
      */
@@ -212,31 +216,70 @@ public class MainActivity extends AppCompatActivity {
         try {
             boolean showTime = Setting.getValueB(Setting.AUTO_STEP_TIME);
 
-            if (isLandscape()) {
-                hideStatusBar();
-                screenCastingMode=true;
-            } else if (Setting.getValueB(Setting.STATUS_BAR_SHOW) && !showTime) {
-                Tool.showStatusBar(getWindow(), this);
-                screenCastingMode=false;
-            } else {
-                hideStatusBar();
-                screenCastingMode=false;
-            }
+            updateKAfterTime = System.currentTimeMillis() + 1000;
 
             if (isLandscape()) {
-                getPdfV0().setMinZoom(0.6f);
-                getPdfV1().setMinZoom(0.6f);
-            } else {
-                getPdfV0().setMinZoom(1f);
-                getPdfV1().setMinZoom(1f);
-                if (getPdfV0().getZoom() < 1f) {
-                    getPdfV0().resetZoom();
-                    getPdfV1().resetZoom();
+                hideStatusBar();
+                screenCastingMode = Setting.getValueB(Setting.SCREEN_CASTING_MODE);
+                if (screenCastingMode) {
+                    PDFView p = getPdfV0();
                 }
+            } else if (Setting.getValueB(Setting.STATUS_BAR_SHOW) && !showTime) {
+                Tool.showStatusBar(getWindow(), this);
+                screenCastingMode = false;
+            } else {
+                hideStatusBar();
+                screenCastingMode = false;
             }
 
         } catch (Exception e) {
             Logger.exception(e);
+        }
+    }
+
+    private void updatePdfK() {
+        Logger.info("update pdf k");
+        if (screenCastingMode) {
+            float sk = getScreenCastingModeK();
+            getPdfV0().setMinZoom(sk);
+            getPdfV1().setMinZoom(sk);
+            getPdfV0().setMaxZoom(sk);
+            getPdfV1().setMaxZoom(sk);
+            getPdfV0().resetZoom();
+            getPdfV1().resetZoom();
+            getPdfV0().setPositionOffset(0f);
+        } else if (isLandscape()) {
+            getPdfV0().setMinZoom(0.6f);
+            getPdfV1().setMinZoom(0.6f);
+            getPdfV0().setMaxZoom(3f);
+            getPdfV1().setMaxZoom(3f);
+        } else {
+            getPdfV0().setMinZoom(1f);
+            getPdfV1().setMinZoom(1f);
+            if (getPdfV0().getZoom() < 1f) {
+                getPdfV0().resetZoom();
+                getPdfV1().resetZoom();
+            }
+            getPdfV0().setMaxZoom(3f);
+            getPdfV1().setMaxZoom(3f);
+        }
+    }
+
+    private float getScreenCastingModeK() {
+        try {
+            //先默认pdf页是4:3比例
+            int width = ScreenUtils.getScreenWidth(getWindowManager());
+            int height = ScreenUtils.getScreenHeight(getWindowManager());
+            if (height == 0) {
+                Logger.info("no height return 1");
+                return 1f;
+            }
+            float f = 4f / 3 / width * height;
+            Logger.info("cf " + width + " " + height);
+            return f;
+        } catch (Exception e) {
+            Logger.exception(e);
+            return 1f;
         }
     }
 
@@ -330,12 +373,18 @@ public class MainActivity extends AppCompatActivity {
             int dr = tt.PressDouble(ev);
             boolean lp = tt.LongPress(ev);
 
-            if(screenCastingMode){
-                if(tt.clickZoneInd(ev,0,0,1,2)){
+            if (screenCastingMode) {
+                if (tt.clickCenterZoneInd(ev, 0, 3)) {
                     toastInTimerH("上翻");
+                    return true;
                 }
-                if(tt.clickZoneInd(ev,0,1,1,2)){
+                if (tt.clickCenterZoneInd(ev, 1, 3)) {
+                    hideBtnClickEvent();
+                    return true;
+                }
+                if (tt.clickCenterZoneInd(ev, 2, 3)) {
                     toastInTimerH("下翻");
+                    return true;
                 }
             }
             if (tt.clickCenter(ev)) {
@@ -734,6 +783,10 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             try {
                 timeTool.Stat();
+                if (System.currentTimeMillis() > updateKAfterTime) {
+                    updatePdfK();
+                    updateKAfterTime = Long.MAX_VALUE;
+                }
                 //当满足条件时 弹出添加足迹提示（自动足迹）
                 if (timeTool.WarnOnce() && (Setting.getValueI(Setting.AUTO_STEP) == 1) && (!lastHymn.hasStepToday())) {
                     CommonDialog cd = new CommonDialog(MainActivity.this, enuCm.LEAVE_STEP, () -> setTitleText(lastFile)
@@ -750,7 +803,7 @@ public class MainActivity extends AppCompatActivity {
                 if (tt.notSet()) {
                     int h1 = binding.tvbackTitle.getHeight() +
                             (viv == View.VISIBLE ? binding.mp3Layout.getHeight() : 0);
-                    int h2 = binding.rLayout2.getHeight();
+                    int h2 = binding.tableLayout.getHeight();
 
                     tt.set(h1, h2);
                 }
@@ -1283,7 +1336,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void quickSign(int type) {
         switch (type) {
-            case Setting.CATELOG_QUICK:
+            case Setting.CATALOG_QUICK:
                 binding.cataBtn.callOnClick();
                 break;
             case Setting.COLEECT_QUICK:

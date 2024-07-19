@@ -173,8 +173,6 @@ public class StartPageActivity extends AppCompatActivity {
                     Logger.info("获取权限成功");
                     Service.getC().forceUpdate(StartPageActivity.this);
                     Setting.updateSetting(Setting.RES_VERSION, 1);
-                } else {
-                    Logger.info("已有权限？？");
                 }
 
                 String s = Service.getC().checkSelf();

@@ -30,10 +30,10 @@ public class SignSettingDialog extends Dialog implements IShowDialog {
         binding.oneFingerLr.setEnabled(false);
         binding.twoFingerLr.setEnabled(false);
         binding.longClick.setEnabled(false);
-        final int[] options1 = new int[]{Setting.CATELOG_QUICK, Setting.DETAIL_QUICK, Setting.MP3_PLAY_QUICK};
+        final int[] options1 = new int[]{Setting.CATALOG_QUICK, Setting.DETAIL_QUICK, Setting.MP3_PLAY_QUICK};
         final int[] options2 = new int[]{Setting.COLEECT_QUICK, Setting.LABLE_COLLECT_QUICK};
         HashMap<Integer, String> os = new HashMap<>();
-        os.put(Setting.CATELOG_QUICK, "快捷方式：目录");
+        os.put(Setting.CATALOG_QUICK, "快捷方式：目录");
         os.put(Setting.COLEECT_QUICK, "快捷方式：收藏");
         os.put(Setting.DETAIL_QUICK, "快捷方式：详情");
         os.put(Setting.LABLE_COLLECT_QUICK, "标签收藏栏");

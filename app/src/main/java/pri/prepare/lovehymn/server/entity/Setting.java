@@ -149,11 +149,15 @@ public class Setting {
      * 启动页背景
      */
     public static final int STARTPAGE_BACKGROUND = 53;
+    /**
+     * 横屏时进入投影模式
+     */
+    public static final int SCREEN_CASTING_MODE =54;
 
-    public static final int CATELOG_QUICK = 1;
+    public static final int CATALOG_QUICK = 1;
     public static final int DETAIL_QUICK = 3;
     public static final int MP3_PLAY_QUICK = 5;
-    public static final int double_finger_up_default = CATELOG_QUICK;
+    public static final int double_finger_up_default = CATALOG_QUICK;
     public static final int COLEECT_QUICK = 2;
     public static final int LABLE_COLLECT_QUICK = 4;
     public static final int double_finger_down_default = LABLE_COLLECT_QUICK;
@@ -223,6 +227,7 @@ public class Setting {
             defaultMap.put(LOAD_STEP, false);
             defaultMap.put(USE_ASYNC, false);
             defaultMap.put(STARTPAGE_BACKGROUND, 0);
+            defaultMap.put(SCREEN_CASTING_MODE, true);
         }
         return defaultMap.get(key);
     }

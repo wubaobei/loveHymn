@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (screenCastingMode) {
                 if (tt.clickCenterZoneInd(ev, 0, 3)) {
-                    toastInTimerH("上翻");
+                    getPdfV0().setPositionOffset(getPdfV0().getPositionOffset()-1f/(getPdfV0().getPageCount()-1));
                     return true;
                 }
                 if (tt.clickCenterZoneInd(ev, 1, 3)) {
@@ -383,10 +383,11 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
                 if (tt.clickCenterZoneInd(ev, 2, 3)) {
-                    toastInTimerH("下翻");
+                    getPdfV0().setPositionOffset(getPdfV0().getPositionOffset()+1f/(getPdfV0().getPageCount()-1));
                     return true;
                 }
             }
+
             if (tt.clickCenter(ev)) {
                 hideBtnClickEvent();
                 return true;

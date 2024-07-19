@@ -32,7 +32,7 @@ public class SpecialSettingDialog extends Dialog implements IShowDialog {
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.special_setting_layout, null, false);
         setContentView(binding.getRoot());
 
-        Tool.setListDialogLayout(binding.specialSettingTitle, context, R.drawable.special_setting,binding.button3, binding.button4,
+        Tool.setListDialogLayout(binding.specialSettingTitle, context, R.drawable.special_setting,binding.button3,
                 binding.clearData, binding.addPdfBtn, binding.clearCache, binding.secretCode);
 
         ct = context;
@@ -61,17 +61,6 @@ public class SpecialSettingDialog extends Dialog implements IShowDialog {
             String setStr1 = Setting.SEARCH_RESULT_SPLIT_Arr[setting1];
             b2.setText(Tool.getSpannableString("切换搜索的结果的分隔符 当前：" + setStr1, new String[]{setStr1}));
             Setting.updateSetting(Setting.SEARCH_RESULT_SPLIT, setting1);
-        });
-        //endregion
-        //region 隐藏状态栏
-        final Button b3 = binding.button4;
-        boolean setting2 = Setting.getValueB(Setting.STATUS_BAR_SHOW);
-        b3.setText(Tool.getSpannableString("竖屏时的状态栏展示 当前：" + (setting2 ? "显示" : "隐藏"), new String[]{"显示", "隐藏"}));
-        b3.setOnClickListener(v -> {
-            boolean setting21 = Setting.getValueB(Setting.STATUS_BAR_SHOW);
-            setting21 = !setting21;
-            b3.setText(Tool.getSpannableString("竖屏时的状态栏展示 当前：" + (setting21 ? "显示" : "隐藏"), new String[]{"显示", "隐藏"}));
-            Setting.updateSetting(Setting.STATUS_BAR_SHOW, setting21);
         });
         //endregion
         //region 自定义pdf

@@ -61,6 +61,8 @@ public class SettingDialog extends Dialog implements IShowDialog {
         setLabelSetting();
         setAllRead();
         setShowToolBarSetting();
+        setStatusBarSetting();
+        setScreenCastingModeSetting();
         setDictSetting();
         setTigSetting();
         setSignSetting();
@@ -74,6 +76,7 @@ public class SettingDialog extends Dialog implements IShowDialog {
             img.setImageResource(R.drawable.off);
 
         img.setOnClickListener(v -> {
+            Logger.info("set " + setId);
             boolean b = Setting.getValueB(setId);
             b = !b;
             Setting.updateSetting(setId, b);
@@ -101,12 +104,12 @@ public class SettingDialog extends Dialog implements IShowDialog {
         int[] btnId = new int[]{R.id.resStatBtn, R.id.all_read,
                 R.id.dispearTime, R.id.downloadAddressBtn, R.id.bibleShowChineseEnglish,
                 R.id.specialSettingBtn,
-                R.id.lableBtn,
+                R.id.lableBtn,R.id.showstatusbar,R.id.screenCastingMode,
                 R.id.showtoolbar, R.id.dict_show, R.id.close_tig_btn, R.id.signSettingBtn, R.id.spgb};
         int[] dId = new int[]{R.drawable.s_2, R.drawable.s_4,
                 R.drawable.s_5, R.drawable.s_6, R.drawable.book,
                 R.drawable.special_setting,
-                R.drawable.label_icon,
+                R.drawable.label_icon,R.drawable.statuslan,R.drawable.screen_casting_mode,
                 R.drawable.lan, R.drawable.spz, R.drawable.gth2, R.drawable.finger, R.drawable.pngicon};
 
         for (int i = 0; i < btnId.length; i++) {
@@ -161,6 +164,14 @@ public class SettingDialog extends Dialog implements IShowDialog {
      */
     private void setShowToolBarSetting() {
         commonSwitchSet(binding.showtoolbarSw, Setting.SHOW_TOOL_BAR_ON_LOAD);
+    }
+
+    private void setStatusBarSetting() {
+        commonSwitchSet(binding.showstatusbarSw, Setting.STATUS_BAR_SHOW);
+    }
+
+    private void setScreenCastingModeSetting() {
+        commonSwitchSet(binding.screenCastingModeSw, Setting.SCREEN_CASTING_MODE);
     }
 
     /**

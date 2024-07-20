@@ -221,9 +221,6 @@ public class MainActivity extends AppCompatActivity {
             if (isLandscape()) {
                 hideStatusBar();
                 screenCastingMode = Setting.getValueB(Setting.SCREEN_CASTING_MODE);
-                if (screenCastingMode) {
-                    PDFView p = getPdfV0();
-                }
             } else if (Setting.getValueB(Setting.STATUS_BAR_SHOW) && !showTime) {
                 Tool.showStatusBar(getWindow(), this);
                 screenCastingMode = false;
@@ -238,15 +235,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updatePdfK() {
-        Logger.info("update pdf k");
         if (screenCastingMode) {
             float sk = getScreenCastingModeK();
             getPdfV0().setMinZoom(sk);
             getPdfV1().setMinZoom(sk);
-            getPdfV0().setMaxZoom(sk);
-            getPdfV1().setMaxZoom(sk);
-            getPdfV0().resetZoom();
-            getPdfV1().resetZoom();
+            getPdfV0().setMaxZoom(1f);
+            getPdfV1().setMaxZoom(1f);
+            getPdfV0().zoomTo(sk);
+            getPdfV1().zoomTo(sk);
             getPdfV0().setPositionOffset(0f);
         } else if (isLandscape()) {
             getPdfV0().setMinZoom(0.6f);
@@ -271,11 +267,9 @@ public class MainActivity extends AppCompatActivity {
             int width = ScreenUtils.getScreenWidth(getWindowManager());
             int height = ScreenUtils.getScreenHeight(getWindowManager());
             if (height == 0) {
-                Logger.info("no height return 1");
                 return 1f;
             }
             float f = 4f / 3 / width * height;
-            Logger.info("cf " + width + " " + height);
             return f;
         } catch (Exception e) {
             Logger.exception(e);
@@ -360,6 +354,12 @@ public class MainActivity extends AppCompatActivity {
         return f;
     }
 
+    private float getUDpercent() {
+        float t = getPdfV0().getZoom() / getScreenCastingModeK();//>1
+        int c = getPdfV0().getPageCount();
+        return 1f / (c - 1 / t) ;
+    }
+
     @SuppressLint("ShowToast")
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -375,7 +375,10 @@ public class MainActivity extends AppCompatActivity {
 
             if (screenCastingMode) {
                 if (tt.clickCenterZoneInd(ev, 0, 3)) {
-                    getPdfV0().setPositionOffset(getPdfV0().getPositionOffset()-1f/(getPdfV0().getPageCount()-1));
+                    float r = getPdfV0().getPositionOffset() - getUDpercent();
+                    if (r >= -1f / getPdfV0().getPageCount() / 2) {
+                        getPdfV0().setPositionOffset(r);
+                    }
                     return true;
                 }
                 if (tt.clickCenterZoneInd(ev, 1, 3)) {
@@ -383,7 +386,10 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
                 if (tt.clickCenterZoneInd(ev, 2, 3)) {
-                    getPdfV0().setPositionOffset(getPdfV0().getPositionOffset()+1f/(getPdfV0().getPageCount()-1));
+                    float r = getPdfV0().getPositionOffset() + getUDpercent();
+                    if (r < 1 + 1f / getPdfV0().getPageCount() / 2) {
+                        getPdfV0().setPositionOffset(r);
+                    }
                     return true;
                 }
             }
@@ -1321,6 +1327,9 @@ public class MainActivity extends AppCompatActivity {
             lastFile = f;
             setPreviousNext(f);
             setTitleText(f);
+            if (screenCastingMode) {
+                pdfView.zoomTo(getScreenCastingModeK());
+            }
             binding.tvbackTitle.setOnClickListener(v -> {
                 try {
                     LabelCollectDialog dialog = new LabelCollectDialog(this, f, i4Lc, i4Set);

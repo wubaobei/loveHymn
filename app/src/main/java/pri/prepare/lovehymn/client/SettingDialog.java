@@ -123,11 +123,11 @@ public class SettingDialog extends Dialog implements IShowDialog {
      */
     private void setDisappearBtn() {
         Button btn = binding.dispearTimeBtn;
-        int v = Setting.getValueI(Setting.DISPEAR_TIME);
+        int v = Setting.getValueI(Setting.DISAPPEAR_TIME);
         btn.setText(getText(v));
 
         btn.setOnClickListener(v1 -> {
-            int v2 = Setting.getValueI(Setting.DISPEAR_TIME);
+            int v2 = Setting.getValueI(Setting.DISAPPEAR_TIME);
             int ind = 0;
             for (int i = 0; i < disappearTimeArr.length; i++)
                 if (disappearTimeArr[i] == v2) {
@@ -138,7 +138,7 @@ public class SettingDialog extends Dialog implements IShowDialog {
             if (ind >= disappearTimeArr.length)
                 ind = 0;
             v2 = disappearTimeArr[ind];
-            Setting.updateSetting(Setting.DISPEAR_TIME, v2);
+            Setting.updateSetting(Setting.DISAPPEAR_TIME, v2);
             btn.setText(getText(v2));
         });
     }
@@ -147,14 +147,14 @@ public class SettingDialog extends Dialog implements IShowDialog {
      * 启动页背景
      */
     private void setSPBGSetting() {
-        int bg = Setting.getValueI(Setting.STARTPAGE_BACKGROUND);
+        int bg = Setting.getValueI(Setting.START_PAGE_BACKGROUND);
         Button btn = binding.spbgBtn;
         btn.setText(SPBGManager.bname[bg]);
 
         btn.setOnClickListener(v -> {
-            int bg0 = Setting.getValueI(Setting.STARTPAGE_BACKGROUND);
+            int bg0 = Setting.getValueI(Setting.START_PAGE_BACKGROUND);
             bg0 = (bg0 + 1) % SPBGManager.bname.length;
-            Setting.updateSetting(Setting.STARTPAGE_BACKGROUND, bg0);
+            Setting.updateSetting(Setting.START_PAGE_BACKGROUND, bg0);
             btn.setText(SPBGManager.bname[bg0]);
         });
     }

@@ -100,6 +100,7 @@ public class CommonDialog extends Dialog implements IShowDialog {
 
     private void DELETE_LABEL_init(IRefresh iRefresh, String param) {
         Tool.drawableLeftSet(binding.cmTitle, getContext(), R.drawable.delete_i);
+        binding.cmTitle.setText("是否删除");
         binding.cmEdit.setText(param);
         binding.cmEdit.setEnabled(false);
         binding.cmYes.setOnClickListener(v -> {
@@ -134,7 +135,7 @@ public class CommonDialog extends Dialog implements IShowDialog {
     @SuppressLint("SetTextI18n")
     private void RENAME_LABEL_init(IRefresh iRefresh, String param) {
         LabelType lt = LabelType.getByShowName(param);
-        binding.cmTitle.setText(" 重命名：" + lt.getName());
+        binding.cmTitle.setText("重命名：" + lt.getName());
         binding.cmEdit.setText(lt.getName());
         groupInit(lt.getGroup());
 

@@ -64,7 +64,7 @@ public class DisplayStat {
     public void resetToolBar() {
         ToolBarStat = 0;
         ToolBarPercent = 0;
-        dispearTime = Setting.getValueI(Setting.DISPEAR_TIME);
+        dispearTime = Setting.getValueI(Setting.DISAPPEAR_TIME);
     }
 
     /**
@@ -73,7 +73,7 @@ public class DisplayStat {
     public void hideToolBarNow() {
         ToolBarStat = 1;
         ToolBarPercent = DISPEAR_RATE_TIME * HZ / 1000;
-        dispearTime = Setting.getValueI(Setting.DISPEAR_TIME);
+        dispearTime = Setting.getValueI(Setting.DISAPPEAR_TIME);
     }
 
     /**

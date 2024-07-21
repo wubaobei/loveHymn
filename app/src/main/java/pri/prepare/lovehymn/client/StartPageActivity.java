@@ -109,7 +109,7 @@ public class StartPageActivity extends AppCompatActivity {
                 });
             } else {
                 setContentView(R.layout.startpage_layout);
-                int gd = Setting.getValueI(Setting.STARTPAGE_BACKGROUND);
+                int gd = Setting.getValueI(Setting.START_PAGE_BACKGROUND);
 
                 if (gd == 0) {
                     Random rd = new Random();

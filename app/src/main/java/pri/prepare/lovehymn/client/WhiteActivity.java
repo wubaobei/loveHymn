@@ -1,5 +1,6 @@
 package pri.prepare.lovehymn.client;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
@@ -12,10 +13,12 @@ import pri.prepare.lovehymn.server.entity.Setting;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -37,9 +40,9 @@ public class WhiteActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String path = intent.getStringExtra("path");
         int page = intent.getIntExtra("page", 0);
-        PDFView pdfv = binding.pdfv2;
-        pdfv.fromFile(new File(path)).defaultPage(page).load();
-        pdfv.setMinZoom(0.6f);
+        PDFView pdfView = binding.pdfv2;
+        pdfView.fromFile(new File(path)).defaultPage(page).load();
+        setPdfViewZoom();
         handler.post(runnable);
         lockBtnSet();
         new Thread(r).start();
@@ -47,15 +50,33 @@ public class WhiteActivity extends AppCompatActivity {
         MainActivity.timeTool.Resume();
         if (!Setting.getValueB(Setting.STATUS_BAR_SHOW)) {
             hideStatusBar(this);
-        }else{
+        } else {
             Tool.showStatusBar(getWindow(), this);
         }
     }
 
+    private boolean isLandscape() {
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        return rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270;
+    }
+
+    private void setPdfViewZoom() {
+        PDFView pdfView = binding.pdfv2;
+        if (isLandscape()) {
+            pdfView.setMinZoom(0.6f);
+        } else {
+            pdfView.setMinZoom(1f);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        setPdfViewZoom();
+        super.onConfigurationChanged(newConfig);
+    }
+
     /**
      * 竖屏时隐藏状态栏
-     *
-     * @param activity
      */
     public void hideStatusBar(Activity activity) {
         if (activity == null) return;
@@ -143,8 +164,16 @@ public class WhiteActivity extends AppCompatActivity {
         }
     };
 
+    private boolean runF = true;
+
+    @Override
+    protected void onDestroy() {
+        runF = false;
+        super.onDestroy();
+    }
+
     final Runnable timerR = () -> {
-        while (true) {
+        while (runF) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {

@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -926,9 +925,9 @@ public class MainActivity extends AppCompatActivity {
                 Service.getC().loadResFileByName(a);
                 Setting.updateSetting(Setting.LOAD_STEP, true);
                 res += "足迹,";
-            } else if (a.contains("qita") && (!Setting.getValueB(Setting.LOAD_QITA))) {
+            } else if (a.contains("qita") && (!Setting.getValueB(Setting.LOAD_OTHER))) {
                 Service.getC().loadResFileByName(a);
-                Setting.updateSetting(Setting.LOAD_QITA, true);
+                Setting.updateSetting(Setting.LOAD_OTHER, true);
                 res += "其他诗歌信息,";
             }
         }
@@ -1349,7 +1348,7 @@ public class MainActivity extends AppCompatActivity {
             case Setting.CATALOG_QUICK:
                 binding.cataBtn.callOnClick();
                 break;
-            case Setting.COLEECT_QUICK:
+            case Setting.COLLECT_QUICK:
                 CollectTool.modCollect(lastFile);
                 setTitleText(lastFile);
                 if (CollectTool.hasFile(lastFile))
@@ -1363,7 +1362,7 @@ public class MainActivity extends AppCompatActivity {
                 else
                     toastInTimerH("没有详情内容");
                 break;
-            case Setting.LABLE_COLLECT_QUICK:
+            case Setting.LABEL_COLLECT_QUICK:
                 binding.tvbackTitle.callOnClick();
                 break;
             case Setting.MP3_PLAY_QUICK:

@@ -1,5 +1,6 @@
 package pri.prepare.lovehymn.client;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ public class AllStepDialog extends Dialog implements IShowDialog {
         return sb.toString().trim();
     }
 
+    @SuppressLint("SetTextI18n")
     private void allSet(String[] cts) {
         binding.allStep.setOnClickListener(v -> {
             binding.title.setText("所有足迹(" + cts.length + ")");
@@ -68,56 +70,63 @@ public class AllStepDialog extends Dialog implements IShowDialog {
 
     private void statSet() {
         binding.stepStat.setOnClickListener(v -> {
-            Hymn[] hymns = Hymn.getHymnsHasStepSortDesc();
-            String[] cts = MyFile.from(SdCardTool.getStepPath()).getContent();
+            try {
+                Hymn[] hymns = Hymn.getHymnsHasStepSortDesc();
+                String[] cts = MyFile.from(SdCardTool.getStepPath()).getContent();
 
-            StringBuilder sbw = new StringBuilder();
-            sbw.append("共留下" + cts.length + "次足迹\r\n");
-            int[] week = new int[8];
-            for (String s : cts) {
-                int ind = s.indexOf(" ");
-                String dateString = s.substring(ind).trim();
-                LocalDateTime dt = LocalDateTime.parse(dateString, Setting.getDefaultTimeFormatter());
-                week[dt.getDayOfWeek().getValue()]++;
-            }
-            int[] arr = new int[]{DayOfWeek.SUNDAY.getValue(), DayOfWeek.MONDAY.getValue(), DayOfWeek.TUESDAY.getValue(),
-                    DayOfWeek.WEDNESDAY.getValue(), DayOfWeek.THURSDAY.getValue(), DayOfWeek.FRIDAY.getValue(), DayOfWeek.SATURDAY.getValue()};
-            String[] arrS = new String[]{"主日", "周一", "周二", "周三", "周四", "周五", "周六"};
-
-            sbw.append("按时间分类:\r\n");
-            for (int i = 0; i < arr.length; i++)
-                if (week[arr[i]] > 0)
-                    sbw.append("\t" + arrS[i] + ":" + week[arr[i]]).append("次\r\n");
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("留下足迹最多的几首是：\r\n");
-            for (int i = 0; i < hymns.length && i < 5; i++) {
-                sb.append(hymns[i].getShowName()).append("(").append(hymns[i].getSteps().length).append("次)\r\n");
-            }
-
-            HashMap<String, Integer> bookN = new HashMap<>();
-            for (Book b : Book.getAll()) {
-                bookN.put(b.SimpleName, 0);
-            }
-            for (String ct : cts) {
-                int bn = bookN.get(ct.substring(0, 1));
-                bookN.put(ct.substring(0, 1), bn + 1);
-            }
-            sbw.append("按诗歌本分类:\r\n");
-            for (Book b : Book.getAll()) {
-                if (bookN.get(b.SimpleName) > 0) {
-                    sbw.append("\t" + b.FullName + ":" + bookN.get(b.SimpleName)).append("\r\n");
+                StringBuilder sbw = new StringBuilder();
+                sbw.append("共留下").append(cts.length).append("次足迹\r\n");
+                int[] week = new int[8];
+                for (String s : cts) {
+                    int ind = s.indexOf(" ");
+                    String dateString = s.substring(ind).trim();
+                    LocalDateTime dt = LocalDateTime.parse(dateString, Setting.getDefaultTimeFormatter());
+                    week[dt.getDayOfWeek().getValue()]++;
                 }
+                int[] arr = new int[]{DayOfWeek.SUNDAY.getValue(), DayOfWeek.MONDAY.getValue(), DayOfWeek.TUESDAY.getValue(),
+                        DayOfWeek.WEDNESDAY.getValue(), DayOfWeek.THURSDAY.getValue(), DayOfWeek.FRIDAY.getValue(), DayOfWeek.SATURDAY.getValue()};
+                String[] arrS = new String[]{"主日", "周一", "周二", "周三", "周四", "周五", "周六"};
+
+                sbw.append("按时间分类:\r\n");
+                for (int i = 0; i < arr.length; i++)
+                    if (week[arr[i]] > 0)
+                        sbw.append("\t").append(arrS[i]).append(":").append(week[arr[i]]).append("次\r\n");
+
+                StringBuilder sb = new StringBuilder();
+                sb.append("留下足迹最多的几首是：\r\n");
+                for (int i = 0; i < hymns.length && i < 5; i++) {
+                    sb.append(hymns[i].getShowName()).append("(").append(hymns[i].getSteps().length).append("次)\r\n");
+                }
+
+                HashMap<String, Integer> bookN = new HashMap<>();
+                for (Book b : Book.getAll()) {
+                    bookN.put(b.SimpleName, 0);
+                }
+                for (String ct : cts) {
+                    Integer bn = bookN.get(ct.substring(0, 1));
+                    if(bn==null){
+                        continue;
+                    }
+                    bookN.put(ct.substring(0, 1), bn + 1);
+                }
+                sbw.append("按诗歌本分类:\r\n");
+                for (Book b : Book.getAll()) {
+                    if (bookN.get(b.SimpleName) !=null) {
+                        sbw.append("\t").append(b.FullName).append(":").append(bookN.get(b.SimpleName)).append("\r\n");
+                    }
+                }
+
+                String[] stat = new String[]{"有" + hymns.length + "首诗歌留下了足迹", sbw.toString().trim(), sb.toString().trim()};
+
+                binding.title.setText("足迹统计");
+                binding.textView.setText(String.join("\r\n\r\n", stat));
+
+
+                binding.allStep.setEnabled(true);
+                binding.stepStat.setEnabled(false);
+            } catch (Exception e) {
+                Logger.exception(e);
             }
-
-            String[] stat = new String[]{"有" + hymns.length + "首诗歌留下了足迹", sbw.toString().trim(), sb.toString().trim()};
-
-            binding.title.setText("足迹统计");
-            binding.textView.setText(String.join("\r\n\r\n", stat));
-
-
-            binding.allStep.setEnabled(true);
-            binding.stepStat.setEnabled(false);
         });
     }
 

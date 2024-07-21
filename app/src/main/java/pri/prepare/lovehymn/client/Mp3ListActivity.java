@@ -56,38 +56,43 @@ public class Mp3ListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        DBHelper.init(Mp3ListActivity.this);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_mp3_list);
-        Tool.showStatusBar(getWindow(), this);
-        volumeUtil = new VolumeUtil(this);
+        try {
+            super.onCreate(savedInstanceState);
+            DBHelper.init(Mp3ListActivity.this);
+            setTheme(R.style.BigTheme);
+            binding = DataBindingUtil.setContentView(this, R.layout.activity_mp3_list);
+            Tool.showStatusBar(getWindow(), this);
+            volumeUtil = new VolumeUtil(this);
 
-        helper = new IntentHelper(getIntent());
-        if (helper.error) {
-            binding.mp3Title.setText("无最近播放列表");
-            return;
+            helper = new IntentHelper(getIntent());
+            if (helper.error) {
+                binding.mp3Title.setText("无最近播放列表");
+                return;
+            }
+
+            TextView tv = new TextView(this);
+            tv.setText("加载中...\r\n如果长时间卡在这个界面，请到‘设置’-‘其他设置’中关闭异步功能");
+            binding.mp3List.addView(tv);
+
+            if (Setting.getValueB(Setting.USE_ASYNC))
+                new Thread(runnableInit).start();
+            else
+                run0();
+
+            btnSet();
+            btnUpdate();
+            lyricBtnSet();
+            jumpPdfSet();
+            updateLyric();
+            plusDecSet();
+
+            binding.lyricLl.setVisibility(INVISIBLE);
+            binding.lyricLs.setVisibility(INVISIBLE);
+
+            listSvSet();
+        } catch (Exception e) {
+            Logger.exception(e);
         }
-
-        TextView tv = new TextView(this);
-        tv.setText("加载中...\r\n如果长时间卡在这个界面，请到‘设置’-‘其他设置’中关闭异步功能");
-        binding.mp3List.addView(tv);
-
-        if (Setting.getValueB(Setting.USE_ASYNC))
-            new Thread(runnableInit).start();
-        else
-            run0();
-
-        btnSet();
-        btnUpdate();
-        lyricBtnSet();
-        jumpPdfSet();
-        updateLyric();
-        plusDecSet();
-
-        binding.lyricLl.setVisibility(INVISIBLE);
-        binding.lyricLs.setVisibility(INVISIBLE);
-
-        listSvSet();
     }
 
     /**

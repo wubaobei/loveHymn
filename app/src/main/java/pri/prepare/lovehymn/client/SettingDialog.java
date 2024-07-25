@@ -85,7 +85,7 @@ public class SettingDialog extends Dialog implements IShowDialog {
         });
     }
 
-    private static final int[] disappearTimeArr = new int[]{999000, 2000, 4000, 6000};
+    private static final int[] disappearTimeArr = new int[]{9999000, 2000, 4000, 6000};
 
     public static int getInitDisappearTime() {
         return disappearTimeArr[disappearTimeArr.length - 1];

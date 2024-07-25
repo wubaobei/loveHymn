@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import pri.prepare.lovehymn.R;
-import pri.prepare.lovehymn.client.tool.DisplayStat;
 import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.databinding.ActivityWhiteBinding;
 import pri.prepare.lovehymn.server.entity.Logger;
@@ -22,6 +21,8 @@ import android.view.Surface;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.github.barteksc.pdfviewer.PDFView;
 
@@ -43,7 +44,7 @@ public class WhiteActivity extends AppCompatActivity {
         PDFView pdfView = binding.pdfv2;
         pdfView.fromFile(new File(path)).defaultPage(page).load();
         setPdfViewZoom();
-        handler.post(runnable);
+        binding.lockBtn.setAnimation(lockBtnHideAnimation());
         lockBtnSet();
         new Thread(r).start();
         new Thread(timerR).start();
@@ -53,6 +54,27 @@ public class WhiteActivity extends AppCompatActivity {
         } else {
             Tool.showStatusBar(getWindow(), this);
         }
+    }
+
+    private Animation lockBtnHideAnimation() {
+        Animation res = AnimationUtils.loadAnimation(this, R.anim.alpha_out_slow);
+        res.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                binding.lockBtn.setAlpha(1f);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                binding.lockBtn.setAlpha(0f);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        return res;
     }
 
     private boolean isLandscape() {
@@ -112,15 +134,16 @@ public class WhiteActivity extends AppCompatActivity {
     private void lockBtnSet() {
         binding.lockBtn.setOnClickListener(v -> {
             isLock = !isLock;
-            btnAlpha = 1f;
             binding.lockBtn.setImageResource(isLock ? R.drawable.lock_foreground : R.drawable.lock_open_foreground);
+            binding.lockBtn.startAnimation(lockBtnHideAnimation());
         });
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (isLock && (ev.getX() < lx || ev.getY() > ly))
+        if (isLock && (ev.getX() < lx || ev.getY() > ly)) {
             return true;
+        }
         return super.dispatchTouchEvent(ev);
     }
 
@@ -135,34 +158,11 @@ public class WhiteActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        isRun = false;
         t1 = System.currentTimeMillis() - t1;
     }
 
     private boolean isLock = false;
-    private float btnAlpha = 1f;
-    private boolean isRun = true;
     private final Handler handler = new Handler();
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                this.update();
-                int n = 1000 / DisplayStat.HZ;
-                if (isRun)
-                    handler.postDelayed(this, n);
-            } catch (Exception e) {
-                Logger.exception(e);
-            }
-        }
-
-        void update() {
-            btnAlpha -= 0.01f;
-            if (btnAlpha < 0f)
-                btnAlpha = 0f;
-            binding.lockBtn.setAlpha(btnAlpha);
-        }
-    };
 
     private boolean runF = true;
 

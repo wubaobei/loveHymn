@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -354,9 +356,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private float getUDpercent() {
-        float t = getPdfV0().getZoom() / getScreenCastingModeK();//>1
+        float t = getPdfV0().getZoom() / getScreenCastingModeK();
         int c = getPdfV0().getPageCount();
-        return 1f / (c - 1 / t) ;
+        return 1f / (c - 1 / t);
     }
 
     @SuppressLint("ShowToast")
@@ -406,14 +408,16 @@ public class MainActivity extends AppCompatActivity {
                 MyFile f = HistoryTool.getNext();
                 if (f != null) {
                     loadPdf(f, false);
-                } else
+                } else {
                     toastInTimerH("没有下一首");
+                }
             } else if (dr == TouchUtil.DOUBLE_RIGHT) {
                 MyFile f = HistoryTool.getPreview();
                 if (f != null) {
                     loadPdf(f, false);
-                } else
+                } else {
                     toastInTimerH("没有上一首");
+                }
             } else if (dr == TouchUtil.DOUBLE_UP) {
                 quickSign(Setting.getValueI(Setting.DOUBLE_FINGER_UP));
             } else if (dr == TouchUtil.DOUBLE_DOWN) {
@@ -506,29 +510,94 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void hide1Set() {
-        try {
-            RelativeLayout iv = binding.rLayout;
-            iv.setY(0f);
-            RelativeLayout iv2 = binding.rLayout2;
-            iv2.setY(0f);
-        } catch (Exception e) {
-            Logger.exception(e);
+    /**
+     * 1 show 0 hide 2 isHiding
+     */
+    private int toolBarStatus = 0;
+    private long showBarStartTime = 0;
+
+    private void hideBtnClickEvent() {
+        if (toolBarStatus == 2) {
+            return;
+        }
+
+
+        if (toolBarStatus == 1) {
+            beginHideAnimation();
+        } else {
+            showBar();
         }
     }
 
-    private void hideBtnClickEvent() {
+    private void beginHideAnimation() {
+        showBarStartTime = 0l;
         RelativeLayout iv = binding.rLayout;
-        TextView bigIv = binding.tvback;
         RelativeLayout iv2 = binding.rLayout2;
-        //
-        if (iv.getY() < 0.001f) {
-            DisplayStat.getC().beginHide();
-        } else if (bigIv.getHeight() < iv2.getHeight()) {
-            DisplayStat.getC().resetToolBar();
-            hide1Set();
+
+        if (iv2.getAnimation() != null) {
+            iv2.startLayoutAnimation();
+        } else {
+            Animation ani2 = AnimationUtils.loadAnimation(this, R.anim.push_top_out_slow);
+            ani2.setAnimationListener(animationListener);
+            iv2.setAnimation(ani2);
         }
+
+        if (iv.getAnimation() != null) {
+            iv.startLayoutAnimation();
+        } else {
+            Animation ani = AnimationUtils.loadAnimation(this, R.anim.push_bottom_out_slow);
+            ani.setAnimationListener(animationListener);
+            iv.setAnimation(ani);
+        }
+
+        toolBarStatus = 2;
     }
+
+    private void showBar() {
+        Logger.info("show bar");
+        toolBarStatus = 1;
+        RelativeLayout iv = binding.rLayout;
+        RelativeLayout iv2 = binding.rLayout2;
+        iv2.setY(0);
+        iv.setY(0);
+        int t = Setting.getValueI(Setting.DISAPPEAR_TIME);
+        showBarStartTime = System.currentTimeMillis() + t;
+    }
+
+    private boolean hideAgain = false;
+
+    private void hideBar() {
+        RelativeLayout iv = binding.rLayout;
+        RelativeLayout iv2 = binding.rLayout2;
+
+        if (iv.getHeight() == 0) {
+            //未初始化完成，延后再执行
+            hideAgain = true;
+            Logger.info("hide again");
+            return;
+        }
+        toolBarStatus = 0;
+
+        iv2.setY(-iv2.getHeight());
+        iv.setY(iv.getHeight());
+    }
+
+    Animation.AnimationListener animationListener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            hideBar();
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    };
 
     private int resumeToSetPdfFlag = -1;
 
@@ -538,7 +607,6 @@ public class MainActivity extends AppCompatActivity {
             resumeToSetPdfFlag = 50;
             Logger.info("onResume");
 
-            DisplayStat.getC().resetToolBar();
             isRun = true;
             new Thread(timerR).start();
 
@@ -680,6 +748,15 @@ public class MainActivity extends AppCompatActivity {
                     } catch (InterruptedException e) {
                         Logger.exception(e);
                     }
+
+                    if (hideAgain) {
+                        hideAgain = false;
+                        hideBar();
+                    }
+                    if (showBarStartTime != 0 && System.currentTimeMillis() > showBarStartTime) {
+                        beginHideAnimation();
+                    }
+
                     if (msgWait.length() > 0) {
                         if (msgWait.startsWith("解压")) {
                             toastInTimerH(msgWait, 60 * 60);
@@ -717,7 +794,7 @@ public class MainActivity extends AppCompatActivity {
                         DisplayStat.getC().updateProcess++;
                         updateH.sendEmptyMessage(DisplayStat.getC().updateProcess);
                     } else {
-                        DisplayStat.getC().addToolBarPercent();
+//                        DisplayStat.getC().addToolBarPercent();
                         timerH.sendEmptyMessage(0);
                     }
 
@@ -861,11 +938,6 @@ public class MainActivity extends AppCompatActivity {
                 lastInToast--;
 
                 TextView back2 = binding.tvback2;
-                RelativeLayout iv2 = binding.rLayout2;
-                if (DisplayStat.getC().resetLast()) {
-                    iv2.setY(0);
-                    iv.setY(0);
-                }
 
                 if (back1.getHeight() < cal.getHeight())
                     back1.setHeight(cal.getHeight());
@@ -873,17 +945,6 @@ public class MainActivity extends AppCompatActivity {
                 int h = binding.tableLayout2.getHeight() + binding.seekBarLayout.getHeight();
                 if (back2.getHeight() < h)
                     back2.setHeight(h);
-
-                //关闭标题栏和工具栏
-                if (DisplayStat.getC().isClosingToolBar()) {
-                    int height = back1.getHeight() + tvhide.getHeight();
-                    int in2h = viv == View.VISIBLE ? iv2.getHeight() : (binding.tvbackTitle.getHeight() + binding.dpdp.getHeight());
-
-                    if (iv.getY() < iv.getHeight()) {
-                        iv2.setY(-DisplayStat.getC().getToolBarPercent() * in2h);
-                        iv.setY(DisplayStat.getC().getToolBarPercent() * height);
-                    }
-                }
 
                 //加载pdf成功时，关闭加载失败的说明
                 if (loadPdfSuccess) {
@@ -1135,7 +1196,7 @@ public class MainActivity extends AppCompatActivity {
                     musicManager = new MusicManager(mp3);
                 mp3StateSet();
                 playBtn.setOnClickListener(v -> {
-                    DisplayStat.getC().resetToolBar();
+//                    DisplayStat.getC().resetToolBar();
                     if (musicManager.isPlaying())
                         musicManager.pause();
                     else {
@@ -1147,7 +1208,7 @@ public class MainActivity extends AppCompatActivity {
                 });
                 playTv.setOnClickListener(v -> playBtn.callOnClick());
                 repeatBtn.setOnClickListener(v -> {
-                    DisplayStat.getC().resetToolBar();
+//                    DisplayStat.getC().resetToolBar();
                     musicManager.changeSimpleRepeat();
                     Setting.updateSetting(Setting.MP3_LOOP, musicManager.getRepeat());
                     mp3StateSet();
@@ -1168,7 +1229,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         musicManager.setProgress(((double) seekBar.getProgress()) / seekBar.getMax());
-                        DisplayStat.getC().resetToolBar();
+//                        DisplayStat.getC().resetToolBar();
                     }
                 });
                 randomBtn.setOnClickListener(v -> {
@@ -1298,18 +1359,20 @@ public class MainActivity extends AppCompatActivity {
         //is pdf
         try {
             String remark = PersonRemark.getRemark(f.getHymn());
-            if (remark.length() > 0)
+            if (remark.length() > 0) {
                 toastInTimerH(remark);
+            }
 
             Logger.info("load pdf:" + f.getAbsolutePath());
             HistoryTool.add(f, modifyHis);
             if (tt != null)
                 tt.set(0, 0);
 
-            if (Setting.getValueB(Setting.SHOW_TOOL_BAR_ON_LOAD))
-                DisplayStat.getC().resetToolBar();
-            else
-                DisplayStat.getC().hideToolBarNow();
+            if (Setting.getValueB(Setting.SHOW_TOOL_BAR_ON_LOAD)) {
+                showBar();
+            } else {
+                hideBar();
+            }
             if (!f.isFile()) {
                 Logger.info(f.getAbsolutePath() + "不存在或不是pdf文件");
                 return;

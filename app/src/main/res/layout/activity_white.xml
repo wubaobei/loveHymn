@@ -24,7 +24,6 @@
 
             <ImageButton
                 android:id="@+id/lock_btn"
-                android:alpha="0"
                 android:src="@drawable/lock_open_foreground"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

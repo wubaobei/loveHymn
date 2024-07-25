@@ -621,8 +621,7 @@ public class MainActivity extends AppCompatActivity {
             setCataLL();
 
             binding.bgMsg.setText("加载pdf失败，请尝试下列方法，如果仍有问题联系作者\r\n" + Service.getC().getFixFunctions() + "\r\n"
-                    + Service.getC().getDebugMsg(this)
-                    + "\r\n在'设置'-'" + SettingDialog.ALL_READ + "'中看到《加百度好友教程》《附加包下载及使用教程》");
+                    + Service.getC().getDebugMsg(this));
 
             timeTool.Resume();
 

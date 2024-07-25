@@ -23,7 +23,7 @@ public class AllReadDialog extends Dialog implements IShowDialog {
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.all_read_dialog, null, false);
         setContentView(binding.getRoot());
 
-        Tool.setListDialogLayout(binding.allReadTitle, context, R.drawable.s_4, binding.readMeBtn, binding.askanswerBtn, binding.addfriend, binding.addpackage);
+        Tool.setListDialogLayout(binding.allReadTitle, context, R.drawable.s_4, binding.readMeBtn, binding.askanswerBtn);
 
         binding.askanswerBtn.setOnClickListener(v -> {
             Intent intent = new Intent(context, ReadMeActivity.class);
@@ -36,15 +36,6 @@ public class AllReadDialog extends Dialog implements IShowDialog {
             Intent intent = new Intent(context, ReadMeActivity.class);
             intent.putExtra("type", 1);
             getContext().startActivity(intent);
-            dismiss();
-        });
-
-        binding.addfriend.setOnClickListener(v -> {
-            i4Set.loadPdfCall(R.raw.addfriend + "");
-            dismiss();
-        });
-        binding.addpackage.setOnClickListener(v -> {
-            i4Set.loadPdfCall(R.raw.addpackage + "");
             dismiss();
         });
     }

@@ -34,20 +34,6 @@
                 android:layout_height="wrap_content"
                 android:text="常见问题" />
 
-            <Button
-                android:id="@+id/addfriend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/bg_msg"
-                android:text="加百度网盘好友教程" />
-
-            <Button
-                android:id="@+id/addpackage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/addfriend"
-                android:text="附加包教程" />
-
         </LinearLayout>
     </ScrollView>
 </layout>

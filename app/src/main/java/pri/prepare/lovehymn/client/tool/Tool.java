@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -32,6 +33,7 @@ import java.util.Random;
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.CatalogDialog;
 import pri.prepare.lovehymn.client.CommonListDialog;
+import pri.prepare.lovehymn.client.MainActivity;
 import pri.prepare.lovehymn.server.entity.Logger;
 
 public class Tool {
@@ -84,17 +86,19 @@ public class Tool {
         alertDialog.setMessage(toColorSpan(value, Color.RED));
         alertDialog.show();
     }
-    public static void ShowDialog(Context context, String title, String[] values){
-        ShowDialog(context,title,values,-1);
+
+    public static void ShowDialog(Context context, String title, String[] values) {
+        ShowDialog(context, title, values, -1);
     }
+
     /**
      * 纯文本dialog
      */
-    public static void ShowDialog(Context context, String title, String[] values,int res) {
+    public static void ShowDialog(Context context, String title, String[] values, int res) {
         List<String> c = new ArrayList<>();
         c.add(title);
         Collections.addAll(c, values);
-        CommonListDialog dialog = new CommonListDialog(context, 3, c,null,res);
+        CommonListDialog dialog = new CommonListDialog(context, 3, c, null, res);
         dialog.showDialog();
     }
 
@@ -281,17 +285,24 @@ public class Tool {
         return spannableString;
     }
 
-    public static void setListDialogLayout(TextView title, Context context, int r, Button... buttons) {
+    public static void setListDialogLayout(TextView title, Context context, int r) {
         title.setTextSize(28f);
         drawableLeftSet(title, context, r);
+    }
 
-//        int n = 0;
-//        for (Button btn : buttons) {
-//            if (n % 2 == 0)
-//                btn.setTextColor(Color.BLUE);
-//            else
-//                btn.setTextColor(Color.RED);
-//            n++;
-//        }
+    /**
+     * 隐藏状态栏
+     */
+    public static void hideStatusBar(Activity activity) {
+        if (activity == null) return;
+        Window window = activity.getWindow();
+        if (window == null) return;
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
+        window.setAttributes(lp);
     }
 }

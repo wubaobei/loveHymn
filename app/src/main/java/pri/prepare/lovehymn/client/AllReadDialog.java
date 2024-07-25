@@ -23,7 +23,7 @@ public class AllReadDialog extends Dialog implements IShowDialog {
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.all_read_dialog, null, false);
         setContentView(binding.getRoot());
 
-        Tool.setListDialogLayout(binding.allReadTitle, context, R.drawable.s_4, binding.readMeBtn, binding.askanswerBtn);
+        Tool.setListDialogLayout(binding.allReadTitle, context, R.drawable.s_4);
 
         binding.askanswerBtn.setOnClickListener(v -> {
             Intent intent = new Intent(context, ReadMeActivity.class);

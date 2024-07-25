@@ -105,21 +105,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * 竖屏时隐藏状态栏
-     */
-    public void hideStatusBar(Activity activity) {
-        if (activity == null) return;
-        Window window = activity.getWindow();
-        if (window == null) return;
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-        WindowManager.LayoutParams lp = window.getAttributes();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-        }
-        window.setAttributes(lp);
-    }
+
 
     private void showTips() {
         TipStruct tip = TipTool.getTig();
@@ -159,14 +145,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
-
-    //region 状态栏设置
-    //全屏并且隐藏状态栏
-    private void hideStatusBar() {
-        hideStatusBar(this);
-    }
-
-    //endregion
 
     private TouchUtil tt;
 
@@ -220,13 +198,13 @@ public class MainActivity extends AppCompatActivity {
             updateKAfterTime = System.currentTimeMillis() + 1000;
 
             if (isLandscape()) {
-                hideStatusBar();
+                Tool.hideStatusBar(this);
                 screenCastingMode = Setting.getValueB(Setting.SCREEN_CASTING_MODE);
             } else if (Setting.getValueB(Setting.STATUS_BAR_SHOW) && !showTime) {
                 Tool.showStatusBar(getWindow(), this);
                 screenCastingMode = false;
             } else {
-                hideStatusBar();
+                Tool.hideStatusBar(this);
                 screenCastingMode = false;
             }
 

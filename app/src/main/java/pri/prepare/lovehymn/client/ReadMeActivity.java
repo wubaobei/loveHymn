@@ -8,9 +8,11 @@ import androidx.databinding.DataBindingUtil;
 
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.tool.TipStruct;
+import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.databinding.ActivityEmpty4readmeBinding;
 import pri.prepare.lovehymn.server.UpdateHistory;
 import pri.prepare.lovehymn.server.entity.Logger;
+import pri.prepare.lovehymn.server.entity.Setting;
 import pri.prepare.lovehymn.server.function.Constant;
 import pri.prepare.lovehymn.server.function.TipTool;
 
@@ -44,5 +46,7 @@ public class ReadMeActivity extends AppCompatActivity {
 
         TipTool.addTips(this, str, binding.readLl);
         binding.readLl.setOnClickListener(view -> Logger.info("click readLL"));
+        //查看说明文档时隐藏状态栏意义不大
+        Tool.showStatusBar(getWindow(), this);
     }
 }

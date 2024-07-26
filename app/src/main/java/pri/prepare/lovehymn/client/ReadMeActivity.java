@@ -12,6 +12,7 @@ import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.databinding.ActivityEmpty4readmeBinding;
 import pri.prepare.lovehymn.server.UpdateHistory;
 import pri.prepare.lovehymn.server.entity.Logger;
+import pri.prepare.lovehymn.server.entity.MyFile;
 import pri.prepare.lovehymn.server.entity.Setting;
 import pri.prepare.lovehymn.server.function.Constant;
 import pri.prepare.lovehymn.server.function.TipTool;
@@ -29,13 +30,21 @@ public class ReadMeActivity extends AppCompatActivity {
         TipStruct[] str;
         String h1 = "";
         String h2 = "";
-        if (type == 2) {
+        if (type == 3) {
+            h1 = "主恢复中的文字工作";
+            String[] ss = MyFile.readStream(this.getResources().openRawResource(R.raw.worldwork));
+            str = new TipStruct[ss.length];
+            for (int i = 0; i < ss.length; i++) {
+                str[i] = new TipStruct(ss[i]);
+            }
+        } else if (type == 2) {
             h1 = "常见问题";
             h2 = "如果有其他问题，可以问作者，微信：prepareWu";
             String[] ss = UpdateHistory.getAskAnswer();
             str = new TipStruct[ss.length];
-            for (int i = 0; i < ss.length; i++)
+            for (int i = 0; i < ss.length; i++) {
                 str[i] = new TipStruct(ss[i]);
+            }
         } else {
             h1 = Constant.READ_ME;
             h2 = "其实是'" + Constant.TIPS + "'集合";

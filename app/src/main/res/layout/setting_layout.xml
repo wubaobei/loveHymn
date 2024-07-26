@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -108,6 +109,7 @@
                         android:src="@drawable/off" />
 
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -137,6 +139,7 @@
                         android:src="@drawable/off" />
 
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -166,6 +169,7 @@
                         android:src="@drawable/off" />
 
                 </RelativeLayout>
+
                 <ImageButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -239,14 +243,14 @@
                     android:scaleType="fitXY"
                     android:src="@mipmap/line" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    app:flexWrap="wrap"
+                    android:layout_height="wrap_content">
 
                     <Button
                         android:id="@+id/resStatBtn"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/set_padding"
                         android:layout_marginRight="@dimen/set_padding"
@@ -259,7 +263,7 @@
 
                     <Button
                         android:id="@+id/downloadAddressBtn"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/set_padding"
                         android:layout_marginRight="@dimen/set_padding"
@@ -269,16 +273,10 @@
                         android:gravity="center_vertical"
                         android:minHeight="@dimen/setting_btn_min_height"
                         android:text="@string/downloadaddress" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/signSettingBtn"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/set_padding"
                         android:layout_marginRight="@dimen/set_padding"
@@ -291,7 +289,7 @@
 
                     <Button
                         android:id="@+id/lableBtn"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/set_padding"
                         android:layout_marginRight="@dimen/set_padding"
@@ -300,19 +298,11 @@
                         android:drawablePadding="10dp"
                         android:gravity="center_vertical"
                         android:minHeight="@dimen/setting_btn_min_height"
-                        android:text="标签与足迹" />
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                        android:text="标签足迹" />
 
                     <Button
                         android:id="@+id/all_read"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/set_padding"
                         android:layout_marginRight="@dimen/set_padding"
@@ -325,7 +315,7 @@
 
                     <Button
                         android:id="@+id/specialSettingBtn"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/set_padding"
                         android:layout_marginRight="@dimen/set_padding"
@@ -336,17 +326,9 @@
                         android:minHeight="@dimen/setting_btn_min_height"
                         android:text="其他设置" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-
                     <Button
                         android:id="@+id/close_tig_btn"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/set_padding"
                         android:layout_marginRight="@dimen/set_padding"
@@ -356,7 +338,8 @@
                         android:gravity="center_vertical"
                         android:minHeight="@dimen/setting_btn_min_height"
                         android:text="关闭小贴士" />
-                </LinearLayout>
+                </com.google.android.flexbox.FlexboxLayout>
+
 
                 <RelativeLayout
                     android:id="@+id/rLayout"

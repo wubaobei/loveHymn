@@ -38,6 +38,12 @@ public class AllReadDialog extends Dialog implements IShowDialog {
             getContext().startActivity(intent);
             dismiss();
         });
+        binding.worldworkBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ReadMeActivity.class);
+            intent.putExtra("type", 3);
+            getContext().startActivity(intent);
+            dismiss();
+        });
     }
 
     @Override

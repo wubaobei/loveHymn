@@ -51,7 +51,6 @@ public class SearchIndexD extends DaoBase {
             while (cursor.moveToNext()) {
                 SearchIndexD a = new SearchIndexD();
                 res.add(DBUtil.getC().convert(cursor, a));
-                Logger.info("search index " + a.name + " " + a.paths);
             }
         }
         return res.toArray(new SearchIndexD[0]);

@@ -18,7 +18,7 @@ public class ContentTypeD extends DaoBase {
         for (ContentTypeD ct : getAll())
             if (ct.name.equals(SAME_MUSIC))
                 return ct;
-        return null;
+        throw new RuntimeException("数据错误，未找到同谱诗歌类型");
     }
     public static ContentTypeD getSameSongType() throws Exception {
         for (ContentTypeD ct : getAll())

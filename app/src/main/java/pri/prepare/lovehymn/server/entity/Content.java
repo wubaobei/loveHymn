@@ -74,14 +74,19 @@ public class Content {
     }
 
     public void fillSameMusic(String hymnStr) throws Exception {
-        if (!isType(ContentTypeD.getSameMusicType()))
+        Logger.info("fill same music " + hymnStr);
+        if (!isType(ContentTypeD.getSameMusicType())) {
+            Logger.info("error type in fill same music");
             return;
+        }
 
-        if (!MusicSearch.contains(hymnStr))
+        if (!MusicSearch.contains(hymnStr)) {
+            Logger.info("no in search in fill same music");
             return;
+        }
 
         String[] arr = MusicSearch.getSimilar(hymnStr);
-        String[] asource = dao.value.split("[;.；,]");
+        String[] asource = dao.value == null ? new String[0] : dao.value.split("[;.；,]");
         HashSet<String> hs = new HashSet<>();
         for (String a : arr) {
             String t = a.replace("-", "附");
@@ -101,7 +106,18 @@ public class Content {
             Logger.info("智能添加同谱诗歌" + (hs.size() - asource.length) + "首");
         }
         ArrayList<String> tempList = new ArrayList<>(hs);
-        Collections.sort(tempList);
+
+        tempList.sort((s0, s1) -> {
+            String b0 = s0.substring(0, 1);
+            String b1 = s1.substring(0, 1);
+            if (b0.equals(b1)) {
+                return s0.compareTo(s1);
+            }
+            Book book0 = Book.getByName(b0);
+            Book book1 = Book.getByName(b1);
+            return book0.id < book1.id ? -1 : 1;
+        });
+
         dao.value = String.join(";", tempList);
         String res = "";
         for (String s : tempList) {

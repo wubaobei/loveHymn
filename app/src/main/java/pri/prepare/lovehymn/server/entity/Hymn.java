@@ -293,7 +293,7 @@ public class Hymn {
             String dt = s.substring(ind + 1);
             try {
                 Hymn h = Hymn.search(hymnInd);
-                if(h!=null) {
+                if (h != null) {
                     h.addStep(dt);
                     h.update();
                 }
@@ -425,7 +425,7 @@ public class Hymn {
         if (dao.index1 < 0)
             return getBook().SimpleName + dao.index1;
 
-        String res = getBook().SimpleName + String.format("%0" + getBook().maxLength + "d", dao.index1);
+        String res = getBook().SimpleName + String.format("%0" + 3 + "d", dao.index1);
         if (dao.index2 > 1)
             res += "-" + dao.index2;
         return res;
@@ -527,18 +527,21 @@ public class Hymn {
                 ArrayList<Content> res = new ArrayList<>();
 
                 boolean hasTP = false;
-                for (ContentD content : contents) {
-                    Content cen = new Content(content);
-                    if (cen.isType(ContentTypeD.getSameMusicType())) {
+                for (ContentD contentD : contents) {
+                    Content content = new Content(contentD);
+                    if (content.isType(ContentTypeD.getSameMusicType())) {
                         hasTP = true;
-                        cen.fillSameMusic(toString());
+                        content.fillSameMusic(toString());
                     }
-                    res.add(cen);
+                    res.add(content);
                 }
                 if (!hasTP) {
-                    String[] arr = MusicSearch.getSimilar(toString());
-                    if (arr.length > 0) {
-                        res.add(Content.fromHymnStrings(arr));
+                    ContentD d = new ContentD();
+                    d.typeId = ContentTypeD.getSameMusicType().id;
+                    Content content = new Content(d);
+                    content.fillSameMusic(toString());
+                    if (content.getOtherShowString() != null && content.getOtherShowString().length() > 0) {
+                        res.add(content);
                     }
                 }
                 get_contents_temp = Content.sort(res).toArray(new Content[0]);

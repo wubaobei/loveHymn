@@ -22,7 +22,6 @@ public class TouchUtil {
     public void set(int height1, int height2) {
         h1 = height1;
         h2 = height2;
-        Logger.info("h1 " + h1 + " h2 " + h2);
     }
 
     /**

@@ -191,7 +191,8 @@ public class MyFile extends File {
 
         return null;
     }
-    public MyFile getMp3(){
+
+    public MyFile getMp3() {
         return getMp3(true);
     }
 
@@ -217,13 +218,15 @@ public class MyFile extends File {
                         for (String otherHymn : co) {
                             Hymn oh = Hymn.search(otherHymn);
                             MyFile mp3 = oh.getFile().getMp3(false);
-                            if (mp3 != null)
+                            if (mp3 != null) {
                                 return mp3;
+                            }
                         }
                     }
                 }
             } catch (Exception e) {
-
+                Logger.info("content error");
+                Logger.exception(e);
             }
 
         return null;
@@ -243,7 +246,6 @@ public class MyFile extends File {
                     h.setFilePath(getAbsolutePath());
                     try {
                         h.update();
-                        //Logger.info("更新" + h.toString() + "的路径完成");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -353,7 +355,7 @@ public class MyFile extends File {
                         s = s.substring(0, s.indexOf("-"));
                     }
                     int ind = Integer.parseInt(s);
-                    HymnD hymn = null;//HymnD.getByIndex(bk.id, ind, ind2);
+                    HymnD hymn = null;
                     for (HymnD h : hs) {
                         if (h.index1 == ind && h.bookId == bk.id && h.index2 == ind2) {
                             hymn = h;

@@ -4,7 +4,9 @@ import android.app.Activity;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import pri.prepare.lovehymn.server.function.ResFileManager;
@@ -28,7 +30,7 @@ public class MusicSearch {
         if (_map != null)
             return;
 
-        _map = new HashMap<>();
+        _map = new LinkedHashMap<>();
 
         for (int fn : ResFileManager.getMusicFiles()) {
             for (String s : MyFile.readStream(activity.getResources().openRawResource(fn))) {
@@ -51,6 +53,12 @@ public class MusicSearch {
     }
 
     public static String[] getSimilar(String hymnStr) {
+        String[] res = getSimilar0(hymnStr);
+        Logger.info("get similar " + hymnStr + " " + res.length + " " + String.join(",", res));
+        return res;
+    }
+
+    public static String[] getSimilar0(String hymnStr) {
         if (!_map.containsKey(hymnStr))
             return new String[0];
         String v = _map.get(hymnStr);
@@ -62,7 +70,6 @@ public class MusicSearch {
                 res.add(e.getKey().replace("-", "附"));
             }
         }
-        Collections.sort(res);
         return res.toArray(new String[0]);
     }
 

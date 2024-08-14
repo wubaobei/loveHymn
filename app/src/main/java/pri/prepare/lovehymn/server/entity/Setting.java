@@ -148,7 +148,7 @@ public class Setting {
     /**
      * 启动页背景
      */
-    public static final int START_PAGE_BACKGROUND = 53;
+    //public static final int START_PAGE_BACKGROUND = 53;
     /**
      * 横屏时进入投影模式
      */
@@ -226,7 +226,7 @@ public class Setting {
             defaultMap.put(LOAD_OTHER, false);
             defaultMap.put(LOAD_STEP, false);
             defaultMap.put(USE_ASYNC, false);
-            defaultMap.put(START_PAGE_BACKGROUND, 0);
+            //defaultMap.put(START_PAGE_BACKGROUND, 0);
             defaultMap.put(SCREEN_CASTING_MODE, true);
         }
         return defaultMap.get(key);

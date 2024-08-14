@@ -104,17 +104,14 @@ public class StartPageActivity extends AppCompatActivity {
                         tv.setText("加载资源成功，请重启app");
                     } catch (Exception e) {
                         Toast.makeText(this, "加载资源失败：" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        tv.setText("加载资源失败：" + e.getMessage()+"。\r\n请联系作者并将日志发送给作者");
+                        tv.setText("加载资源失败：" + e.getMessage() + "。\r\n请联系作者并将日志发送给作者");
                     }
                 });
             } else {
                 setContentView(R.layout.startpage_layout);
-                int gd = Setting.getValueI(Setting.START_PAGE_BACKGROUND);
+                Random rd = new Random();
+                int gd = rd.nextInt(SPBGManager.bname.length - 1) + 1;
 
-                if (gd == 0) {
-                    Random rd = new Random();
-                    gd = rd.nextInt(SPBGManager.bname.length - 1) + 1;
-                }
                 findViewById(R.id.spbg_ll).setBackgroundResource(SPBGManager.ids[gd]);
                 ((TextView) findViewById(R.id.sa1)).setText(SPBGManager.j0[gd]);
                 ((TextView) findViewById(R.id.sa2)).setText(SPBGManager.j1[gd]);

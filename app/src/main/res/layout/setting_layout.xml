@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -57,45 +57,24 @@
                     android:layout_height="match_parent">
 
                     <Button
-                        android:id="@+id/spgb"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/set_padding"
-                        android:layout_marginRight="@dimen/set_padding"
-                        android:layout_toStartOf="@+id/spbgBtn"
-                        android:background="@drawable/btn_white"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/setting_btn_min_height"
-                        android:text="启动页图片" />
-
-                    <Button
-                        android:id="@+id/spbgBtn"
+                        android:id="@+id/showtoolbar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/set_padding"
-                        android:background="@drawable/btn_white"
-                        android:minHeight="@dimen/setting_btn_min_height" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <Button
-                        android:id="@+id/showtoolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
                         android:layout_marginLeft="@dimen/set_padding"
-                        android:layout_marginRight="@dimen/set_padding"
-                        android:layout_toStartOf="@+id/showtoolbarSw"
                         android:background="@drawable/btn_white"
                         android:drawablePadding="10dp"
                         android:gravity="center_vertical"
                         android:minHeight="@dimen/setting_btn_min_height"
                         android:text="默认显示工具栏" />
+
+                    <ImageView
+                        android:id="@+id/showtoolbarHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/showtoolbar"
+                        app:srcCompat="@android:drawable/ic_menu_help" />
 
                     <ImageButton
                         android:id="@+id/showtoolbarSw"
@@ -146,16 +125,23 @@
 
                     <Button
                         android:id="@+id/screenCastingMode"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
                         android:layout_marginLeft="@dimen/set_padding"
-                        android:layout_marginRight="@dimen/set_padding"
-                        android:layout_toStartOf="@+id/screenCastingModeSw"
                         android:background="@drawable/btn_white"
                         android:drawablePadding="10dp"
                         android:gravity="center_vertical"
                         android:minHeight="@dimen/setting_btn_min_height"
                         android:text="横屏时使用投影模式" />
+
+                    <ImageView
+                        android:id="@+id/screenCastingModeHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/screenCastingMode"
+                        app:srcCompat="@android:drawable/ic_menu_help" />
 
                     <ImageButton
                         android:id="@+id/screenCastingModeSw"
@@ -183,16 +169,24 @@
 
                     <Button
                         android:id="@+id/bibleShowChineseEnglish"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/set_padding"
-                        android:layout_marginRight="@dimen/set_padding"
-                        android:layout_toStartOf="@+id/bibleShowChineseEnglishBtn"
+                        android:layout_alignParentStart="true"
                         android:background="@drawable/btn_white"
                         android:drawablePadding="10dp"
                         android:gravity="center_vertical"
                         android:minHeight="@dimen/setting_btn_min_height"
                         android:text="相关经节显示" />
+
+
+                    <ImageView
+                        android:id="@+id/bibleShowChineseEnglishHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/bibleShowChineseEnglish"
+                        app:srcCompat="@android:drawable/ic_menu_help" />
 
                     <Button
                         android:id="@+id/bibleShowChineseEnglishBtn"
@@ -245,8 +239,8 @@
 
                 <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
-                    app:flexWrap="wrap"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:flexWrap="wrap">
 
                     <Button
                         android:id="@+id/resStatBtn"

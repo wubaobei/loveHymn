@@ -56,7 +56,7 @@ public class AddPdfActivity extends AppCompatActivity {
 
     private String path;
 
-    private void toast(String s) {
+    private void  toast(String s) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 

@@ -118,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
     private long createTime;
     public static TimeStatTool timeTool;
 
+    /**
+     * 投影模式
+     */
     public static boolean screenCastingMode = false;
 
     /**
@@ -223,20 +226,24 @@ public class MainActivity extends AppCompatActivity {
             getPdfV0().zoomTo(sk);
             getPdfV1().zoomTo(sk);
             getPdfV0().setPositionOffset(0f);
+            Logger.info("screenCastingMode "+getPdfV0().getZoom());
         } else if (isLandscape()) {
             getPdfV0().setMinZoom(0.6f);
             getPdfV1().setMinZoom(0.6f);
             getPdfV0().setMaxZoom(3f);
             getPdfV1().setMaxZoom(3f);
+            Logger.info("isLandscape "+getPdfV0().getZoom());
         } else {
             getPdfV0().setMinZoom(1f);
             getPdfV1().setMinZoom(1f);
             if (getPdfV0().getZoom() < 1f) {
                 getPdfV0().resetZoom();
                 getPdfV1().resetZoom();
+                getPdfV0().setPositionOffset(0f);
             }
             getPdfV0().setMaxZoom(3f);
             getPdfV1().setMaxZoom(3f);
+            Logger.info("not Landscape "+getPdfV0().getZoom());
         }
     }
 
@@ -256,6 +263,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 横屏
+     * @return
+     */
     private boolean isLandscape() {
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
         return rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270;
@@ -551,7 +562,6 @@ public class MainActivity extends AppCompatActivity {
         if (iv.getHeight() == 0) {
             //未初始化完成，延后再执行
             hideAgain = true;
-            Logger.info("hide again");
             return;
         }
         toolBarStatus = 0;

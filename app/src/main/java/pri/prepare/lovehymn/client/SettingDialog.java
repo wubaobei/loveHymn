@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -66,7 +67,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
         setDictSetting();
         setTigSetting();
         setSignSetting();
-        setSPBGSetting();
     }
 
     private void commonSwitchSet(ImageButton img, int setId) {
@@ -104,13 +104,13 @@ public class SettingDialog extends Dialog implements IShowDialog {
         int[] btnId = new int[]{R.id.resStatBtn, R.id.all_read,
                 R.id.dispearTime, R.id.downloadAddressBtn, R.id.bibleShowChineseEnglish,
                 R.id.specialSettingBtn,
-                R.id.lableBtn,R.id.showstatusbar,R.id.screenCastingMode,
-                R.id.showtoolbar, R.id.dict_show, R.id.close_tig_btn, R.id.signSettingBtn, R.id.spgb};
+                R.id.lableBtn, R.id.showstatusbar, R.id.screenCastingMode,
+                R.id.showtoolbar, R.id.dict_show, R.id.close_tig_btn, R.id.signSettingBtn};
         int[] dId = new int[]{R.drawable.s_2, R.drawable.s_4,
                 R.drawable.s_5, R.drawable.s_6, R.drawable.book,
                 R.drawable.special_setting,
-                R.drawable.label_icon,R.drawable.statuslan,R.drawable.screen_casting_mode,
-                R.drawable.lan, R.drawable.spz, R.drawable.gth2, R.drawable.finger, R.drawable.pngicon};
+                R.drawable.label_icon, R.drawable.statuslan, R.drawable.screen_casting_mode,
+                R.drawable.lan, R.drawable.spz, R.drawable.gth2, R.drawable.finger};
 
         for (int i = 0; i < btnId.length; i++) {
             Button btn1 = findViewById(btnId[i]);
@@ -144,26 +144,11 @@ public class SettingDialog extends Dialog implements IShowDialog {
     }
 
     /**
-     * 启动页背景
-     */
-    private void setSPBGSetting() {
-        int bg = Setting.getValueI(Setting.START_PAGE_BACKGROUND);
-        Button btn = binding.spbgBtn;
-        btn.setText(SPBGManager.bname[bg]);
-
-        btn.setOnClickListener(v -> {
-            int bg0 = Setting.getValueI(Setting.START_PAGE_BACKGROUND);
-            bg0 = (bg0 + 1) % SPBGManager.bname.length;
-            Setting.updateSetting(Setting.START_PAGE_BACKGROUND, bg0);
-            btn.setText(SPBGManager.bname[bg0]);
-        });
-    }
-
-    /**
      * 默认显示工具栏
      */
     private void setShowToolBarSetting() {
         commonSwitchSet(binding.showtoolbarSw, Setting.SHOW_TOOL_BAR_ON_LOAD);
+        binding.showtoolbarHelp.setOnClickListener(v -> toast("在打开pdf和切换pdf时是否显示工具栏"));
     }
 
     private void setStatusBarSetting() {
@@ -172,6 +157,11 @@ public class SettingDialog extends Dialog implements IShowDialog {
 
     private void setScreenCastingModeSetting() {
         commonSwitchSet(binding.screenCastingModeSw, Setting.SCREEN_CASTING_MODE);
+        binding.screenCastingModeHelp.setOnClickListener(v -> toast("一般模式下，pdf是拖动上滑下滑；投影模式下，pdf是点击左右两边而上一页下一页"));
+    }
+
+    private void toast(String s) {
+        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -190,6 +180,8 @@ public class SettingDialog extends Dialog implements IShowDialog {
             Setting.updateSetting(Setting.SHOW_CHINESE_ENGLISH, v2);
             btn.setText(getCEText(v2));
         });
+
+        binding.bibleShowChineseEnglishHelp.setOnClickListener(v2 -> toast("部分诗歌详情中有相关经节"));
     }
 
     /**

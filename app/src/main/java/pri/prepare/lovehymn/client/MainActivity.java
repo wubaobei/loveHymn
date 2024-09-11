@@ -948,12 +948,76 @@ public class MainActivity extends AppCompatActivity {
      */
     final Runnable checkResAble = () -> {
         try {
+            checkFolderConstruction();
             checkRes();
             jumpCheck = true;
         } catch (Exception e) {
             Logger.exception(e);
         }
     };
+
+    /**
+     * 检查mp3文件夹结构（手动解压）
+     */
+    private void checkFolderConstruction() {
+        File f=new File( SdCardTool.getLbPath());
+        if(!f.exists()){
+            return;
+        }
+        File[] fs=f.listFiles();
+        if(fs==null){
+            return;
+        }
+        String aim="附加包";
+        for (File file : fs) {
+            if(file.isDirectory() && file.getName().endsWith(aim)){
+                Logger.info("检测到'"+aim+"'文件夹，开始处理");
+                moveToParent(file);
+            }
+        }
+    }
+
+
+    public static void moveToParent(File f) {
+        for (File file : f.listFiles()) {
+            moveFile(file, f.getParent() + File.separator + file.getName());
+        }
+        forceDelete(f);
+    }
+
+    private static void forceDelete(File f) {
+        if(f.isFile()){
+            f.delete();
+        }else{
+            for (File file : f.listFiles()) {
+                forceDelete(file);
+            }
+            f.delete();
+        }
+    }
+
+    private static void moveFile(File file, String s) {
+        if (file.isFile()) {
+            rename(file, new File(s));
+        } else {
+            createFolder(new File(s));
+            for (File listFile : file.listFiles()) {
+                moveFile(listFile, s+File.separator+listFile.getName());
+            }
+        }
+    }
+
+    private static void createFolder(File file) {
+        if(!file.exists()){
+            file.mkdirs();
+        }
+    }
+
+    private static void rename(File from, File to) {
+        if(!to.exists()) {
+            from.renameTo(to);
+        }
+    }
 
     private void checkRes() {
         long t1 = System.currentTimeMillis();

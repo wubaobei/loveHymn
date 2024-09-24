@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -16,10 +17,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -71,13 +74,11 @@ public class Mp3ListActivity extends AppCompatActivity {
             }
 
             TextView tv = new TextView(this);
-            tv.setText("加载中...\r\n如果长时间卡在这个界面，请到‘设置’-‘其他设置’中关闭异步功能");
+            tv.setText("加载中...\r\n");
             binding.mp3List.addView(tv);
 
-            if (Setting.getValueB(Setting.USE_ASYNC))
-                new Thread(runnableInit).start();
-            else
-                run0();
+            MyHandler2 loadHandle = new MyHandler2(this);
+            loadHandle.sendEmptyMessageDelayed(1, 50);
 
             btnSet();
             btnUpdate();
@@ -493,7 +494,11 @@ public class Mp3ListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        handler.post(runnable);
+
+        if (handlerSend == null) {
+            handlerSend = new MyHandler(this);
+        }
+        handlerSend.sendEmptyMessageDelayed(1, 250);
     }
 
     private final HashMap<String, TextView> nameTextViewMap = new HashMap<>();
@@ -539,7 +544,6 @@ public class Mp3ListActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        isRun = false;
         if (musicManager != null) {
             musicManager.release();
             musicManager = null;
@@ -575,82 +579,65 @@ public class Mp3ListActivity extends AppCompatActivity {
         Setting.updateSetting(Setting.MP3_COUNT_CACHE, newCache.toString());
     }
 
-    private boolean isRun = true;
-
-    private final Handler handler = new Handler();
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                this.update();
-                int n = 1000 / DisplayStat.HZ;
-                if (isRun)
-                    handler.postDelayed(this, n);
-            } catch (Exception e) {
-                Logger.exception(e);
-            }
+    @SuppressLint("SetTextI18n")
+    private void updateInHandle() {
+        try {
+            int n = 1000 / DisplayStat.HZ;
+            Thread.sleep(n);
+        } catch (InterruptedException e) {
+            Logger.exception(e);
         }
 
-        @SuppressLint("SetTextI18n")
-        void update() {
-            try {
-                int n = 1000 / DisplayStat.HZ;
-                Thread.sleep(n);
-            } catch (InterruptedException e) {
-                Logger.exception(e);
+        int n = 0;
+
+        while (mp3AddIndex < mp3Added.size() && n++ < 30) {
+            if (isLoadingFlag) {
+                isLoadingFlag = false;
+                binding.mp3List.removeAllViews();
             }
-
-            int n = 0;
-
-            while (mp3AddIndex < mp3Added.size() && n++ < 30) {
-                if (isLoadingFlag) {
-                    isLoadingFlag = false;
-                    binding.mp3List.removeAllViews();
-                }
-                TextView tv = mp3Added.get(mp3AddIndex);
-                mp3AddIndex++;
-                if (tv.getParent() != null) {
-                    Logger.info("发现异常：有parent " + tv.getText().toString());
-                    break;
-                }
-                binding.mp3List.addView(tv);
+            TextView tv = mp3Added.get(mp3AddIndex);
+            mp3AddIndex++;
+            if (tv.getParent() != null) {
+                Logger.info("发现异常：有parent " + tv.getText().toString());
+                break;
             }
-
-            firstOverSet();
-
-            if (musicManager != null) {
-                binding.progressText.setText(musicManager.getProgressString());
-                ProgressBar pb = binding.seekBar;
-                int pro = (int) (musicManager.getProgressPercent() * pb.getMax());
-                pb.setProgress(pro);
-
-                if (musicManager.isPlaying()) {
-                    binding.mp3Title.setText("正在播放：" + musicManager.getMusicName());
-                    if (musicManager.needUpdateLyric) {
-                        updateLyric();
-                        musicManager.needUpdateLyric = false;
-                    }
-                } else
-                    binding.mp3Title.setText("暂停播放：" + musicManager.getMusicName());
-            }
-
-            if (musicManager != null && !musicManager.getMusicName().equals(lastString)) {
-                TextView tv1 = nameTextViewMap.getOrDefault(lastString, null);
-                if (tv1 != null) {
-                    tv1.setTextColor(Color.BLACK);
-                }
-                lastString = musicManager.getMusicName();
-                TextView tv2 = nameTextViewMap.getOrDefault(lastString, null);
-                if (tv2 != null) {
-                    tv2.setTextColor(Color.RED);
-                }
-                updateLabelCount(musicManager.getMusicName());
-            } else if (musicManager != null && updateLabelFlag) {
-                updateLabelFlag = false;
-                updateLabelCount(musicManager.getMusicName());
-            }
+            binding.mp3List.addView(tv);
         }
-    };
+
+        firstOverSet();
+
+        if (musicManager != null) {
+            binding.progressText.setText(musicManager.getProgressString());
+            ProgressBar pb = binding.seekBar;
+            int pro = (int) (musicManager.getProgressPercent() * pb.getMax());
+            pb.setProgress(pro);
+
+            if (musicManager.isPlaying()) {
+                binding.mp3Title.setText("正在播放：" + musicManager.getMusicName());
+                if (musicManager.needUpdateLyric) {
+                    updateLyric();
+                    musicManager.needUpdateLyric = false;
+                }
+            } else
+                binding.mp3Title.setText("暂停播放：" + musicManager.getMusicName());
+        }
+
+        if (musicManager != null && !musicManager.getMusicName().equals(lastString)) {
+            TextView tv1 = nameTextViewMap.getOrDefault(lastString, null);
+            if (tv1 != null) {
+                tv1.setTextColor(Color.BLACK);
+            }
+            lastString = musicManager.getMusicName();
+            TextView tv2 = nameTextViewMap.getOrDefault(lastString, null);
+            if (tv2 != null) {
+                tv2.setTextColor(Color.RED);
+            }
+            updateLabelCount(musicManager.getMusicName());
+        } else if (musicManager != null && updateLabelFlag) {
+            updateLabelFlag = false;
+            updateLabelCount(musicManager.getMusicName());
+        }
+    }
 
     //region lyricShow set
     private float defaultSize = -1f;
@@ -679,4 +666,62 @@ public class Mp3ListActivity extends AppCompatActivity {
     }
 
     //endregion
+
+
+    private MyHandler handlerSend = null;
+
+    private static class MyHandler extends Handler {
+        private final WeakReference<Mp3ListActivity> activityWeakReference;
+
+        @SuppressWarnings("deprecation")
+        public MyHandler(Mp3ListActivity activity) {
+            activityWeakReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            Mp3ListActivity t = activityWeakReference.get();
+            if (t != null) {
+                try {
+                    super.handleMessage(msg);
+                    //todo
+
+                    t.updateInHandle();
+
+                    if (msg.what == 1) {
+                        // 再次使用handler发送信息
+
+                        int n = 1000 / DisplayStat.HZ;
+                        t.handlerSend.sendEmptyMessageDelayed(1, n);
+                    }
+                } catch (Exception e) {
+                    Logger.exception(e);
+                }
+            }
+        }
+    }
+
+    private static class MyHandler2 extends Handler {
+        private final WeakReference<Mp3ListActivity> activityWeakReference;
+
+        @SuppressWarnings("deprecation")
+        public MyHandler2(Mp3ListActivity activity) {
+            activityWeakReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            Mp3ListActivity t = activityWeakReference.get();
+            if (t != null) {
+                try {
+                    super.handleMessage(msg);
+                    //todo
+
+                    t.run0();
+                } catch (Exception e) {
+                    Logger.exception(e);
+                }
+            }
+        }
+    }
 }

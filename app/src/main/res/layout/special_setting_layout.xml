@@ -75,18 +75,6 @@
                 android:textSize="@dimen/tip_size" />
 
             <Button
-                android:id="@+id/close_yb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="异步功能" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="在某些情况下，异步功能会导致错误，可以选择关闭"
-                android:textSize="@dimen/tip_size" />
-            <Button
                 android:id="@+id/secret_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

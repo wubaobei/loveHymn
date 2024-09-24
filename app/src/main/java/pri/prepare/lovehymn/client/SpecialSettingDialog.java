@@ -37,7 +37,6 @@ public class SpecialSettingDialog extends Dialog implements IShowDialog {
 
         ct = context;
         btnSet();
-        setYbBtn();
 
         setAppInfoSetting((Activity) context);
     }
@@ -82,22 +81,6 @@ public class SpecialSettingDialog extends Dialog implements IShowDialog {
         //endregion
     }
 
-    /**
-     * 异步功能
-     */
-    private void setYbBtn() {
-        final Button btn = binding.closeYb;
-        boolean set = Setting.getValueB(Setting.USE_ASYNC);
-        String[] oc=new String[]{"开启","关闭"};
-        btn.setText(Tool.getSpannableString("异步功能 当前："+(set?oc[0]:oc[1]) ,oc));
-
-        btn.setOnClickListener(v -> {
-            boolean set1 = Setting.getValueB(Setting.USE_ASYNC);
-            set1 = !set1;
-            btn.setText(Tool.getSpannableString("异步功能 当前："+(set1?oc[0]:oc[1]) ,oc));
-            Setting.updateSetting(Setting.USE_ASYNC, set1);
-        });
-    }
     @Override
     public void showDialog() {
         Tool.setAnim(getWindow(), Tool.ANIM_NORMAL);

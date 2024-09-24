@@ -144,7 +144,7 @@ public class Setting {
     /**
      * 关闭异步功能
      */
-    public static final int USE_ASYNC = 52;
+    //public static final int USE_ASYNC = 52;
     /**
      * 启动页背景
      */
@@ -225,7 +225,7 @@ public class Setting {
             defaultMap.put(LOAD_LABEL, false);
             defaultMap.put(LOAD_OTHER, false);
             defaultMap.put(LOAD_STEP, false);
-            defaultMap.put(USE_ASYNC, false);
+            //defaultMap.put(USE_ASYNC, false);
             //defaultMap.put(START_PAGE_BACKGROUND, 0);
             defaultMap.put(SCREEN_CASTING_MODE, true);
         }

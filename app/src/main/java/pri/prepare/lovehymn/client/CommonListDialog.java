@@ -54,10 +54,8 @@ public class CommonListDialog extends Dialog implements IShowDialog {
         createTime = System.currentTimeMillis();
         _type = type;
         if (type == 1) {
-            //currentHymn.getMp3File()
             binding.title.setText("播放列表：");
-            if (!Setting.getValueB(Setting.USE_ASYNC))
-                binding.title2.setText("注意：由于关闭了异步功能，点击后后卡一会");
+
             int n = 0;
             for (String c : contents) {
                 String path = currentHymn == null ? "" : currentHymn.getMp3File().getAbsolutePath();
@@ -74,10 +72,10 @@ public class CommonListDialog extends Dialog implements IShowDialog {
                 Activity act = (Activity) context;
                 Intent intent = IntentHelper.create(act, Mp3ListActivity.class, IntentHelper.TYPE_NORMAL, Math.abs(Integer.parseInt(sid)), Integer.parseInt(sid) < 0, "a", path);
                 loadCount(tv, new IntentHelper(intent).key());
-                if (n++ % 2 == 0)
-                    binding.listLl1.addView(tv);
-                else
-                    binding.listLl2.addView(tv);
+                if (n++ % 2 == 0){
+                    binding.listLl1.addView(tv);}
+                else{
+                    binding.listLl2.addView(tv);}
                 tv.setOnClickListener(v -> {
                     try {
                         i4StopMp3.Stop();

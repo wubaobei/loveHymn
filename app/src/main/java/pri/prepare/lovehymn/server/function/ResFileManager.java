@@ -5,7 +5,7 @@ import pri.prepare.lovehymn.server.entity.MyFile;
 
 public class ResFileManager {
     public static int[] getMusicFiles() {
-        return new int[]{R.raw.b111,R.raw.b112};
+        return new int[]{R.raw.b111,R.raw.b112,R.raw.b113};
     }
 
     private static String[] jumpList = new String[]{"letter", "字典", "dict", "bible",  "旋律"};

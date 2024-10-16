@@ -256,6 +256,18 @@
                         android:text="资源统计" />
 
                     <Button
+                        android:id="@+id/loadResBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/set_padding"
+                        android:layout_marginRight="@dimen/set_padding"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_white"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/setting_btn_min_height"
+                        android:text="加载资源" />
+                    <Button
                         android:id="@+id/downloadAddressBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -1668,4 +1668,12 @@ public class Service {
         }
         return false;
     }
+
+    /**
+     * 加载资源
+     */
+    public void autoLoadOtherRes() {
+        //加载其他的诗歌附加包（篮板 mp3 白板 歌词作者等信息文件）
+
+    }
 }

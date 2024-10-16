@@ -22,7 +22,6 @@ import androidx.databinding.DataBindingUtil;
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.tool.I4Set;
 import pri.prepare.lovehymn.client.tool.IShowDialog;
-import pri.prepare.lovehymn.client.tool.SPBGManager;
 import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.databinding.SettingLayoutBinding;
 import pri.prepare.lovehymn.server.UpdateHistory;
@@ -52,6 +51,7 @@ public class SettingDialog extends Dialog implements IShowDialog {
         iTell = tell;
         _wm = wm;
         setStatisticBtn();
+        setLoadResBtn();
         setUpdateHistoryBtn();
         setAuthorTV();
         setSettingIcons();
@@ -105,12 +105,12 @@ public class SettingDialog extends Dialog implements IShowDialog {
                 R.id.dispearTime, R.id.downloadAddressBtn, R.id.bibleShowChineseEnglish,
                 R.id.specialSettingBtn,
                 R.id.lableBtn, R.id.showstatusbar, R.id.screenCastingMode,
-                R.id.showtoolbar, R.id.dict_show, R.id.close_tig_btn, R.id.signSettingBtn};
+                R.id.showtoolbar, R.id.dict_show, R.id.close_tig_btn, R.id.signSettingBtn, R.id.loadResBtn};
         int[] dId = new int[]{R.drawable.s_2, R.drawable.s_4,
                 R.drawable.s_5, R.drawable.s_6, R.drawable.book,
                 R.drawable.special_setting,
                 R.drawable.label_icon, R.drawable.statuslan, R.drawable.screen_casting_mode,
-                R.drawable.lan, R.drawable.spz, R.drawable.gth2, R.drawable.finger};
+                R.drawable.lan, R.drawable.spz, R.drawable.gth2, R.drawable.finger, R.drawable.load};
 
         for (int i = 0; i < btnId.length; i++) {
             Button btn1 = findViewById(btnId[i]);
@@ -209,6 +209,15 @@ public class SettingDialog extends Dialog implements IShowDialog {
      */
     private void setStatisticBtn() {
         binding.resStatBtn.setOnClickListener(v -> Tool.ShowDialog(ct, "资源统计", Service.getC().getResStatString(), -1));
+    }
+
+    /**
+     * 加载资源按钮
+     */
+    private void setLoadResBtn(){
+        //搜索资源
+        //由于一般的附加包在打开时已经加载了，所以这里只加载其他的一些资源
+        Service.getC().autoLoadOtherRes();
     }
 
     /**

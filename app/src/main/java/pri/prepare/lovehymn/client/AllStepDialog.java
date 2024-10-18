@@ -100,7 +100,7 @@ public class AllStepDialog extends Dialog implements IShowDialog {
 
                 HashMap<String, Integer> bookN = new HashMap<>();
                 for (Book b : Book.getAll()) {
-                    bookN.put(b.SimpleName, 0);
+                    bookN.put(b.simpleName, 0);
                 }
                 for (String ct : cts) {
                     Integer bn = bookN.get(ct.substring(0, 1));
@@ -111,8 +111,8 @@ public class AllStepDialog extends Dialog implements IShowDialog {
                 }
                 sbw.append("按诗歌本分类:\r\n");
                 for (Book b : Book.getAll()) {
-                    if (bookN.get(b.SimpleName) !=null) {
-                        sbw.append("\t").append(b.FullName).append(":").append(bookN.get(b.SimpleName)).append("\r\n");
+                    if (bookN.get(b.simpleName) !=null) {
+                        sbw.append("\t").append(b.fullName).append(":").append(bookN.get(b.simpleName)).append("\r\n");
                     }
                 }
 

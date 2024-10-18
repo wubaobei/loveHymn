@@ -174,16 +174,16 @@ public class MyFile extends File {
             return this;
         String p = getAbsolutePath().replace(".mp3", ".pdf");
         for (Book bk : Book.getAll()) {
-            if (p.contains(File.separator + bk.SimpleName + File.separator)) {
-                String p2 = p.replace(File.separator + bk.SimpleName + File.separator, File.separator + bk.FullName + File.separator);
+            if (p.contains(File.separator + bk.simpleName + File.separator)) {
+                String p2 = p.replace(File.separator + bk.simpleName + File.separator, File.separator + bk.fullName + File.separator);
                 if (new File(p2).exists())
                     return MyFile.from(p2);
-            } else if (p.contains(File.separator + bk.SimpleName.toLowerCase() + File.separator)) {
-                String p2 = p.replace(File.separator + bk.SimpleName.toLowerCase() + File.separator, File.separator + bk.FullName + File.separator);
+            } else if (p.contains(File.separator + bk.simpleName.toLowerCase() + File.separator)) {
+                String p2 = p.replace(File.separator + bk.simpleName.toLowerCase() + File.separator, File.separator + bk.fullName + File.separator);
                 if (new File(p2).exists())
                     return MyFile.from(p2);
-            } else if (p.contains(bk.FullName + "mp3")) {
-                String p1 = p.replace(bk.FullName + "mp3", bk.FullName);
+            } else if (p.contains(bk.fullName + "mp3")) {
+                String p1 = p.replace(bk.fullName + "mp3", bk.fullName);
                 if (new File(p1).exists())
                     return MyFile.from(p1);
             }
@@ -201,8 +201,8 @@ public class MyFile extends File {
             return null;
         String p = getAbsolutePath().replace(".pdf", ".mp3");
         for (Book bk : Book.getAll()) {
-            if (p.contains(bk.FullName)) {
-                String p2 = p.replace(bk.FullName, bk.SimpleName);
+            if (p.contains(bk.fullName)) {
+                String p2 = p.replace(bk.fullName, bk.simpleName);
                 if (new File(p2).exists()) {
                     return MyFile.from(p2);
                 }
@@ -283,13 +283,13 @@ public class MyFile extends File {
     private static Book getBook(MyFile f) {
         String path = f.getAbsolutePath();
         for (Book bk : Book.getAll()) {
-            if (path.contains(bk.FullName + "/") || path.contains(bk.FullName + "\\")) {
+            if (path.contains(bk.fullName + "/") || path.contains(bk.fullName + "\\")) {
                 return bk;
             }
         }
 
         for (Book bk : Book.getAll()) {
-            if (path.toUpperCase().contains("/" + bk.SimpleName + "/") || path.toUpperCase().contains("\\" + bk.SimpleName + "\\")) {
+            if (path.toUpperCase().contains("/" + bk.simpleName + "/") || path.toUpperCase().contains("\\" + bk.simpleName + "\\")) {
                 return bk;
             }
         }

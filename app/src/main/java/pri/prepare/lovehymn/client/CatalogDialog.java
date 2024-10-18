@@ -492,7 +492,7 @@ public class CatalogDialog extends Dialog implements IShowDialog {
                 try {
                     if (autoOpen) {
                         for (Book b : Book.getAll())
-                            if (b.FullName.equals(ff.getName()))
+                            if (b.fullName.equals(ff.getName()))
                                 setBookId(b.id);
                     }
                     if (Service.isInteger(f.getName())) {
@@ -555,6 +555,6 @@ public class CatalogDialog extends Dialog implements IShowDialog {
         if (_bookId == -1)
             binding.bookIn.setText("");
         else
-            binding.bookIn.setText(Book.getById(_bookId).FullName);
+            binding.bookIn.setText(Book.getById(_bookId).fullName);
     }
 }

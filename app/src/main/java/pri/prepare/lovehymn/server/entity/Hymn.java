@@ -166,7 +166,7 @@ public class Hymn {
         if (getBook() == null) {
             return ("??" + String.format("%03d", dao.index1) + (dao.index2 > 1 ? ("+" + dao.index2) : "")).replace("-", "附").replace("+", "-");
         }
-        return (getBook().SimpleName + String.format("%03d", dao.index1) + (dao.index2 > 1 ? ("+" + dao.index2) : "")).replace("-", "附").replace("+", "-");
+        return (getBook().simpleName + String.format("%03d", dao.index1) + (dao.index2 > 1 ? ("+" + dao.index2) : "")).replace("-", "附").replace("+", "-");
     }
 
     /**
@@ -193,7 +193,7 @@ public class Hymn {
     public static Hymn search(Book bk, int ind, int ind2) throws Exception {
         Hymn res = search(bk.id, ind, ind2);
         if (res == null)
-            Logger.info("search hymn is null:" + bk.FullName + " " + ind + " " + ind2);
+            Logger.info("search hymn is null:" + bk.fullName + " " + ind + " " + ind2);
         return res;
     }
 
@@ -275,7 +275,7 @@ public class Hymn {
             Book bk = Book.getById(h.bookId);
             if (bk == null)
                 return "书名异常";
-            return bk.SimpleName + String.format("%03d", h.index1) + (h.index2 > 1 ? ("-" + h.index2) : "");
+            return bk.simpleName + String.format("%03d", h.index1) + (h.index2 > 1 ? ("-" + h.index2) : "");
         }
         return null;
     }
@@ -423,9 +423,9 @@ public class Hymn {
     @Override
     public String toString() {
         if (dao.index1 < 0)
-            return getBook().SimpleName + dao.index1;
+            return getBook().simpleName + dao.index1;
 
-        String res = getBook().SimpleName + String.format("%0" + 3 + "d", dao.index1);
+        String res = getBook().simpleName + String.format("%0" + 3 + "d", dao.index1);
         if (dao.index2 > 1)
             res += "-" + dao.index2;
         return res;
@@ -591,7 +591,7 @@ public class Hymn {
     }
 
     public MyFile getFile() {
-        String fp1 = SdCardTool.getLbPath() + File.separator + getBook().FullName + File.separator;
+        String fp1 = SdCardTool.getLbPath() + File.separator + getBook().fullName + File.separator;
         if (new File(fp1).exists()) {
             String fp2 = "";
             if (getIndex1() > 0) {

@@ -39,6 +39,7 @@ import pri.prepare.lovehymn.client.tool.LOAD_ENUM;
 import pri.prepare.lovehymn.client.tool.LoadProcess;
 import pri.prepare.lovehymn.server.dal.AuthorD;
 import pri.prepare.lovehymn.server.dal.AuthorRelatedD;
+import pri.prepare.lovehymn.server.dal.BookD;
 import pri.prepare.lovehymn.server.dal.ContentD;
 import pri.prepare.lovehymn.server.dal.ContentTypeD;
 import pri.prepare.lovehymn.server.dal.HymnD;
@@ -521,7 +522,7 @@ public class Service {
                     h = new Hymn();
                     Book bk = null;
                     for (Book b : Book.getAllInLoad()) {
-                        if (b.SimpleName.equals(line.substring(sOrder.length(), sOrder.length() + 1))) {
+                        if (b.simpleName.equals(line.substring(sOrder.length(), sOrder.length() + 1))) {
                             bk = b;
                             break;
                         }
@@ -755,7 +756,7 @@ public class Service {
         boolean isBookName = false;
         for (MyFile f : fs)
             for (Book bk : Book.getAllInLoad()) {
-                if (bk.FullName.equals(f.getName())) {
+                if (bk.fullName.equals(f.getName())) {
                     isBookName = true;
                     break;
                 }
@@ -832,7 +833,7 @@ public class Service {
                 }
             }
 
-            String path = SdCardTool.getLbPath() + File.separator + hymn.getBook().FullName + File.separator;
+            String path = SdCardTool.getLbPath() + File.separator + hymn.getBook().fullName + File.separator;
             File qf = new File(path);
             if (qf.exists()) {
                 String p2 = "";
@@ -863,7 +864,7 @@ public class Service {
             MyFile df = MyFile.from(SdCardTool.getLbPath());
             Book bk = hymn.getBook();
             for (MyFile f : df.listFiles()) {
-                if (f.isDirectory() && bk.FullName.equals(f.getName())) {
+                if (f.isDirectory() && bk.fullName.equals(f.getName())) {
                     df = f;
                     break;
                 }
@@ -981,8 +982,8 @@ public class Service {
 
         String p = file.getAbsolutePath();
         for (Book bk : Book.getAll()) {
-            if (p.contains(bk.FullName)) {
-                res = bk.SimpleName + res;
+            if (p.contains(bk.fullName)) {
+                res = bk.simpleName + res;
                 break;
             }
         }
@@ -1029,7 +1030,7 @@ public class Service {
                 int n;
                 int[] res = DBHelper.execSQL_Is(sqls);
                 if (res[0] != 0) {
-                    rt += bk.FullName;
+                    rt += bk.fullName;
                     //
                     TC.begin("pdf");
                     int pdfN = SdCardTool.getNum(bk, ".PDF", true);
@@ -1147,9 +1148,9 @@ public class Service {
                 MyFile mp3 = getRandomMp3();
                 String p = mp3.getAbsolutePath().replace(".mp3", ".pdf");
                 for (Book bk : Book.getAll()) {
-                    String sp = File.separator + bk.SimpleName.toLowerCase() + File.separator;
+                    String sp = File.separator + bk.simpleName.toLowerCase() + File.separator;
                     if (p.contains(sp))
-                        p = p.replace(sp, File.separator + bk.FullName + File.separator);
+                        p = p.replace(sp, File.separator + bk.fullName + File.separator);
                     if (new File(p).exists())
                         return MyFile.from(p);
                 }
@@ -1240,7 +1241,7 @@ public class Service {
     }
 
     public String getFirstHymnPath() {
-        return SdCardTool.getLbPath() + File.separator + Book.DaBen.FullName + File.separator + "0" + File.separator + "001.pdf";
+        return SdCardTool.getLbPath() + File.separator + Book.DaBen.fullName + File.separator + "0" + File.separator + "001.pdf";
     }
 
     /**
@@ -1298,7 +1299,7 @@ public class Service {
         List<String> res = new ArrayList<>();
         for (Book book : Book.getAll()) {
             if (book.getMp3Directory() != null)
-                res.add(book.id + ";" + book.FullName);//+ "(" + book.getMp3Count() + ")");
+                res.add(book.id + ";" + book.fullName);//+ "(" + book.getMp3Count() + ")");
         }
         return res;
     }
@@ -1318,7 +1319,7 @@ public class Service {
     private String hymnBookSimpleName(HymnD hymnD) {
         for (Book bk : Book.getAll())
             if (bk.id == hymnD.bookId)
-                return bk.SimpleName;
+                return bk.simpleName;
         return "U";
     }
 
@@ -1350,7 +1351,7 @@ public class Service {
                         for (MyFile f : d.listFiles()) {
                             if (!f.isMp3())
                                 continue;
-                            String key = b.SimpleName + f.getName().split("\\.")[0];
+                            String key = b.simpleName + f.getName().split("\\.")[0];
                             if (m.containsKey(key)) {
                                 res.put(f.getAbsolutePath(), Hymn.fromDao(m.get(key)).getShowName());
                             } else
@@ -1376,7 +1377,7 @@ public class Service {
 
         for (Book book : Book.getAll()) {
             Hymn[] hymns = Hymn.getByBook(book);
-            Logger.info("获取" + book.FullName + "完成");
+            Logger.info("获取" + book.fullName + "完成");
             StringBuilder sb = new StringBuilder();
             sb.append(sp);
             for (Hymn hymn : hymns) {
@@ -1406,8 +1407,8 @@ public class Service {
                     sb.append(content.getTypeString()).append("：").append(content.getValue()).append(sp);
                 }
             }
-            SdCardTool.writeToFile(dirPath.getAbsolutePath() + File.separator + book.FullName + ".txt", sb.toString(), SdCardTool.FILE_OVERWRITE);
-            Logger.info("写入" + book.FullName + "完成");
+            SdCardTool.writeToFile(dirPath.getAbsolutePath() + File.separator + book.fullName + ".txt", sb.toString(), SdCardTool.FILE_OVERWRITE);
+            Logger.info("写入" + book.fullName + "完成");
         }
     }
 
@@ -1639,7 +1640,7 @@ public class Service {
         if (mp3List.size() == 0)
             return new ArrayList<>();
         mp3List.addAll(getLabelMp3List());
-        mp3List.add(0, Book.ALL.id + ";" + Book.ALL.FullName);
+        mp3List.add(0, Book.ALL.id + ";" + Book.ALL.fullName);
         return mp3List;
     }
 
@@ -1674,6 +1675,48 @@ public class Service {
      */
     public void autoLoadOtherRes() {
         //加载其他的诗歌附加包（篮板 mp3 白板 歌词作者等信息文件）
+        String path = SdCardTool.getLbPath();
+        File f = new File(path);
+        if (f.exists()) {
+            checkZipInDir(f);
+            checkZipInDir(f.getParentFile());
+        }
+    }
 
+    private void checkZipInDir(File f) {
+        File[] fs = f.listFiles();
+        if (fs != null) {
+            for (File file : fs) {
+                if (file.isFile() && file.getName().endsWith("综合包.zip")) {
+                    String c = getBookShortName(file);
+                    if (c.length() == 0) {
+                        Logger.info("发现不合命名规范的综合包");
+                    } else {
+                        Logger.info("发现" + c + "的综合包");
+                        Book[] bs = Book.getPrivateBooks();
+                        boolean find = false;
+                        for (Book b : bs) {
+                            if (b.simpleName.toLowerCase().equals(c)) {
+                                Logger.info("发现已加载");
+                                find = true;
+                                break;
+                            }
+                        }
+                        if (!find) {
+                            Logger.info("发现未加载");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private String getBookShortName(File file) {
+        String name = file.getName();
+        char c = name.charAt(name.length() - 8);
+        if (c >= 'a' && c <= 'z') {
+            return String.valueOf(c);
+        }
+        return "";
     }
 }

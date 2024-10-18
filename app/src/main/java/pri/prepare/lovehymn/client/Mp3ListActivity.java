@@ -288,16 +288,16 @@ public class Mp3ListActivity extends AppCompatActivity {
 
                 switch (helper.getType()) {
                     case IntentHelper.TYPE_NORMAL:
-                        binding.mp3Title.setText(CharConst.BOOK + book.FullName + IS_LOADING);
+                        binding.mp3Title.setText(CharConst.BOOK + book.fullName + IS_LOADING);
                         break;
                     case IntentHelper.TYPE_BOOK_NO_LABEL:
-                        binding.mp3Title.setText(CharConst.BOOK + book.FullName + " 无标签" + IS_LOADING);
+                        binding.mp3Title.setText(CharConst.BOOK + book.fullName + " 无标签" + IS_LOADING);
                         break;
                     case IntentHelper.TYPE_BOOK_LABEL:
-                        binding.mp3Title.setText(CharConst.BOOK + book.FullName + " 有标签" + IS_LOADING);
+                        binding.mp3Title.setText(CharConst.BOOK + book.fullName + " 有标签" + IS_LOADING);
                         break;
                     case IntentHelper.TYPE_BOOK_LABEL_GROUP:
-                        binding.mp3Title.setText(CharConst.BOOK + book.FullName + " 标签组:" + helper.getParam() + IS_LOADING);
+                        binding.mp3Title.setText(CharConst.BOOK + book.fullName + " 标签组:" + helper.getParam() + IS_LOADING);
                         break;
                 }
 
@@ -322,7 +322,7 @@ public class Mp3ListActivity extends AppCompatActivity {
                     String path = mp3File.getAbsolutePath();
                     if (!map.containsKey(path))
                         Logger.info("找不到MP3对应的诗歌信息：" + path);
-                    addMp3(map.getOrDefault(path, book.SimpleName + mp3File.getName() + " (未知)"), path);
+                    addMp3(map.getOrDefault(path, book.simpleName + mp3File.getName() + " (未知)"), path);
                 }
             }
             loadOver = true;

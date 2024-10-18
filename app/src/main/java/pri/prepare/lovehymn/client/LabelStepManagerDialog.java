@@ -164,7 +164,7 @@ public class LabelStepManagerDialog extends Dialog implements IShowDialog {
             StringBuilder sb = new StringBuilder();
             HashMap<String, Integer> bookN = new HashMap<>();
             for (Book b : Book.getAll()) {
-                bookN.put(b.SimpleName, 0);
+                bookN.put(b.simpleName, 0);
             }
             for (LabelType lt : LabelType.getAll()) {
                 sb.append(lt.getName()).append(" 有").append(lt.getHymns().size()).append("首诗歌\r\n");
@@ -175,8 +175,8 @@ public class LabelStepManagerDialog extends Dialog implements IShowDialog {
             }
             StringBuilder bsb = new StringBuilder();
             for (Book b : Book.getAll()) {
-                if (bookN.get(b.SimpleName) > 0) {
-                    bsb.append(b.FullName + " 共" + bookN.get(b.SimpleName) + "个标签").append("\r\n");
+                if (bookN.get(b.simpleName) > 0) {
+                    bsb.append(b.fullName + " 共" + bookN.get(b.simpleName) + "个标签").append("\r\n");
                 }
             }
 

@@ -220,7 +220,7 @@ public class SdCardTool {
                     SearchIndex sc = t[i];
                     for (String p : sc.getPathArr()) {
                         if (bk != null) {
-                            if (!p.contains(bk.FullName))
+                            if (!p.contains(bk.fullName))
                                 continue;
                         }
                         if (searchTemp0.contains(p)) {
@@ -303,7 +303,7 @@ public class SdCardTool {
                 if (f.file != null || f.showStr.length() > 0)
                     res.add(f);
                 else
-                    Logger.info("找不到文件：" + h.getBook().FullName + " " + h.getIndex1() + " " + (h.getIndex2() > 1 ? (h.getIndex2() + "") : ""));
+                    Logger.info("找不到文件：" + h.getBook().fullName + " " + h.getIndex1() + " " + (h.getIndex2() > 1 ? (h.getIndex2() + "") : ""));
 
                 n++;
             }
@@ -367,7 +367,7 @@ public class SdCardTool {
 
     public static int getNum(Book bk, String extension, boolean isFull) {
         numStat = 0;
-        MyFile f = MyFile.from(SdCardTool.getLbPath() + File.separator + (isFull ? bk.FullName : bk.SimpleName));
+        MyFile f = MyFile.from(SdCardTool.getLbPath() + File.separator + (isFull ? bk.fullName : bk.simpleName));
         dfs(f, extension);
         return numStat;
     }

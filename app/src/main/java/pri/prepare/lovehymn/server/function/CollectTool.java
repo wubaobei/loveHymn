@@ -26,7 +26,7 @@ public class CollectTool {
             ArrayList<MyFile> temp = new ArrayList<>();
             ArrayList<MyFile> fu = new ArrayList<>();
             for (MyFile f : fs) {
-                if (f.getAbsolutePath().contains(bk.FullName)) {
+                if (f.getAbsolutePath().contains(bk.fullName)) {
                     temp.add(f);
                     if (f.getName().contains(Constant.SUBJOIN_DIR_NAME))
                         fu.add(f);

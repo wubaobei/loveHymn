@@ -34,7 +34,7 @@ public class AuthorD extends DaoBase {
         return DBUtil.getC().getById(a);
     }
 
-    public AuthorD[] getAll() throws Exception {
+    public static AuthorD[] getAll() throws Exception {
         return DBUtil.getC().getAll(AuthorD.class).toArray(new AuthorD[0]);
     }
 

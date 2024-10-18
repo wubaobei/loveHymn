@@ -31,7 +31,7 @@ public class SpecialMp3ListDialog extends Dialog implements IShowDialog {
         setContentView(binding.getRoot());
 
         Book book = Book.getById(bookSid);
-        binding.titleTv.setText(CharConst.BOOK + book.FullName);
+        binding.titleTv.setText(CharConst.BOOK + book.fullName);
         binding.buttonAll.setBackground(null);
         binding.buttonLabel.setBackground(null);
         binding.buttonNoLabel.setBackground(null);

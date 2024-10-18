@@ -19,8 +19,6 @@ import androidx.databinding.DataBindingUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -148,7 +146,7 @@ public class AddPdfActivity extends AppCompatActivity {
                     return;
                 }
                 String newName = ind > 99 ? (ind + ".pdf") : (ind > 9 ? ("0" + ind + ".pdf") : ("00" + ind + ".pdf"));
-                String newPath = SdCardTool.getLbPath() + File.separator + Book.Other.FullName + File.separator + (ind / 100) + File.separator + newName;
+                String newPath = SdCardTool.getLbPath() + File.separator + Book.Other.fullName + File.separator + (ind / 100) + File.separator + newName;
                 if (new File(newPath).exists()) {
                     toast("已存在pdf:" + newPath);
                     return;

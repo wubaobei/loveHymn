@@ -337,30 +337,36 @@ public class CatalogDialog extends Dialog implements IShowDialog {
         ArrayList<MyFile> showFileList = new ArrayList<>();
         for (MyFile file : Service.getC().orderFiles(fileList)) {
             //跳过资源文件 隐藏文件 MP3 白版
-            if (!file.getName().equals(Constant.RES_NAME) && !(file.getName().startsWith("."))
-                    && !(file.getName().endsWith("mp3")) && !(file.getName().equals(Constant.WHITE))
-                    && (!isRoot || file.getName().length() > 1) && (!file.getName().contains("hide"))) {
-                showFileList.add(file);
+            if (file.getName().equals(Constant.RES_NAME) || (file.getName().startsWith("."))
+                    || (file.getName().endsWith("mp3")) || (file.getName().equals(Constant.WHITE))
+                    || !(!isRoot || file.getName().length() > 1) || file.getName().contains("hide")) {
+                continue;
             }
+            if (isRoot && Book.getByName(file.getName()).id < 0) {
+                continue;
+            }
+            showFileList.add(file);
         }
         int n = 0;
         Button btnF = null;
 
         lazyLoadData = new ArrayList<>();
         lazyLoadFlag = true;
-        for (int i = Constant.FIRST_LOAD_COUNT; i < showFileList.size(); i++)
+        for (int i = Constant.FIRST_LOAD_COUNT; i < showFileList.size(); i++) {
             lazyLoadData.add(showFileList.get(i));
+        }
 
         MyFile.loadHymnBat(showFileList);
         for (int i = 0; i < Constant.FIRST_LOAD_COUNT && i < showFileList.size(); i++) {
             MyFile fn = showFileList.get(i);
             ShowResult sr = new ShowResult(fn);
-            if (n == 0)
+            if (n == 0) {
                 btnF = setSearchBtn(sr, lt, TOP, isRoot);
-            else if (n == showFileList.size() - 1)
+            } else if (n == showFileList.size() - 1) {
                 setSearchBtn(sr, lt, BOTTOM, isRoot);
-            else
+            } else {
                 setSearchBtn(sr, lt, NORMAL, isRoot);
+            }
             n++;
         }
 
@@ -441,7 +447,6 @@ public class CatalogDialog extends Dialog implements IShowDialog {
             tv.setTextColor(Color.RED);
             tv.setText(sr.showStr);
             lastView = tv;
-            //Logger.info("setSearchBtn:sr.file == null");
             return null;
         }
 
@@ -485,19 +490,22 @@ public class CatalogDialog extends Dialog implements IShowDialog {
         }
         if (f.isDirectory()) {
             if (Service.isInteger(f.getName())) {
-                if (f.getName().equals(Constant.SUBJOIN_DIR_NAME))
+                if (f.getName().equals(Constant.SUBJOIN_DIR_NAME)) {
                     btn.setText(Constant.SUBJOIN_DIR_RENAME);
-                else
+                } else {
                     btn.setText(f.getName());
-            } else
+                }
+            } else {
                 btn.setText(CharConst.DIR + f.getName());
+            }
 
             btn.setOnClickListener(v -> {
                 try {
                     if (autoOpen) {
                         for (Book b : Book.getAll())
-                            if (b.fullName.equals(ff.getName())){
-                                setBookId(b.id);}
+                            if (b.fullName.equals(ff.getName())) {
+                                setBookId(b.id);
+                            }
                     }
                     if (Service.isInteger(f.getName())) {
                         if (lastChooseDirBtn != null) {

@@ -19,8 +19,8 @@ public class Book {
     public final int maxLength;
     public final String pinYin;
 
-    public Book(int privateId, String sn, String fn, int ml, String pinyin) {
-        this.id = privateId;
+    public Book(int id, String sn, String fn, int ml, String pinyin) {
+        this.id = id;
         simpleName = sn.toUpperCase();
         fullName = fn;
         maxLength = ml;

@@ -25,6 +25,7 @@ import pri.prepare.lovehymn.client.tool.IShowDialog;
 import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.databinding.SettingLayoutBinding;
 import pri.prepare.lovehymn.server.UpdateHistory;
+import pri.prepare.lovehymn.server.entity.Book;
 import pri.prepare.lovehymn.server.function.Constant;
 import pri.prepare.lovehymn.server.Service;
 import pri.prepare.lovehymn.server.entity.Logger;
@@ -70,10 +71,11 @@ public class SettingDialog extends Dialog implements IShowDialog {
     }
 
     private void commonSwitchSet(ImageButton img, int setId) {
-        if (Setting.getValueB(setId))
+        if (Setting.getValueB(setId)) {
             img.setImageResource(R.drawable.on);
-        else
+        } else {
             img.setImageResource(R.drawable.off);
+        }
 
         img.setOnClickListener(v -> {
             Logger.info("set " + setId);
@@ -225,7 +227,13 @@ public class SettingDialog extends Dialog implements IShowDialog {
                 Tool.ShowDialog(getContext(), "加载异常", e.getMessage());
             }
         });
-
+        binding.loadResBtn.setOnLongClickListener(v -> {
+            for (Book privateBook : Book.getPrivateBooks()) {
+                privateBook.delete();
+            }
+            Tool.ShowDialog(getContext(), "提示", "已删除附加的诗歌本。如果是误删除，请再次点击‘加载资源按钮’");
+            return true;
+        });
     }
 
     /**

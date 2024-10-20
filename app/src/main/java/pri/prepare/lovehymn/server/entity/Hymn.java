@@ -422,12 +422,18 @@ public class Hymn {
     @NonNull
     @Override
     public String toString() {
-        if (dao.index1 < 0)
-            return getBook().simpleName + dao.index1;
+        if (getBook() == null) {
+            return "book unknown " + dao.index1 + " " + dao.index2;
+        }
 
-        String res = getBook().simpleName + String.format("%0" + 3 + "d", dao.index1);
-        if (dao.index2 > 1)
+        if (dao.index1 < 0) {
+            return getBook().simpleName + dao.index1;
+        }
+
+        String res = getBook().simpleName + String.format("%0"+3+"d", dao.index1);
+        if (dao.index2 > 1) {
             res += "-" + dao.index2;
+        }
         return res;
     }
 

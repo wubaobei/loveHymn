@@ -214,10 +214,18 @@ public class SettingDialog extends Dialog implements IShowDialog {
     /**
      * 加载资源按钮
      */
-    private void setLoadResBtn(){
-        //搜索资源
-        //由于一般的附加包在打开时已经加载了，所以这里只加载其他的一些资源
-        Service.getC().autoLoadOtherRes();
+    private void setLoadResBtn() {
+        binding.loadResBtn.setOnClickListener(v -> { //搜索资源
+            //由于一般的附加包在打开时已经加载了，所以这里只加载其他的一些资源
+            try {
+                String t = Service.getC().autoLoadOtherRes();
+                Tool.ShowDialog(getContext(), "加载完成", t);
+            } catch (Exception e) {
+                Logger.exception(e);
+                Tool.ShowDialog(getContext(), "加载异常", e.getMessage());
+            }
+        });
+
     }
 
     /**

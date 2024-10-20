@@ -5,9 +5,7 @@ import static pri.prepare.lovehymn.server.function.SdCardTool.FILE_OVERWRITE;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.text.ClipboardManager;
 
 import androidx.core.app.ActivityCompat;
@@ -26,6 +24,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -39,7 +38,6 @@ import pri.prepare.lovehymn.client.tool.LOAD_ENUM;
 import pri.prepare.lovehymn.client.tool.LoadProcess;
 import pri.prepare.lovehymn.server.dal.AuthorD;
 import pri.prepare.lovehymn.server.dal.AuthorRelatedD;
-import pri.prepare.lovehymn.server.dal.BookD;
 import pri.prepare.lovehymn.server.dal.ContentD;
 import pri.prepare.lovehymn.server.dal.ContentTypeD;
 import pri.prepare.lovehymn.server.dal.HymnD;
@@ -508,27 +506,26 @@ public class Service {
         String sLyric = "歌词：";
         boolean isLyric = false;
         Hymn h = new Hymn();
+
+        int loadNum = 0;
         try {
             for (String line : ct) {
                 line = line.trim();
-                if (line.length() == 0)
+                if (line.length() == 0) {
                     continue;
+                }
                 if (line.startsWith(sOrder)) {
                     if (h.getBookId() != 0 && h.getIndex1() != 0) {
                         h.addOrUpdateByIndex();
+                        loadNum++;
                         isLyric = false;
                         stat = -1;
                     }
                     h = new Hymn();
-                    Book bk = null;
-                    for (Book b : Book.getAllInLoad()) {
-                        if (b.simpleName.equals(line.substring(sOrder.length(), sOrder.length() + 1))) {
-                            bk = b;
-                            break;
-                        }
-                    }
-                    if (bk == null)
+                    Book bk = Book.getByName(line.substring(sOrder.length(), sOrder.length() + 1));
+                    if (bk.id < 0) {
                         throw new RuntimeException("格式异常：" + line);
+                    }
                     h.setBookId(bk.id);
                     String ind12 = line.substring(sOrder.length() + 1);
                     if (ind12.contains("-") && !ind12.startsWith("-")) {
@@ -575,11 +572,9 @@ public class Service {
                         String[] ss = s.split(" ");
                         h.setWhitePdf(ss[0].trim());
                         h.setWhitePage(Integer.parseInt(ss[1]));
-                    } else if (isInteger(s))
+                    } else if (isInteger(s)) {
                         h.setWhitePage(Integer.parseInt(s));
-//                } else if (line.startsWith(sBibleSection)) {
-//                    String s = line.substring(sBibleSection.length());
-//                    h.addSections(s);
+                    }
                 } else {
                     boolean flag = false;
                     for (ContentTypeD ctype : ContentTypeD.getAll()) {
@@ -601,8 +596,9 @@ public class Service {
             }
             if (h.getBookId() != 0 && h.getIndex1() != 0) {
                 h.addOrUpdateByIndex();
+                loadNum++;
             }
-            Logger.info("加载完成");
+            Logger.info("加载完成 添加诗歌" + loadNum);
         } catch (Exception e) {
             Logger.exception(e);
         }
@@ -715,10 +711,11 @@ public class Service {
                     continue;
                 if (line.startsWith(hds[0])) {
                     if (author != null) {
-                        if (isAdd)
+                        if (isAdd) {
                             author.addOrUpdateByName();
-                        else
+                        } else {
                             author.update();
+                        }
                         //addA++;
                     }
 
@@ -751,11 +748,12 @@ public class Service {
     }
 
     public MyFile[] orderFiles(MyFile[] fs) {
-        if (fs == null || fs.length == 0)
+        if (fs == null || fs.length == 0) {
             return new MyFile[0];
+        }
         boolean isBookName = false;
         for (MyFile f : fs)
-            for (Book bk : Book.getAllInLoad()) {
+            for (Book bk : Book.getAll()) {
                 if (bk.fullName.equals(f.getName())) {
                     isBookName = true;
                     break;
@@ -765,10 +763,12 @@ public class Service {
         if (isBookName) {
             List fileList = Arrays.asList(fs);
             Collections.sort(fileList, (Comparator<MyFile>) (o1, o2) -> {
-                if (o1.isDirectory() && o2.isFile())
+                if (o1.isDirectory() && o2.isFile()) {
                     return -1;
-                if (o1.isFile() && o2.isDirectory())
+                }
+                if (o1.isFile() && o2.isDirectory()) {
                     return 1;
+                }
                 int id1 = Book.getByName(o1.getName()).id;
                 int id2 = Book.getByName(o2.getName()).id;
                 return id1 < id2 ? -1 : 1;
@@ -778,20 +778,24 @@ public class Service {
 
         List fileList = Arrays.asList(fs);
         Collections.sort(fileList, (Comparator<MyFile>) (o1, o2) -> {
-            if (o1.isDirectory() && o2.isFile())
+            if (o1.isDirectory() && o2.isFile()) {
                 return -1;
-            if (o1.isFile() && o2.isDirectory())
+            }
+            if (o1.isFile() && o2.isDirectory()) {
                 return 1;
+            }
             if (o1.isPdf() && o2.isPdf()) {
                 String n1 = o1.getName().substring(0, o1.getName().indexOf("."));
                 String n2 = o2.getName().substring(0, o2.getName().indexOf("."));
                 if (isInteger(n1) && isInteger(n2)) {
                     int i1 = Integer.parseInt(n1);
                     int i2 = Integer.parseInt(n2);
-                    if (i1 < 0)
+                    if (i1 < 0) {
                         i1 = -i1 + 10000;
-                    if (i2 < 0)
+                    }
+                    if (i2 < 0) {
                         i2 = -i2 + 10000;
+                    }
                     return i1 < i2 ? -1 : 1;
                 } else if (isInteger(n1)) {
                     if (n2.contains("-")) {
@@ -898,8 +902,9 @@ public class Service {
                     }
 
                     try {
-                        if (Service.isInteger(name) && Integer.parseInt(name) == index)
+                        if (Service.isInteger(name) && Integer.parseInt(name) == index) {
                             return nf;
+                        }
                     } catch (Exception e) {
                         Logger.exception(e);
                     }
@@ -911,14 +916,17 @@ public class Service {
 
     public String nearContent(String content, String ss, int len) {
         String s1 = nearContent0(content, ss, len);
-        if (s1.length() == 0)
+        if (s1.length() == 0) {
             return s1;
+        }
         if (s1.contains("\n")) {
             String[] arr = s1.split("\n");
-            if (arr[0].trim().length() < 3)
+            if (arr[0].trim().length() < 3) {
                 arr[0] = "";
-            if (arr[arr.length - 1].trim().length() < 3)
+            }
+            if (arr[arr.length - 1].trim().length() < 3) {
                 arr[arr.length - 1] = "";
+            }
             return String.join("\n", arr).trim();
         }
         return s1;
@@ -928,14 +936,15 @@ public class Service {
         int ind = content.indexOf(ss);
         int st = ind;
         int ed = ind + ss.length();
-        if (st > len)
+        if (st > len) {
             st -= len;
-        else
+        } else
             st = 0;
-        if (ed + len >= content.length())
+        if (ed + len >= content.length()) {
             ed = content.length();
-        else
+        } else {
             ed += len;
+        }
         return trimChar(content.substring(st, ed));
     }
 
@@ -951,11 +960,13 @@ public class Service {
     }
 
     public boolean copyFile(MyFile oldFile, MyFile newFile) {
-        if (newFile.exists())
+        if (newFile.exists()) {
             return true;
+        }
 
-        if (!newFile.getParentFile().exists())
+        if (!newFile.getParentFile().exists()) {
             newFile.getParentFile().getfile().mkdirs();
+        }
 
         try {
             FileInputStream fileInputStream = new FileInputStream(oldFile.getAbsolutePath());
@@ -977,8 +988,9 @@ public class Service {
 
     public String getNameAfterDeal(MyFile file, boolean withExtend) {
         String res = file.getName();
-        if (file.getName().startsWith("-"))
+        if (file.getName().startsWith("-")) {
             res = res.replace("-", "附");
+        }
 
         String p = file.getAbsolutePath();
         for (Book bk : Book.getAll()) {
@@ -989,15 +1001,16 @@ public class Service {
         }
 
         if (!withExtend) {
-            if (file.isPdf())
+            if (file.isPdf()) {
                 res = res.substring(0, res.length() - 4);
+            }
         }
         Hymn hymn = file.getHymn();
         if (hymn != null && hymn.getTitle() != null && hymn.getTitle().length() > 0) {
             res = res.toUpperCase().replace(".PDF", "") + " " + hymn.getTitle();
-            //+ ".pdf";
-            if (withExtend)
+            if (withExtend) {
                 res += ".pdf";
+            }
         }
 
         return res;
@@ -1035,30 +1048,34 @@ public class Service {
                     TC.begin("pdf");
                     int pdfN = SdCardTool.getNum(bk, ".PDF", true);
                     TC.end("pdf");
-                    if (pdfN > 0)
+                    if (pdfN > 0) {
                         rt += " 蓝版:" + pdfN;
-                    //
-                    //rt += " 标题:" + res[0];
-                    //
-                    if (res[1] > 0)
+                    }
+                    if (res[1] > 0) {
                         rt += " 作者:" + res[1];
-                    if (res[2] > 0)
+                    }
+                    if (res[2] > 0) {
                         rt += " 歌词:" + res[2];
+                    }
 
                     n = 3;
                     for (int i = 0; i < ContentTypeD.getAll().length; i++) {
-                        if (res[n] > 0)
+                        if (res[n] > 0) {
                             rt += " " + ContentTypeD.getAll()[i].name + ":" + res[n];
+                        }
                         n++;
                     }
                     //
                     TC.begin("mp3");
                     int mp3N = SdCardTool.getNum(bk, ".MP3", false);
                     TC.end("mp3");
-                    if (mp3N > 0)
+                    if (mp3N > 0) {
                         rt += " mp3:" + mp3N;
+                    }
                     //
                     arr.add(rt.trim());
+                } else {
+                    arr.add(bk.fullName + " 无信息");
                 }
             } catch (Exception e) {
                 Logger.exception(e);
@@ -1080,17 +1097,11 @@ public class Service {
         return arr.toArray(new String[0]);
     }
 
-    public void openByIE(Context ct, String url) {
-        Intent intent = new Intent();
-        intent.setAction("android.intent.action.VIEW");
-        Uri content_url = Uri.parse(url);
-        intent.setData(content_url);
-        intent.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
-        ct.startActivity(intent);
-    }
-
     /**
      * 注意内部文件（夹）的名字不能为中文
+     *
+     * @param msg 解压过程的问题数据的记录
+     * @return 解压的文件数
      */
     public int unzip(String target, String source, String[] msg) throws IOException {
         long t1 = System.currentTimeMillis();
@@ -1109,7 +1120,10 @@ public class Service {
             File temp = new File(target + File.separator + fileName);
             if (zipEntry.isDirectory()) {
                 File dir = new File(target + File.separator + fileName);
-                dir.mkdirs();
+                if (!dir.exists()) {
+                    Logger.info("创建文件夹 " + dir.getAbsolutePath());
+                    dir.mkdirs();
+                }
                 continue;
             }
             if (temp.getParentFile() != null && !temp.getParentFile().exists()) {
@@ -1131,8 +1145,9 @@ public class Service {
         }
         zipInputStream.close();
         MainActivity.msgWait = "解压" + source + "完成\r\n耗时：" + (System.currentTimeMillis() - t1) / 1000 + "秒";
-        for (Book bk : Book.getAll())
+        for (Book bk : Book.getAll()) {
             bk.renamePinYin();
+        }
         return res;
     }
 
@@ -1149,10 +1164,12 @@ public class Service {
                 String p = mp3.getAbsolutePath().replace(".mp3", ".pdf");
                 for (Book bk : Book.getAll()) {
                     String sp = File.separator + bk.simpleName.toLowerCase() + File.separator;
-                    if (p.contains(sp))
+                    if (p.contains(sp)) {
                         p = p.replace(sp, File.separator + bk.fullName + File.separator);
-                    if (new File(p).exists())
+                    }
+                    if (new File(p).exists()) {
                         return MyFile.from(p);
+                    }
                 }
             }
             return null;
@@ -1175,11 +1192,14 @@ public class Service {
     }
 
     private void dfsMp3(MyFile f, ArrayList<MyFile> list) {
-        if (f.isFile())
-            if (f.getName().toLowerCase().endsWith(".mp3"))
+        if (f.isFile()) {
+            if (f.getName().toLowerCase().endsWith(".mp3")) {
                 list.add(f);
-        for (MyFile fn : f.listFiles())
+            }
+        }
+        for (MyFile fn : f.listFiles()) {
             dfsMp3(fn, list);
+        }
     }
 
     /**
@@ -1262,8 +1282,9 @@ public class Service {
                 return "未找到圣经各卷书名的资源文件或文件内容异常:" + allLetter.length;
             }
             MyFile f = MyFile.from(SdCardTool.getLbPath());
-            if (!f.exists() || !f.isDirectory() || f.listFiles().length == 0)
+            if (!f.exists() || !f.isDirectory() || f.listFiles().length == 0) {
                 return "找不到蓝版诗歌文件夹或者文件夹里没有文件，请确认是否移动了文件夹或者是只下载了升级包";
+            }
 
             updateYisitie();
             Logger.info("自检完成");
@@ -1298,8 +1319,9 @@ public class Service {
     public List<String> getDirectoryMp3List() {
         List<String> res = new ArrayList<>();
         for (Book book : Book.getAll()) {
-            if (book.getMp3Directory() != null)
-                res.add(book.id + ";" + book.fullName);//+ "(" + book.getMp3Count() + ")");
+            if (book.getMp3Directory() != null) {
+                res.add(book.id + ";" + book.fullName);
+            }
         }
         return res;
     }
@@ -1317,9 +1339,11 @@ public class Service {
     }
 
     private String hymnBookSimpleName(HymnD hymnD) {
-        for (Book bk : Book.getAll())
-            if (bk.id == hymnD.bookId)
+        for (Book bk : Book.getAll()) {
+            if (bk.id == hymnD.bookId) {
                 return bk.simpleName;
+            }
+        }
         return "U";
     }
 
@@ -1336,10 +1360,11 @@ public class Service {
                     m.put(hymnBookSimpleName(h) + h.index1 + "-" + h.index2, h);
                 } else {
                     m.put(hymnBookSimpleName(h) + h.index1 + "", h);
-                    if (h.index1 < 10)
+                    if (h.index1 < 10) {
                         m.put(hymnBookSimpleName(h) + "00" + h.index1, h);
-                    else if (h.index1 < 100)
+                    } else if (h.index1 < 100) {
                         m.put(hymnBookSimpleName(h) + "0" + h.index1, h);
+                    }
                 }
             }
 
@@ -1354,8 +1379,9 @@ public class Service {
                             String key = b.simpleName + f.getName().split("\\.")[0];
                             if (m.containsKey(key)) {
                                 res.put(f.getAbsolutePath(), Hymn.fromDao(m.get(key)).getShowName());
-                            } else
+                            } else {
                                 Logger.info("not find key:" + key);
+                            }
                         }
                     }
                 }
@@ -1386,10 +1412,11 @@ public class Service {
                 if (hymn.getLyric() != null && hymn.getLyric().length() > 0)
                     sb.append("歌词：").append(hymn.getLyric()).append(sp);
                 if (hymn.getWhitePage() > 0) {
-                    if (hymn.getWhitePdf() != null && hymn.getWhitePdf().length() > 0)
+                    if (hymn.getWhitePdf() != null && hymn.getWhitePdf().length() > 0) {
                         sb.append("白版：").append(hymn.getWhitePdf()).append(" ").append(hymn.getWhitePage()).append(sp);
-                    else
+                    } else {
                         sb.append("白版：").append(hymn.getWhitePage()).append(sp);
+                    }
                 }
                 Author[] la = hymn.getLyricAuthors();
                 Author[] ma = hymn.getMusicAuthors();
@@ -1433,10 +1460,12 @@ public class Service {
             }
         }
         String res = "";
-        if (num > 0)
+        if (num > 0) {
             res += "发现分享pdf" + num + "个，大小" + (sum / 1000) + "KB，已清理";
-        if (otherNum > 0)
+        }
+        if (otherNum > 0) {
             res += "\r\n发现其他文件" + otherNum + "个，请手动清理";
+        }
         //过期日志（超过一周）
         sum = 0;
         num = 0;
@@ -1448,8 +1477,9 @@ public class Service {
                 f.delete();
             }
         }
-        if (num > 0)
+        if (num > 0) {
             res += "\r\n发现过期日志" + num + "个，大小" + (sum / 1000) + "KB，已清理";
+        }
         //过期资源文件 删除序号小于MIN_RES_INDEX的资源文件
         sum = 0;
         num = 0;
@@ -1470,27 +1500,34 @@ public class Service {
         String ddir = "";
         for (MyFile f : MyFile.from(SdCardTool.getLbPath()).listFiles()) {
             if (f.isDirectory() && f.getName().toLowerCase().contains("hidein")) {
-                if (f.deleteForce())
+                if (f.deleteForce()) {
                     ddir += "删除过期文件夹" + f.getName();
+                }
             }
         }
-        if (num > 0)
+        if (num > 0) {
             res += "\r\n发现无用资源文件" + num + "个，大小" + (sum / 1000) + "KB，已清理";
-        if (ddir.length() > 0)
+        }
+        if (ddir.length() > 0) {
             res += "\r\n" + ddir;
-        if (res.length() == 0)
+        }
+        if (res.length() == 0) {
             res = "没有需要清理的文件";
+        }
         return res.trim();
     }
 
     public String getNewOtherBookIndex() {
         Hymn[] hymns = Hymn.getByBook(Book.Other);
         HashSet<String> hs = new HashSet<>();
-        for (Hymn h : hymns)
+        for (Hymn h : hymns) {
             hs.add(String.valueOf(h.getIndex1()));
-        for (int i = 1; i < 1000; i++)
-            if (!hs.contains(String.valueOf(i)))
+        }
+        for (int i = 1; i < 1000; i++) {
+            if (!hs.contains(String.valueOf(i))) {
                 return String.valueOf(i);
+            }
+        }
         return "";
     }
 
@@ -1524,10 +1561,11 @@ public class Service {
                 for (MyFile fn : f.listFiles()) {
                     if (fn.getName().equals("儿童诗歌")) {
                         dfsRN(fn);
-                        if (rnCount > 0)
+                        if (rnCount > 0) {
                             Logger.info("处理异常文档：" + rnCount);
-                        else
+                        } else {
                             Logger.info("文档无异常");
+                        }
                         return;
                     }
                 }
@@ -1545,9 +1583,9 @@ public class Service {
             boolean hasFound = false;
             for (LetterD d : LetterD.getAll()) {
                 if (d.fullName.equals("以斯拉记")) {
-                    if (!hasFound)
+                    if (!hasFound) {
                         hasFound = true;
-                    else {
+                    } else {
                         Logger.info("发现错误数据：书卷名异常");
                         DBHelper.execSQL("update letterD set fullName='以斯帖记' where id=" + d.id);
                     }
@@ -1570,10 +1608,11 @@ public class Service {
                     String newP = f.getAbsolutePath().replace(f.getName(), f.getName().substring(1));
                     File newF = new File(newP);
                     rnCount++;
-                    if (newF.exists())
+                    if (newF.exists()) {
                         f.delete();
-                    else
+                    } else {
                         f.renameTo(newF);
+                    }
                 }
             }
         }
@@ -1599,18 +1638,6 @@ public class Service {
                 + "app版本:" + getVersionStr(activity);
     }
 
-
-    /**
-     * 专门用于 Setting.RES_UPDATE_RECORD 的资源数统计
-     */
-    private int dotNum(String s) {
-        int res = 0;
-        for (int i = 0; i < s.length() - 2; i++)
-            if (s.charAt(i) == 't' && s.charAt(i + 1) == 'x' && s.charAt(i + 2) == 't')
-                res++;
-        return res;
-    }
-
     /**
      * 没有读写权限（一般是第一次打开）
      */
@@ -1625,9 +1652,8 @@ public class Service {
      */
     public String getFixFunctions() {
         String sp = "\r\n";
-        return "1:如果是第一次使用且使用的是升级包，请下载pdf附加包(加百度网盘好友后,作者会在其中分享附加包,下载后无需解压,打开app会自动加载资源)" + sp +
-                "2:重启app" + sp +
-                "3:检查储存卡下是否有'诗歌蓝版'文件夹，且有文件";
+        return "1:检查储存卡下是否有'诗歌蓝版'文件夹，且有文件" + sp +
+                "2:重启app";
     }
 
     /**
@@ -1673,24 +1699,120 @@ public class Service {
     /**
      * 加载资源
      */
-    public void autoLoadOtherRes() {
+    public String autoLoadOtherRes() throws IOException {
         //加载其他的诗歌附加包（篮板 mp3 白板 歌词作者等信息文件）
         String path = SdCardTool.getLbPath();
         File f = new File(path);
+        Logger.info("检查res中的加载引导文件");
+        checkLoadFileInRes();
         if (f.exists()) {
             checkZipInDir(f);
             checkZipInDir(f.getParentFile());
         }
+        return "todo return value";
     }
 
-    private void checkZipInDir(File f) {
+    /**
+     * 检查资源文件夹下的加载引导文件
+     */
+    private void checkLoadFileInRes() {
+        File resF = new File(SdCardTool.getResPath());
+        if (!resF.exists()) {
+            return;
+        }
+        File[] fs = resF.listFiles();
+        if (fs == null) {
+            return;
+        }
+        Book[] bs = Book.getPrivateBooks();
+        for (File f : fs) {
+            if (f.getName().length() == 10 && f.getName().startsWith("load")) {
+                String bookName = getLoadFileShortName(f);
+                boolean find = false;
+                for (Book b : bs) {
+                    if (b.simpleName.toLowerCase().equals(bookName)) {
+                        Logger.info("发现已加载");
+                        find = true;
+                        break;
+                    }
+                }
+                if (!find) {
+                    Logger.info("发现未加载");
+                    loadPrivateResFromLoadFile(f);
+                }
+            }
+        }
+    }
+
+    /**
+     * 加载综合包（已解压）
+     *
+     * @param f 引导文件(load-x.txt)
+     */
+    private void loadPrivateResFromLoadFile(File f) {
+        if (!f.getName().contains("load")) {
+            throw new RuntimeException("输入文件应该为引导文件");
+        }
+
+        Map<String, String> map = MyFile.from(f.getAbsolutePath()).getMapContent();
+        File resF;
+        if (!map.containsKey("msg")) {
+            throw new RuntimeException("缺少诗歌歌词等信息的资源文件的配置");
+        } else {
+            resF = new File(SdCardTool.getResPath() + File.separator + map.get("msg"));
+            if (!resF.isFile()) {
+                throw new RuntimeException("缺少诗歌歌词等信息的资源文件 " + resF.getAbsolutePath());
+            }
+        }
+        if (map.containsKey("shortname") && map.containsKey("pinyin") && map.containsKey("chinese") && map.containsKey("privateId")) {
+            //重命名文件夹 拼音转汉字
+            File pyFile = new File(SdCardTool.getLbPath() + File.separator + map.get("pinyin"));
+            File chineseFile = new File(SdCardTool.getLbPath() + File.separator + map.get("chinese"));
+            if (pyFile.isDirectory() && (!chineseFile.exists())) {
+                pyFile.renameTo(chineseFile);
+            }
+            //保存book
+            int ml = 3;
+            if (map.containsKey("maxLength")) {
+                ml = Integer.parseInt(map.get("maxLength"));
+            }
+            if (!Book.addPrivateBook(Integer.parseInt(map.get("privateId")), map.get("shortname"), map.get("chinese"), ml, map.get("pinyin"))) {
+                throw new RuntimeException("添加书的信息失败");
+            }
+            //保存 歌词等信息
+            loadResFile(MyFile.from(resF.getAbsolutePath()).getContent());
+        } else {
+            throw new RuntimeException("引导文件" + f.getAbsolutePath() + "错误，缺少必要的key：shortname pinyin chinese privateId");
+        }
+    }
+
+    /**
+     * 获取加载文件的诗歌的短名
+     *
+     * @param f
+     * @return
+     */
+    private String getLoadFileShortName(File f) {
+        return String.valueOf(f.getName().charAt(5));
+    }
+
+    /**
+     * 检查目标文件夹下的综合包
+     *
+     * @param f
+     */
+    private void checkZipInDir(File f) throws IOException {
+        if (f == null) {
+            return;
+        }
+        Logger.info("检查" + f.getAbsolutePath() + "下的综合包");
         File[] fs = f.listFiles();
         if (fs != null) {
             for (File file : fs) {
                 if (file.isFile() && file.getName().endsWith("综合包.zip")) {
                     String c = getBookShortName(file);
                     if (c.length() == 0) {
-                        Logger.info("发现不合命名规范的综合包");
+                        throw new RuntimeException("发现不合命名规范的综合包：" + file.getAbsolutePath());
                     } else {
                         Logger.info("发现" + c + "的综合包");
                         Book[] bs = Book.getPrivateBooks();
@@ -1704,11 +1826,24 @@ public class Service {
                         }
                         if (!find) {
                             Logger.info("发现未加载");
+                            unzipToLb(file);
+                            loadPrivateResFromLoadFile(new File(SdCardTool.getLbPath() + File.separator + "load-" + c + ".txt"));
                         }
                     }
                 }
             }
         }
+    }
+
+    /**
+     * 解压压缩包到篮板
+     *
+     * @param file
+     */
+    private void unzipToLb(File file) throws IOException {
+        Logger.info("开始解压" + file.getAbsolutePath());
+        unzip(SdCardTool.getLbPath(), file.getAbsolutePath(), new String[0]);
+        Logger.info("解压完成");
     }
 
     private String getBookShortName(File file) {

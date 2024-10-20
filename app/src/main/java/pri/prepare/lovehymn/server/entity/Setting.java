@@ -124,7 +124,7 @@ public class Setting {
     /**
      * 最新版本（用于更新app的提醒显示）
      */
-    public static final int NEW_VERSION = 40;
+    //public static final int NEW_VERSION = 40;
     /**
      * 最近播放列表缓存
      */
@@ -218,7 +218,7 @@ public class Setting {
             defaultMap.put(COLLECT, "");
             defaultMap.put(LAST_OPEN, Service.getC().getFirstHymnPath());
             defaultMap.put(SHORT_CUT1, "99]false]1]a");//默认显示所有诗歌
-            defaultMap.put(NEW_VERSION, "");
+            //defaultMap.put(NEW_VERSION, "");
             defaultMap.put(OPEN_RECENT, "");
             defaultMap.put(LAST_VERSION_NAME, "");
             defaultMap.put(PAUSE_TIME, "");

@@ -67,20 +67,23 @@ public class CatalogDialog extends Dialog implements IShowDialog {
         this.i4StopMp3 = i4StopMp3;
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.catelog_layout, null, false);
         setContentView(binding.getRoot());
-        if (searchString != null && searchString.length() > 0)
+        if (searchString != null && searchString.length() > 0) {
             Logger.info("searchString " + searchString);
+        }
         ll = binding.detLayout;
         numLL = binding.numDirShow;
 
         String hintV = null;
-        if (hintRecord != null && hintRecord.length() > 0)
+        if (hintRecord != null && hintRecord.length() > 0) {
             hintV = hintRecord;
+        }
 
         setOkBtnOrSearch(searchString, hintV);
         setDetLayout(MyFile.from(SdCardTool.getLbPath()));
 
-        if (searchString != null && searchString.length() > 0)
+        if (searchString != null && searchString.length() > 0) {
             setReturnBtn(false);
+        }
 
         this.listener = lis;
         setSearchView();
@@ -280,8 +283,9 @@ public class CatalogDialog extends Dialog implements IShowDialog {
 
         ll.removeAllViews();
 
-        if (f == null || f.length() == 0)
+        if (f == null || f.length() == 0) {
             return;
+        }
 
         if (ss.length() > 0) {
             numLL.removeAllViews();
@@ -492,8 +496,8 @@ public class CatalogDialog extends Dialog implements IShowDialog {
                 try {
                     if (autoOpen) {
                         for (Book b : Book.getAll())
-                            if (b.fullName.equals(ff.getName()))
-                                setBookId(b.id);
+                            if (b.fullName.equals(ff.getName())){
+                                setBookId(b.id);}
                     }
                     if (Service.isInteger(f.getName())) {
                         if (lastChooseDirBtn != null) {
@@ -552,9 +556,10 @@ public class CatalogDialog extends Dialog implements IShowDialog {
 
     public void setBookId(int _bookId) {
         this._bookId = _bookId;
-        if (_bookId == -1)
+        if (_bookId == -1) {
             binding.bookIn.setText("");
-        else
+        } else {
             binding.bookIn.setText(Book.getById(_bookId).fullName);
+        }
     }
 }

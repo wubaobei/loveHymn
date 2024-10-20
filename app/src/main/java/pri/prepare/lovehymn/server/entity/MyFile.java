@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import pri.prepare.lovehymn.server.Service;
 import pri.prepare.lovehymn.server.dal.ContentTypeD;
@@ -84,6 +85,23 @@ public class MyFile extends File {
         return this;
     }
 
+    public Map<String, String> getMapContent() {
+        String[] t = getContent();
+        Map<String, String> map = new HashMap<>();
+        for (String s : t) {
+            if (s.contains("=")) {
+                int ind = s.indexOf("=");
+                map.put(s.substring(0, ind).trim(), s.substring(ind + 1).trim());
+            }
+        }
+        return map;
+    }
+
+    /**
+     * 获取内容（过滤空字符串）
+     *
+     * @return
+     */
     public String[] getContent() {
         ArrayList<String> contents = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(getfile()))) {
@@ -176,12 +194,14 @@ public class MyFile extends File {
         for (Book bk : Book.getAll()) {
             if (p.contains(File.separator + bk.simpleName + File.separator)) {
                 String p2 = p.replace(File.separator + bk.simpleName + File.separator, File.separator + bk.fullName + File.separator);
-                if (new File(p2).exists())
+                if (new File(p2).exists()) {
                     return MyFile.from(p2);
+                }
             } else if (p.contains(File.separator + bk.simpleName.toLowerCase() + File.separator)) {
                 String p2 = p.replace(File.separator + bk.simpleName.toLowerCase() + File.separator, File.separator + bk.fullName + File.separator);
-                if (new File(p2).exists())
+                if (new File(p2).exists()) {
                     return MyFile.from(p2);
+                }
             } else if (p.contains(bk.fullName + "mp3")) {
                 String p1 = p.replace(bk.fullName + "mp3", bk.fullName);
                 if (new File(p1).exists())
@@ -212,14 +232,16 @@ public class MyFile extends File {
         Hymn h = getHymn();
         if (search)
             try {
-                for (Content c : h.getContents()) {
-                    if (c.isType(ContentTypeD.getSameSongType())) {
-                        String[] co = Service.getC().correctOrders(c.getValue());
-                        for (String otherHymn : co) {
-                            Hymn oh = Hymn.search(otherHymn);
-                            MyFile mp3 = oh.getFile().getMp3(false);
-                            if (mp3 != null) {
-                                return mp3;
+                if (h != null) {
+                    for (Content c : h.getContents()) {
+                        if (c.isType(ContentTypeD.getSameSongType())) {
+                            String[] co = Service.getC().correctOrders(c.getValue());
+                            for (String otherHymn : co) {
+                                Hymn oh = Hymn.search(otherHymn);
+                                MyFile mp3 = oh.getFile().getMp3(false);
+                                if (mp3 != null) {
+                                    return mp3;
+                                }
                             }
                         }
                     }

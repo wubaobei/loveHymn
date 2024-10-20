@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private void showTips() {
         TipStruct tip = TipTool.getTig();
         if (tip != null) {
@@ -226,13 +225,13 @@ public class MainActivity extends AppCompatActivity {
             getPdfV0().zoomTo(sk);
             getPdfV1().zoomTo(sk);
             getPdfV0().setPositionOffset(0f);
-            Logger.info("screenCastingMode "+getPdfV0().getZoom());
+            Logger.info("screenCastingMode " + getPdfV0().getZoom());
         } else if (isLandscape()) {
             getPdfV0().setMinZoom(0.6f);
             getPdfV1().setMinZoom(0.6f);
             getPdfV0().setMaxZoom(3f);
             getPdfV1().setMaxZoom(3f);
-            Logger.info("isLandscape "+getPdfV0().getZoom());
+            Logger.info("isLandscape " + getPdfV0().getZoom());
         } else {
             getPdfV0().setMinZoom(1f);
             getPdfV1().setMinZoom(1f);
@@ -243,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
             }
             getPdfV0().setMaxZoom(3f);
             getPdfV1().setMaxZoom(3f);
-            Logger.info("not Landscape "+getPdfV0().getZoom());
+            Logger.info("not Landscape " + getPdfV0().getZoom());
         }
     }
 
@@ -265,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 横屏
+     *
      * @return
      */
     private boolean isLandscape() {
@@ -960,18 +960,18 @@ public class MainActivity extends AppCompatActivity {
      * 检查mp3文件夹结构（手动解压）
      */
     private void checkFolderConstruction() {
-        File f=new File( SdCardTool.getLbPath());
-        if(!f.exists()){
+        File f = new File(SdCardTool.getLbPath());
+        if (!f.exists()) {
             return;
         }
-        File[] fs=f.listFiles();
-        if(fs==null){
+        File[] fs = f.listFiles();
+        if (fs == null) {
             return;
         }
-        String aim="附加包";
+        String aim = "附加包";
         for (File file : fs) {
-            if(file.isDirectory() && file.getName().endsWith(aim)){
-                Logger.info("检测到'"+aim+"'文件夹，开始处理");
+            if (file.isDirectory() && file.getName().endsWith(aim)) {
+                Logger.info("检测到'" + aim + "'文件夹，开始处理");
                 moveToParent(file);
             }
         }
@@ -986,9 +986,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static void forceDelete(File f) {
-        if(f.isFile()){
+        if (f.isFile()) {
             f.delete();
-        }else{
+        } else {
             for (File file : f.listFiles()) {
                 forceDelete(file);
             }
@@ -1002,19 +1002,19 @@ public class MainActivity extends AppCompatActivity {
         } else {
             createFolder(new File(s));
             for (File listFile : file.listFiles()) {
-                moveFile(listFile, s+File.separator+listFile.getName());
+                moveFile(listFile, s + File.separator + listFile.getName());
             }
         }
     }
 
     private static void createFolder(File file) {
-        if(!file.exists()){
+        if (!file.exists()) {
             file.mkdirs();
         }
     }
 
     private static void rename(File from, File to) {
-        if(!to.exists()) {
+        if (!to.exists()) {
             from.renameTo(to);
         }
     }
@@ -1046,8 +1046,9 @@ public class MainActivity extends AppCompatActivity {
         if (res.length() > 0) {
             MainActivity.msgWait = "自动加载资源" + res.substring(0, res.length() - 1);
         }
-        for (Book bk : Book.getAll())
+        for (Book bk : Book.getAll()) {
             bk.renamePinYin();
+        }
         Logger.info("自动扫描耗时：" + (System.currentTimeMillis() - t1));
     }
 

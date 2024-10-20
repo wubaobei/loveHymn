@@ -1,7 +1,6 @@
 package pri.prepare.lovehymn.server.entity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 
 import pri.prepare.lovehymn.server.function.CommonTool;

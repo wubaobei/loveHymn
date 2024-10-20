@@ -9,6 +9,12 @@ public class BookD extends DaoBase {
     public String pinYin;
     public int privateId;
 
+    public static void delete(int id) {
+        BookD d=new BookD();
+        d.id=id;
+        DBUtil.getC().delete(d);
+    }
+
     @Override
     public int insert(boolean returnId) throws Exception {
         DBUtil.getC().insert(this);

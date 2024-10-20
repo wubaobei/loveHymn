@@ -124,14 +124,6 @@ public class StartPageActivity extends AppCompatActivity {
                 TextView mode = findViewById(R.id.testMode);
                 if (UpdateHistory.isTestMode(this)) {
                     mode.setText("内测版");
-                } else {
-                    String c = Service.getC().getVersionStr(this);
-                    String ver = Setting.getValueS(Setting.NEW_VERSION);
-                    if (ver.length() != 0 && (!ver.equals(c))) {
-                        if (Service.getC().compareVersion(ver, c)) {
-                            mode.setText("新版本：" + ver);
-                        }
-                    }
                 }
                 new Thread(rb).start();
             }

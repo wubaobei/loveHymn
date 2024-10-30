@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import pri.prepare.lovehymn.client.tool.LoadProcess;
@@ -90,9 +91,7 @@ public class SdCardTool {
                 return res;
         }
 
-        String res = dfsDir(MyFile.from(Environment.getExternalStorageDirectory().getAbsolutePath()), 4);
-
-        return res;
+        return dfsDir(MyFile.from(Environment.getExternalStorageDirectory().getAbsolutePath()), 4);
     }
 
     private static String dfsDir(MyFile f, int deep) {
@@ -160,51 +159,60 @@ public class SdCardTool {
 
     public static String searchType = "";
 
+    private static ShowResult[] searchMusic(String ss){
+        List<ShowResult> res = new ArrayList<>();
+        int[] n = new int[1];
+        int ind = 0;
+        for (String s : MusicSearch.searchMusic(ss, n)) {
+            ind++;
+            try {
+                Hymn h = Hymn.search(s);
+                MyFile f = h.getFile();
+                if (f != null) {
+                    if (res.size() > 10) {
+                        res.add(new ShowResult("结果太多了"));
+                        break;
+                    }
+                    res.add(new ShowResult(f, ind <= n[0]));
+                }
+            } catch (Exception e) {
+                Logger.exception(e);
+            }
+        }
+        return res.toArray(new ShowResult[0]);
+    }
+    private static ShowResult[] searchCorrect(String ss){
+        List<ShowResult> res = new ArrayList<>();
+        for (String a :  Service.getC().correctOrders(ss)) {
+            try {
+                Hymn h = Hymn.search(a);
+                MyFile f = h.getFile();
+                if (f != null)
+                    res.add(new ShowResult(f));
+            } catch (Exception e) {
+                Logger.exception(e);
+            }
+        }
+        return res.toArray(new ShowResult[0]);
+    }
     private static ShowResult[] search0(String ss, int page, int bookId) throws Exception {
-        ArrayList<ShowResult> res = new ArrayList<>();
         String[] coArr;
         if (isMusicStr(ss)) {
             //搜索旋律
             searchType = "isMusicStr";
             if (page == 0) {
-                int[] n = new int[1];
-                int ind = 0;
-                for (String s : MusicSearch.searchMusic(ss, n)) {
-                    ind++;
-                    try {
-                        Hymn h = Hymn.search(s);
-                        MyFile f = h.getFile();
-                        if (f != null) {
-                            if (res.size() > 10) {
-                                res.add(new ShowResult("结果太多了"));
-                                break;
-                            }
-                            res.add(new ShowResult(f, ind <= n[0]));
-                        }
-                    } catch (Exception e) {
-                        Logger.exception(e);
-                    }
-                }
-                return res.toArray(new ShowResult[0]);
+                return searchMusic(ss);
             }
             return new ShowResult[0];
-        } else if ((coArr = Service.getC().correctOrders(ss)) != null) {
+        } else if (Service.getC().correctOrders(ss) != null) {
             //D001;D002 一般是同谱诗歌链接
             searchType = "correctOrders";
             if (page == 0) {
-                for (String a : coArr) {
-                    try {
-                        Hymn h = Hymn.search(a);
-                        MyFile f = h.getFile();
-                        if (f != null)
-                            res.add(new ShowResult(f));
-                    } catch (Exception e) {
-                        Logger.exception(e);
-                    }
-                }
+                return searchCorrect(ss);
             }
-            return res.toArray(new ShowResult[0]);
+            return new ShowResult[0];
         } else if (isInteger(ss)) {
+            List<ShowResult> res = new ArrayList<>();
             //搜索序号
             searchType = "isInteger";
             if (page == 0) {
@@ -270,6 +278,7 @@ public class SdCardTool {
             tempInd = searchTemp0.size();
             return res.toArray(new ShowResult[0]);
         } else {
+            List<ShowResult> res = new ArrayList<>();
             //一般搜索
             searchType = "else";
             ArrayList<String> list = searchTextSplit(ss);
@@ -352,6 +361,7 @@ public class SdCardTool {
                         if (Integer.parseInt(ns) < UpdateHistory.MIN_RES_INDEX)
                             continue;
                     } catch (Exception e) {
+                        Logger.exception(e);
                     }
                 }
                 s.add(n);

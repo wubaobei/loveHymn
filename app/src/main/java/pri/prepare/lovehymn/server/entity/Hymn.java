@@ -192,8 +192,9 @@ public class Hymn {
 
     public static Hymn search(Book bk, int ind, int ind2) throws Exception {
         Hymn res = search(bk.id, ind, ind2);
-        if (res == null)
+        if (res == null) {
             Logger.info("search hymn is null:" + bk.fullName + " " + ind + " " + ind2);
+        }
         return res;
     }
 
@@ -430,7 +431,7 @@ public class Hymn {
             return getBook().simpleName + dao.index1;
         }
 
-        String res = getBook().simpleName + String.format("%0"+3+"d", dao.index1);
+        String res = getBook().simpleName + String.format("%0" + 3 + "d", dao.index1);
         if (dao.index2 > 1) {
             res += "-" + dao.index2;
         }

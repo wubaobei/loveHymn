@@ -1,5 +1,10 @@
 package pri.prepare.lovehymn.server.entity;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import pri.prepare.lovehymn.server.dal.SearchIndexD;
 
 /**
@@ -23,10 +28,16 @@ public class SearchIndex {
     }
 
     public void add(boolean returnId) throws IllegalAccessException {
+//        if (getPaths().contains("001.pdf")) {
+//            Logger.info("add SearchIndex " + getPaths());
+//        }
         dao.insert(returnId);
     }
 
     public void update() throws Exception {
+//        if (getPaths().contains("001.pdf")) {
+//            Logger.info("update SearchIndex " + getPaths());
+//        }
         dao.update();
     }
 
@@ -56,6 +67,25 @@ public class SearchIndex {
 
     public void setPaths(String value) {
         dao.paths = value;
+    }
+
+    public void addPath(File f) {
+//        String[] arr = getPaths().split(";");
+//        String aim = f.getAbsolutePath();
+//        List<String> list=new ArrayList<>();
+//        for (String s : arr) {
+//            list.add(s);
+//        }
+//        list.add(aim);
+//        list.sort(new Comparator<String>() {
+//            @Override
+//            public int compare(String s0, String s1) {
+//
+//                return 0;
+//            }
+//        });
+//        dao.paths=String.join(";",list);
+        dao.paths += ";" + f.getAbsolutePath();
     }
     //endregion
 }

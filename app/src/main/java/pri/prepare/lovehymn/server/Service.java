@@ -164,25 +164,43 @@ public class Service {
                 if (f.getName().equals(Constant.RES_NAME) || f.getName().equals(Constant.WHITE)) {
                     return;
                 }
-                for (MyFile fn : orderFiles(MyFile.from(f.getAbsolutePath()).listFiles()))
+                for (MyFile fn : orderFiles(MyFile.from(f.getAbsolutePath()).listFiles())) {
                     predealDir(fn.getfile());
+                }
             } else {
                 //加入文件名索引，加快搜索速度
-                if (isMp3(f))
+                if (isMp3(f)) {
                     return;
+                }
+                if (!isPublicBook(f, Book.getPublicBookNames())) {
+                    return;
+                }
                 String sn = f.getName();
                 SearchIndex si = SearchIndex.getByName(sn);
                 if (si == null) {
                     si = new SearchIndex(sn, f.getAbsolutePath());
                     si.add(false);
                 } else {
-                    si.setPaths(si.getPaths() + ";" + f.getAbsolutePath());
+                    si.addPath(f);
                     si.update();
                 }
             }
         } catch (Exception e) {
             Logger.exception(e);
         }
+    }
+
+    private boolean isPublicBook(File f, String[] books) {
+        if (books == null || books.length == 0) {
+            //不验证
+            return true;
+        }
+        for (String book : books) {
+            if (f.getAbsolutePath().contains(book)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isMp3(File f) {
@@ -1768,6 +1786,7 @@ public class Service {
             //重命名文件夹 拼音转汉字
             File pyFile = new File(SdCardTool.getLbPath() + File.separator + map.get("pinyin"));
             File chineseFile = new File(SdCardTool.getLbPath() + File.separator + map.get("chinese"));
+//            File mp3Dir = new File(SdCardTool.getLbPath() + File.separator + map.get("shortname"));
             if (pyFile.isDirectory() && (!chineseFile.exists())) {
                 pyFile.renameTo(chineseFile);
             }
@@ -1781,8 +1800,43 @@ public class Service {
             }
             //保存 歌词等信息
             loadResFile(MyFile.from(resF.getAbsolutePath()).getContent());
+            try {
+                loadSearchIndex(chineseFile);
+            } catch (Exception e) {
+                Logger.exception(e);
+            }
         } else {
             throw new RuntimeException("引导文件" + f.getAbsolutePath() + "错误，缺少必要的key：shortname pinyin chinese privateId");
+        }
+    }
+
+    private void allFile(File file, List<File> res) {
+        if (file.isFile()) {
+            res.add(file);
+        } else {
+            File[] fs = file.listFiles();
+            if (fs != null) {
+                for (File r : fs) {
+                    allFile(r, res);
+                }
+            }
+        }
+    }
+
+    private void loadSearchIndex(File pdfDir) throws Exception {
+        List<File> all = new ArrayList<>();
+        allFile(pdfDir, all);
+        Logger.info("loadSearchIndex " + all.size());
+        for (File f : all) {
+            String sn = f.getName();
+            SearchIndex si = SearchIndex.getByName(sn);
+            if (si == null) {
+                si = new SearchIndex(sn, f.getAbsolutePath());
+                si.add(false);
+            } else {
+                si.addPath(f);
+                si.update();
+            }
         }
     }
 

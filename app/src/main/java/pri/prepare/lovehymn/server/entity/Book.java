@@ -50,6 +50,14 @@ public class Book {
 
     private static Book[] allCache = null;
 
+    public static Book[] getPublicBooks() {
+        return new Book[]{DaBen, BuChong, Chang, Xin, ErTong};
+    }
+
+    public static String[] getPublicBookNames() {
+        return new String[]{DaBen.fullName, BuChong.fullName, Chang.fullName, Xin.fullName, ErTong.fullName};
+    }
+
     public static Book[] getPrivateBooks() {
         if (allCache != null) {
             return allCache;

@@ -156,49 +156,6 @@
 
                 </RelativeLayout>
 
-                <ImageButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_white"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/line" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <Button
-                        android:id="@+id/bibleShowChineseEnglish"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/set_padding"
-                        android:layout_alignParentStart="true"
-                        android:background="@drawable/btn_white"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/setting_btn_min_height"
-                        android:text="相关经节显示" />
-
-
-                    <ImageView
-                        android:id="@+id/bibleShowChineseEnglishHelp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toEndOf="@id/bibleShowChineseEnglish"
-                        app:srcCompat="@android:drawable/ic_menu_help" />
-
-                    <Button
-                        android:id="@+id/bibleShowChineseEnglishBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/set_padding"
-                        android:background="@drawable/btn_white"
-                        android:minHeight="@dimen/setting_btn_min_height" />
-                </RelativeLayout>
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">

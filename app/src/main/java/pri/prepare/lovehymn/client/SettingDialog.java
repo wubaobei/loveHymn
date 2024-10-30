@@ -57,7 +57,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
         setAuthorTV();
         setSettingIcons();
         setDisappearBtn();
-        setCEBtn();
         setUpdateBtn();
         setSpecialSetting();
         setLabelSetting();
@@ -104,12 +103,12 @@ public class SettingDialog extends Dialog implements IShowDialog {
      */
     private void setSettingIcons() {
         int[] btnId = new int[]{R.id.resStatBtn, R.id.all_read,
-                R.id.dispearTime, R.id.downloadAddressBtn, R.id.bibleShowChineseEnglish,
+                R.id.dispearTime, R.id.downloadAddressBtn,
                 R.id.specialSettingBtn,
                 R.id.lableBtn, R.id.showstatusbar, R.id.screenCastingMode,
                 R.id.showtoolbar, R.id.dict_show, R.id.close_tig_btn, R.id.signSettingBtn, R.id.loadResBtn};
         int[] dId = new int[]{R.drawable.s_2, R.drawable.s_4,
-                R.drawable.s_5, R.drawable.s_6, R.drawable.book,
+                R.drawable.s_5, R.drawable.s_6,
                 R.drawable.special_setting,
                 R.drawable.label_icon, R.drawable.statuslan, R.drawable.screen_casting_mode,
                 R.drawable.lan, R.drawable.spz, R.drawable.gth2, R.drawable.finger, R.drawable.load};
@@ -164,26 +163,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
 
     private void toast(String s) {
         Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * 经节中英显示设置
-     */
-    private void setCEBtn() {
-        Button btn = binding.bibleShowChineseEnglishBtn;
-        int v = Setting.getValueI(Setting.SHOW_CHINESE_ENGLISH);
-        btn.setText(getCEText(v));
-
-        btn.setOnClickListener(v1 -> {
-            int v2 = Setting.getValueI(Setting.SHOW_CHINESE_ENGLISH);
-            v2++;
-            if (v2 > 3)
-                v2 = 1;
-            Setting.updateSetting(Setting.SHOW_CHINESE_ENGLISH, v2);
-            btn.setText(getCEText(v2));
-        });
-
-        binding.bibleShowChineseEnglishHelp.setOnClickListener(v2 -> toast("部分诗歌详情中有相关经节"));
     }
 
     /**

@@ -34,7 +34,7 @@ public class Setting {
     /**
      * 相关经节中英显示
      */
-    public static final int SHOW_CHINESE_ENGLISH = 7;
+    //public static final int SHOW_CHINESE_ENGLISH = 7;
     /**
      * 收藏夹
      */
@@ -212,7 +212,7 @@ public class Setting {
             defaultMap.put(LYRIC_SIZE, Setting.lyric_default_text_size);
             defaultMap.put(PDF_TIME, 0);
             defaultMap.put(DISAPPEAR_TIME, SettingDialog.getInitDisappearTime());
-            defaultMap.put(SHOW_CHINESE_ENGLISH, show_chinese_english_default);
+            //defaultMap.put(SHOW_CHINESE_ENGLISH, show_chinese_english_default);
             defaultMap.put(RES_VERSION, 0);
             defaultMap.put(MP3_COUNT_CACHE, "");
             defaultMap.put(COLLECT, "");

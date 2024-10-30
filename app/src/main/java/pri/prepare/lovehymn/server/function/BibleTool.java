@@ -1,6 +1,7 @@
 package pri.prepare.lovehymn.server.function;
 
 import android.app.Activity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +88,6 @@ public class BibleTool {
 
     public static String dealStr(String s, boolean setction_ct, Activity activity) {
         List<Section[]> list = getSections(s, activity);
-        int n = Setting.getValueI(Setting.SHOW_CHINESE_ENGLISH);
         StringBuilder sb = new StringBuilder();
         for (Section[] t : list) {
             if (setction_ct) {
@@ -98,31 +98,18 @@ public class BibleTool {
                         sb.append("-").append(secs[secs.length - 1].SectionNum);
                     }
 
-                    if ((n & 1) == 1) {
-                        sb.append("\r\n");
-                        for (Section le : secs)
-                            if (chineseMap.containsKey(le.getKeyString())) {
-                                sb.append(chineseMap.get(le.getKeyString()).substring(3));
-                            }
-                    }
-                    if ((n & 2) == 2) {
-                        sb.append("\r\n");
-                        for (Section le : secs)
-                            if (englishMap.containsKey(le.getKeyString()) && ((n & 2) == 2)) {
-                                sb.append(englishMap.get(le.getKeyString()).substring(3));
-                            }
-                    }
+                    sb.append("\r\n");
+                    for (Section le : secs)
+                        if (chineseMap.containsKey(le.getKeyString())) {
+                            sb.append(chineseMap.get(le.getKeyString()).substring(3));
+                        }
                 }
             } else {
                 for (Section le : t) {
                     sb.append("\r\n").append(le.toString());
-                    if (chineseMap.containsKey(le.getKeyString()) && ((n & 1) == 1)) {
+                    if (chineseMap.containsKey(le.getKeyString())) {
                         sb.append("\r\n");
                         sb.append(chineseMap.get(le.getKeyString()).substring(3));
-                    }
-                    if (englishMap.containsKey(le.getKeyString()) && ((n & 2) == 2)) {
-                        sb.append("\r\n");
-                        sb.append(englishMap.get(le.getKeyString()).substring(3));
                     }
                 }
             }

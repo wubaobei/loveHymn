@@ -32,6 +32,7 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import pri.prepare.lovehymn.R;
+import pri.prepare.lovehymn.client.LoadRes;
 import pri.prepare.lovehymn.client.MainActivity;
 import pri.prepare.lovehymn.client.SettingDialog;
 import pri.prepare.lovehymn.client.tool.LOAD_ENUM;
@@ -218,8 +219,7 @@ public class Service {
      */
     public String getVersionStr(Context context) {
         try {
-            String res = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-            return res;
+            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
             return "未知版本";
         }
@@ -780,7 +780,7 @@ public class Service {
         //is book and order by book id
         if (isBookName) {
             List fileList = Arrays.asList(fs);
-            Collections.sort(fileList, (Comparator<MyFile>) (o1, o2) -> {
+            fileList.sort((Comparator<MyFile>) (o1, o2) -> {
                 if (o1.isDirectory() && o2.isFile()) {
                     return -1;
                 }
@@ -1714,6 +1714,88 @@ public class Service {
         return false;
     }
 
+    public List<LoadRes> loadResList() {
+        String path = SdCardTool.getLbPath();
+        File f = new File(path);
+
+        List<LoadRes> res = getLoadResListInResDir();
+        res.addAll(getLoadZipFrom(f, res));
+        res.addAll(getLoadZipFrom(f.getParentFile(), res));
+
+        return res;
+    }
+
+    private List<LoadRes> getLoadZipFrom(File f, List<LoadRes> r) {
+        if (f == null) {
+            return new ArrayList<>();
+        }
+        Logger.info("检查" + f.getAbsolutePath() + "下的综合包");
+        List<LoadRes> res = new ArrayList<>();
+        File[] fs = f.listFiles();
+        if (fs != null) {
+            for (File file : fs) {
+                if (file.isFile() && file.getName().endsWith("综合包.zip")) {
+                    String[] c = getBookShortNameAndFullName(file);
+                    if (c.length == 0) {
+                        throw new RuntimeException("发现不合命名规范的综合包：" + file.getAbsolutePath());
+                    } else {
+                        Book[] bs = Book.getPrivateBooks();
+                        boolean find = false;
+                        for (Book b : bs) {
+                            if (b.simpleName.toLowerCase().equals(c[0])) {
+                                find = true;
+                                if (r.stream().noneMatch(l -> l.shortName.equals(b.simpleName))) {
+                                    res.add(new LoadRes(b.simpleName, b.fullName, true, false, file.getAbsolutePath()));
+                                }
+                                break;
+                            }
+                        }
+                        if (!find) {
+                            if (r.stream().noneMatch(l -> l.shortName.equals(c[0]))) {
+                                res.add(new LoadRes(c[0], c[1], false, false, file.getAbsolutePath()));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    private List<LoadRes> getLoadResListInResDir() {
+        File resF = new File(SdCardTool.getResPath());
+        if (!resF.exists()) {
+            return new ArrayList<>();
+        }
+        File[] fs = resF.listFiles();
+        if (fs == null) {
+            return new ArrayList<>();
+        }
+        Book[] bs = Book.getPrivateBooks();
+        List<LoadRes> res = new ArrayList<>();
+
+        for (File f : fs) {
+            if (f.getName().length() == 10 && f.getName().startsWith("load")) {
+                String bookName = getLoadFileShortName(f);
+                boolean find = false;
+                for (Book b : bs) {
+                    if (b.simpleName.toLowerCase().equals(bookName)) {
+                        Logger.info("发现已加载");
+                        find = true;
+                        res.add(new LoadRes(b.simpleName, b.fullName, true, true, f.getAbsolutePath()));
+                        break;
+                    }
+                }
+                if (!find) {
+                    Logger.info("发现未加载");
+                    Map<String, String> map = MyFile.from(f.getAbsolutePath()).getMapContent();
+                    res.add(new LoadRes(bookName, map.get("chinese"), false, true, f.getAbsolutePath()));
+                }
+            }
+        }
+        return res;
+    }
+
     /**
      * 加载资源
      */
@@ -1767,7 +1849,7 @@ public class Service {
      *
      * @param f 引导文件(load-x.txt)
      */
-    private void loadPrivateResFromLoadFile(File f) {
+    public void loadPrivateResFromLoadFile(File f) {
         if (!f.getName().contains("load")) {
             throw new RuntimeException("输入文件应该为引导文件");
         }
@@ -1864,15 +1946,15 @@ public class Service {
         if (fs != null) {
             for (File file : fs) {
                 if (file.isFile() && file.getName().endsWith("综合包.zip")) {
-                    String c = getBookShortName(file);
-                    if (c.length() == 0) {
+                    String[] c = getBookShortNameAndFullName(file);
+                    if (c.length == 0) {
                         throw new RuntimeException("发现不合命名规范的综合包：" + file.getAbsolutePath());
                     } else {
-                        Logger.info("发现" + c + "的综合包");
+                        Logger.info("发现" + c[1] + "的综合包");
                         Book[] bs = Book.getPrivateBooks();
                         boolean find = false;
                         for (Book b : bs) {
-                            if (b.simpleName.toLowerCase().equals(c)) {
+                            if (b.simpleName.toLowerCase().equals(c[0])) {
                                 Logger.info("发现已加载");
                                 find = true;
                                 break;
@@ -1881,7 +1963,7 @@ public class Service {
                         if (!find) {
                             Logger.info("发现未加载");
                             unzipToLb(file);
-                            loadPrivateResFromLoadFile(new File(SdCardTool.getLbPath() + File.separator + "load-" + c + ".txt"));
+                            loadPrivateResFromLoadFile(new File(SdCardTool.getLbPath() + File.separator + "load-" + c[0] + ".txt"));
                         }
                     }
                 }
@@ -1894,18 +1976,19 @@ public class Service {
      *
      * @param file
      */
-    private void unzipToLb(File file) throws IOException {
+    public void unzipToLb(File file) throws IOException {
         Logger.info("开始解压" + file.getAbsolutePath());
-        unzip(SdCardTool.getLbPath(), file.getAbsolutePath(), new String[0]);
+        unzip(SdCardTool.getLbPath(), file.getAbsolutePath(), new String[1]);
         Logger.info("解压完成");
     }
 
-    private String getBookShortName(File file) {
+    private String[] getBookShortNameAndFullName(File file) {
         String name = file.getName();
         char c = name.charAt(name.length() - 8);
         if (c >= 'a' && c <= 'z') {
-            return String.valueOf(c);
+            return new String[]{String.valueOf(c), name.substring(0, name.indexOf(String.valueOf(c)))};
         }
-        return "";
+        return new String[0];
     }
+
 }

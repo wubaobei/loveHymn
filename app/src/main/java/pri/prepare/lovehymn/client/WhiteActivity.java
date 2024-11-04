@@ -85,6 +85,7 @@ public class WhiteActivity extends AppCompatActivity {
     private void setPdfViewZoom() {
         PDFView pdfView = binding.pdfv2;
         if (isLandscape()) {
+            Tool.hideStatusBar(this);
             pdfView.setMinZoom(0.6f);
         } else {
             pdfView.setMinZoom(1f);

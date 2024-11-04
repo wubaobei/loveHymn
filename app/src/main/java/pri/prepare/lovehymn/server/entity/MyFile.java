@@ -112,7 +112,7 @@ public class MyFile extends File {
                 contents.add(tempString.trim());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.exception(e);
         }
         return contents.toArray(new String[0]);
     }

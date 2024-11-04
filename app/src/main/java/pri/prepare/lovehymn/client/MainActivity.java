@@ -137,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
                         Logger.info("quick error");
                         Logger.exception(e);
                     }
-                } else
-                    Tool.ShowDialog(this, vs[0], vs[1]);
+                } else{
+                    Tool.ShowDialog(this, vs[0], vs[1]);}
                 return true;
             }
             return false;
@@ -225,13 +225,11 @@ public class MainActivity extends AppCompatActivity {
             getPdfV0().zoomTo(sk);
             getPdfV1().zoomTo(sk);
             getPdfV0().setPositionOffset(0f);
-            Logger.info("screenCastingMode " + getPdfV0().getZoom());
         } else if (isLandscape()) {
             getPdfV0().setMinZoom(0.6f);
             getPdfV1().setMinZoom(0.6f);
             getPdfV0().setMaxZoom(3f);
             getPdfV1().setMaxZoom(3f);
-            Logger.info("isLandscape " + getPdfV0().getZoom());
         } else {
             getPdfV0().setMinZoom(1f);
             getPdfV1().setMinZoom(1f);

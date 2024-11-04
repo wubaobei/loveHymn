@@ -198,21 +198,23 @@ public class SettingDialog extends Dialog implements IShowDialog {
     private void setLoadResBtn() {
         binding.loadResBtn.setOnClickListener(v -> { //搜索资源
             //由于一般的附加包在打开时已经加载了，所以这里只加载其他的一些资源
-            try {
-                String t = Service.getC().autoLoadOtherRes();
-                Tool.ShowDialog(getContext(), "加载完成", t);
-            } catch (Exception e) {
-                Logger.exception(e);
-                Tool.ShowDialog(getContext(), "加载异常", e.getMessage());
-            }
+//            try {
+//                String t = Service.getC().autoLoadOtherRes();
+//                Tool.ShowDialog(getContext(), "加载完成", t);
+//            } catch (Exception e) {
+//                Logger.exception(e);
+//                Tool.ShowDialog(getContext(), "加载异常", e.getMessage());
+//            }
+            LoadResDialog dialog=new LoadResDialog(getContext());
+            dialog.showDialog();
         });
-        binding.loadResBtn.setOnLongClickListener(v -> {
-            for (Book privateBook : Book.getPrivateBooks()) {
-                privateBook.delete();
-            }
-            Tool.ShowDialog(getContext(), "提示", "已删除附加的诗歌本。如果是误删除，请再次点击‘加载资源按钮’");
-            return true;
-        });
+//        binding.loadResBtn.setOnLongClickListener(v -> {
+//            for (Book privateBook : Book.getPrivateBooks()) {
+//                privateBook.delete();
+//            }
+//            Tool.ShowDialog(getContext(), "提示", "已删除附加的诗歌本。如果是误删除，请再次点击‘加载资源按钮’");
+//            return true;
+//        });
     }
 
     /**

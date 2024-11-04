@@ -29,10 +29,12 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
-        <activity android:name=".client.WhiteActivity" />
+        <activity
+            android:name=".client.WhiteActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".client.MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".client.Mp3ListActivity"
             android:screenOrientation="portrait"

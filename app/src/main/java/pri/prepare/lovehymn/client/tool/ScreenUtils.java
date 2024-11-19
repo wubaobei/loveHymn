@@ -3,12 +3,22 @@ package pri.prepare.lovehymn.client.tool;
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Build;
+import android.view.Surface;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 public class ScreenUtils {
 
+    /**
+     * 横屏
+     *
+     * @return
+     */
+    public static boolean isLandscape(WindowManager windowManager) {
+        int rotation = windowManager.getDefaultDisplay().getRotation();
+        return rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270;
+    }
     /**
      * 获取屏幕宽度
      */

@@ -1,5 +1,7 @@
 ﻿
 //作者介绍
+名字：泰德曼(C.A.Tydeman)
+年龄：1842-1914
 名字：汉斯·内举立(Hans GeorNageli)
 年龄：1773-1836
 名字：爱德华·丹尼(Edward Denny)

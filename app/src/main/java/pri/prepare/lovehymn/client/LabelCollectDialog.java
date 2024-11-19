@@ -1,6 +1,7 @@
 package pri.prepare.lovehymn.client;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
@@ -8,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -15,12 +17,15 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.tool.I4LC;
 import pri.prepare.lovehymn.client.tool.I4Set;
 import pri.prepare.lovehymn.client.tool.IRefresh;
 import pri.prepare.lovehymn.client.tool.IShowDialog;
+import pri.prepare.lovehymn.client.tool.ScreenUtils;
 import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.client.tool.enuCm;
 import pri.prepare.lovehymn.databinding.LabelCollectionLayoutBinding;
@@ -44,14 +49,16 @@ public class LabelCollectDialog extends Dialog implements IShowDialog {
     private MyFile _file;
     private Hymn hymn;
 
-    private LabelCollectionLayoutBinding binding ;
+    private LabelCollectionLayoutBinding binding;
+    private WindowManager windowManager;
 
     @SuppressLint("SetTextI18n")
-    public LabelCollectDialog(@NonNull Context context, MyFile file, I4LC i4LC, I4Set i4Set) {
+    public LabelCollectDialog(@NonNull Activity context, MyFile file, I4LC i4LC, I4Set i4Set) {
         super(context);
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.label_collection_layout, null, false);
         setContentView(binding.getRoot());
         getWindow().setBackgroundDrawable(new BitmapDrawable());
+        windowManager = context.getWindowManager();
 
         _i4lc = i4LC;
         _file = file;
@@ -75,7 +82,7 @@ public class LabelCollectDialog extends Dialog implements IShowDialog {
             }
         });
         binding.myStep.setOnClickListener(v -> {
-            AllStepDialog sd=new AllStepDialog(context);
+            AllStepDialog sd = new AllStepDialog(context);
             sd.showDialog();
             dismiss();
         });
@@ -130,10 +137,25 @@ public class LabelCollectDialog extends Dialog implements IShowDialog {
         binding.remark.setText(s);
     };
 
+    List<LinearLayout> llList = new ArrayList<>();
+
     private final IRefresh iRefresh = () -> {
         LabelType[] lts = LabelType.getAll();
-        binding.lll1.removeAllViews();
-        binding.lll2.removeAllViews();
+
+        binding.lll.removeAllViews();
+        int n;
+        if (ScreenUtils.isLandscape(windowManager)) {
+            n = 4;
+        } else {
+            n = 2;
+        }
+
+        for (int i = 0; i < n; i++) {
+            LinearLayout ll = new LinearLayout(getContext());
+            ll.setOrientation(LinearLayout.VERTICAL);
+            binding.lll.addView(ll);
+        }
+
         if (lts.length == 0) {
             binding.hymnLabel.setText("没有标签，去其他设置里添加标签吧");
         } else {
@@ -165,13 +187,15 @@ public class LabelCollectDialog extends Dialog implements IShowDialog {
                 lp.setMargins(0, 0, 0, 0);
                 tv.setLayoutParams(lp);
 
-                if (ind % 2 == 0)
-                    binding.lll1.addView(tv);
-                else
-                    binding.lll2.addView(tv);
+                for (int i = 0; i < n; i++) {
+                    if (ind % n == i) {
+                        ((LinearLayout) binding.lll.getChildAt(i)).addView(tv);
+                    }
+                }
                 ind++;
             }
         }
+
     };
 
     @Override
@@ -185,6 +209,12 @@ public class LabelCollectDialog extends Dialog implements IShowDialog {
         //设置触摸对话框以外的地方取消对话框
         setCanceledOnTouchOutside(true);
         show();
+
+        if(ScreenUtils.isLandscape(windowManager)){
+            WindowManager.LayoutParams params = getWindow().getAttributes();
+            params.width = 1500;
+            getWindow().setAttributes(params);
+        }
     }
 
     private int mod = 0;

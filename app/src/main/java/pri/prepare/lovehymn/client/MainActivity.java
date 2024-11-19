@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
 
             updateKAfterTime = System.currentTimeMillis() + 1000;
 
-            if (isLandscape()) {
+            if (ScreenUtils.isLandscape(getWindowManager())) {
                 Tool.hideStatusBar(this);
                 screenCastingMode = Setting.getValueB(Setting.SCREEN_CASTING_MODE);
             } else if (Setting.getValueB(Setting.STATUS_BAR_SHOW) && !showTime) {
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
             getPdfV0().zoomTo(sk);
             getPdfV1().zoomTo(sk);
             getPdfV0().setPositionOffset(0f);
-        } else if (isLandscape()) {
+        } else if (ScreenUtils.isLandscape(getWindowManager())) {
             getPdfV0().setMinZoom(0.6f);
             getPdfV1().setMinZoom(0.6f);
             getPdfV0().setMaxZoom(3f);
@@ -260,15 +260,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * 横屏
-     *
-     * @return
-     */
-    private boolean isLandscape() {
-        int rotation = getWindowManager().getDefaultDisplay().getRotation();
-        return rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270;
-    }
 
     /**
      * 持续多少刷新间隔（60HZ）

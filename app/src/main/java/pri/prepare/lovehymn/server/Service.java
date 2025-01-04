@@ -1714,7 +1714,7 @@ public class Service {
         return false;
     }
 
-    public List<LoadRes> loadResList() {
+    public List<LoadRes> loadResList() throws IOException {
         String path = SdCardTool.getLbPath();
         File f = new File(path);
 
@@ -1725,7 +1725,7 @@ public class Service {
         return res;
     }
 
-    private List<LoadRes> getLoadZipFrom(File f, List<LoadRes> r) {
+    private List<LoadRes> getLoadZipFrom(File f, List<LoadRes> r) throws IOException {
         if (f == null) {
             return new ArrayList<>();
         }
@@ -1745,14 +1745,23 @@ public class Service {
                             if (b.simpleName.toLowerCase().equals(c[0])) {
                                 find = true;
                                 if (r.stream().noneMatch(l -> l.shortName.equals(b.simpleName))) {
-                                    res.add(new LoadRes(b.simpleName, b.fullName, true, false, file.getAbsolutePath()));
+                                    res.add(new LoadRes(b.simpleName, b.fullName, true, false, file.getAbsolutePath(), null, null));
                                 }
                                 break;
                             }
                         }
                         if (!find) {
                             if (r.stream().noneMatch(l -> l.shortName.equals(c[0]))) {
-                                res.add(new LoadRes(c[0], c[1], false, false, file.getAbsolutePath()));
+                                try {
+                                    Service.getC().unzipToLb(file);
+                                    File ft = new File(SdCardTool.getResPath() + File.separator + "load-" + c[0] + ".txt");
+                                    String[] rd = getReadMeAndDaily(ft);
+
+                                    res.add(new LoadRes(c[0], c[1], false, false, file.getAbsolutePath(), rd[0], rd[1]));
+                                } catch (IOException e) {
+                                    Logger.exception(e);
+                                    throw e;
+                                }
                             }
                         }
                     }
@@ -1777,19 +1786,20 @@ public class Service {
         for (File f : fs) {
             if (f.getName().length() == 10 && f.getName().startsWith("load")) {
                 String bookName = getLoadFileShortName(f);
+                String[] readMeAndDaily = getReadMeAndDaily(f);
                 boolean find = false;
                 for (Book b : bs) {
                     if (b.simpleName.toLowerCase().equals(bookName)) {
                         Logger.info("发现已加载");
                         find = true;
-                        res.add(new LoadRes(b.simpleName, b.fullName, true, true, f.getAbsolutePath()));
+                        res.add(new LoadRes(b.simpleName, b.fullName, true, true, f.getAbsolutePath(), readMeAndDaily[0], readMeAndDaily[1]));
                         break;
                     }
                 }
                 if (!find) {
                     Logger.info("发现未加载");
                     Map<String, String> map = MyFile.from(f.getAbsolutePath()).getMapContent();
-                    res.add(new LoadRes(bookName, map.get("chinese"), false, true, f.getAbsolutePath()));
+                    res.add(new LoadRes(bookName, map.get("chinese"), false, true, f.getAbsolutePath(), readMeAndDaily[0], readMeAndDaily[1]));
                 }
             }
         }
@@ -1868,7 +1878,6 @@ public class Service {
             //重命名文件夹 拼音转汉字
             File pyFile = new File(SdCardTool.getLbPath() + File.separator + map.get("pinyin"));
             File chineseFile = new File(SdCardTool.getLbPath() + File.separator + map.get("chinese"));
-//            File mp3Dir = new File(SdCardTool.getLbPath() + File.separator + map.get("shortname"));
             if (pyFile.isDirectory() && (!chineseFile.exists())) {
                 pyFile.renameTo(chineseFile);
             }
@@ -1980,6 +1989,14 @@ public class Service {
         Logger.info("开始解压" + file.getAbsolutePath());
         unzip(SdCardTool.getLbPath(), file.getAbsolutePath(), new String[1]);
         Logger.info("解压完成");
+    }
+
+    private String[] getReadMeAndDaily(File file) {
+        Map<String, String> map = MyFile.from(file.getAbsolutePath()).getMapContent();
+        if (map.containsKey("readme") && map.containsKey("daily")) {
+            return new String[]{map.get("readme"), map.get("daily")};
+        }
+        throw new RuntimeException("资源不规范 缺少字段readme或readme");
     }
 
     private String[] getBookShortNameAndFullName(File file) {

@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import pri.prepare.lovehymn.R;
@@ -32,10 +33,14 @@ public class LoadResDialog extends Dialog implements IShowDialog {
         setContentView(binding.getRoot());
         getWindow().setBackgroundDrawable(new BitmapDrawable());
 
-        loadResList();
+        try {
+            loadResList();
+        } catch (IOException e) {
+            binding.textView4.setText("出错了，请联系开发者：" + e.getMessage());
+        }
     }
 
-    private void loadResList() {
+    private void loadResList() throws IOException {
         List<LoadRes> res = Service.getC().loadResList();
         for (LoadRes re : res) {
             LinearLayout l = new LinearLayout(getContext());
@@ -60,17 +65,8 @@ public class LoadResDialog extends Dialog implements IShowDialog {
                     btn.setText("解压并加载");
                 }
                 btn.setOnClickListener(v -> {
-                    try {
-                        if (!re.isDir) {
-                            Service.getC().unzipToLb(new File(re.path));
-                        }
-                        Service.getC().loadPrivateResFromLoadFile(new File(SdCardTool.getResPath() + File.separator + "load-" + re.shortName + ".txt"));
-                        toast("加载《" + re.fullNane + "》完成");
-                        dismiss();
-                    } catch (Exception e) {
-                        Logger.exception(e);
-                        toast("加载《" + re.fullNane + "》失败：" + e.getMessage());
-                    }
+                    new ReadMeDialog(getContext(), re).showDialog();
+                    dismiss();
                 });
             }
         }

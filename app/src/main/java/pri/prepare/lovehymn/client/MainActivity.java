@@ -1270,7 +1270,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         musicManager.setProgress(((double) seekBar.getProgress()) / seekBar.getMax());
-//                        DisplayStat.getC().resetToolBar();
                     }
                 });
                 randomBtn.setOnClickListener(v -> {

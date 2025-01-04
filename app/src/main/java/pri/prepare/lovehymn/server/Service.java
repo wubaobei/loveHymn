@@ -46,6 +46,7 @@ import pri.prepare.lovehymn.server.dal.LetterD;
 import pri.prepare.lovehymn.server.entity.Author;
 import pri.prepare.lovehymn.server.entity.Book;
 import pri.prepare.lovehymn.server.entity.Content;
+import pri.prepare.lovehymn.server.entity.DailyMsg;
 import pri.prepare.lovehymn.server.entity.Hymn;
 import pri.prepare.lovehymn.server.entity.Label;
 import pri.prepare.lovehymn.server.entity.LabelType;
@@ -1757,7 +1758,7 @@ public class Service {
                                     File ft = new File(SdCardTool.getResPath() + File.separator + "load-" + c[0] + ".txt");
                                     String[] rd = getReadMeAndDaily(ft);
 
-                                    res.add(new LoadRes(c[0], c[1], false, false, file.getAbsolutePath(), rd[0], rd[1]));
+                                    res.add(new LoadRes(c[0], c[1], false, true, ft.getAbsolutePath(), rd[0], rd[1]));
                                 } catch (IOException e) {
                                     Logger.exception(e);
                                     throw e;
@@ -1874,7 +1875,14 @@ public class Service {
                 throw new RuntimeException("缺少诗歌歌词等信息的资源文件 " + resF.getAbsolutePath());
             }
         }
-        if (map.containsKey("shortname") && map.containsKey("pinyin") && map.containsKey("chinese") && map.containsKey("privateId")) {
+        if (map.containsKey("shortname") && map.containsKey("pinyin") && map.containsKey("chinese")
+                && map.containsKey("privateId") && map.containsKey("daily")) {
+            try {
+                DailyMsg.save(map.get("shortname"), map.get("daily"));
+                Logger.info("插入daily成功:" + map.get("shortname") + " " + map.get("daily"));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             //重命名文件夹 拼音转汉字
             File pyFile = new File(SdCardTool.getLbPath() + File.separator + map.get("pinyin"));
             File chineseFile = new File(SdCardTool.getLbPath() + File.separator + map.get("chinese"));
@@ -1897,7 +1905,7 @@ public class Service {
                 Logger.exception(e);
             }
         } else {
-            throw new RuntimeException("引导文件" + f.getAbsolutePath() + "错误，缺少必要的key：shortname pinyin chinese privateId");
+            throw new RuntimeException("引导文件" + f.getAbsolutePath() + "错误，缺少必要的key：shortname pinyin chinese privateId daily");
         }
     }
 

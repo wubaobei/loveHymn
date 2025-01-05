@@ -1,24 +1,19 @@
 package pri.prepare.lovehymn.client;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -60,9 +55,11 @@ import pri.prepare.lovehymn.client.tool.enuCm;
 import pri.prepare.lovehymn.databinding.ActivityMainBinding;
 import pri.prepare.lovehymn.server.UpdateHistory;
 import pri.prepare.lovehymn.server.entity.Book;
+import pri.prepare.lovehymn.server.entity.DailyMsg;
 import pri.prepare.lovehymn.server.entity.Label;
 import pri.prepare.lovehymn.server.entity.MyFile;
 import pri.prepare.lovehymn.server.entity.PersonRemark;
+import pri.prepare.lovehymn.server.entity.WarnDate;
 import pri.prepare.lovehymn.server.function.CharConst;
 import pri.prepare.lovehymn.server.function.CollectTool;
 import pri.prepare.lovehymn.server.function.Constant;
@@ -137,8 +134,9 @@ public class MainActivity extends AppCompatActivity {
                         Logger.info("quick error");
                         Logger.exception(e);
                     }
-                } else{
-                    Tool.ShowDialog(this, vs[0], vs[1]);}
+                } else {
+                    Tool.ShowDialog(this, vs[0], vs[1]);
+                }
                 return true;
             }
             return false;
@@ -900,9 +898,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                RelativeLayout iv = binding.rLayout;
                 TextView back1 = binding.tvback;
-                TextView tvhide = binding.tvShapeHide;
                 TableLayout cal = binding.tableLayout;
 
                 if (lastInToast <= 0 && toastHasValue) {
@@ -1393,6 +1389,14 @@ public class MainActivity extends AppCompatActivity {
             loadPdf(f.getPdf(), modifyHis);
             return;
         }
+
+        try {
+            dailyWarn(f);
+        } catch (Exception e) {
+            Logger.exception(e);
+            toastInTimerH(e.getMessage());
+        }
+
         if ((lastFile != null && (!lastFile.getAbsolutePath().equals(f.getAbsolutePath())))) {
             timeTool.Restart();
         }
@@ -1443,6 +1447,26 @@ public class MainActivity extends AppCompatActivity {
             });
         } catch (Exception e) {
             Logger.exception(e);
+        }
+    }
+
+    private void dailyWarn(MyFile f) throws IllegalAccessException {
+        for (Book publicBook : Book.getPublicBooks()) {
+            if (f.getAbsolutePath().contains(publicBook.fullName)) {
+                return;
+            }
+        }
+        for (Book privateBook : Book.getPrivateBooks()) {
+            if (f.getAbsolutePath().contains(privateBook.fullName)) {
+                if (!WarnDate.hasWarnToday(privateBook.fullName)) {
+                    new AlertDialog.Builder(MainActivity.this).setTitle("每日提醒")
+                            .setMessage(DailyMsg.get(privateBook.fullName))
+                            .show();
+                    WarnDate.addOrUpdateToday(privateBook.fullName);
+                    return;
+                }
+                return;
+            }
         }
     }
 

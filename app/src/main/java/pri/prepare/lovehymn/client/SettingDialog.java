@@ -25,6 +25,8 @@ import pri.prepare.lovehymn.client.tool.IShowDialog;
 import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.databinding.SettingLayoutBinding;
 import pri.prepare.lovehymn.server.UpdateHistory;
+import pri.prepare.lovehymn.server.dal.DailyMsgD;
+import pri.prepare.lovehymn.server.dal.WarnDateD;
 import pri.prepare.lovehymn.server.entity.Book;
 import pri.prepare.lovehymn.server.function.Constant;
 import pri.prepare.lovehymn.server.Service;
@@ -205,6 +207,9 @@ public class SettingDialog extends Dialog implements IShowDialog {
             for (Book privateBook : Book.getPrivateBooks()) {
                 privateBook.delete();
             }
+            WarnDateD.clearAll();
+            DailyMsgD.clearAll();
+
             Tool.ShowDialog(getContext(), "提示", "(这是调试用的)已删除附加的诗歌本。如果是误删除，请再次点击‘加载资源按钮’");
             return true;
         });

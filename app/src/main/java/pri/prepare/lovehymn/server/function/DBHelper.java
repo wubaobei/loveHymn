@@ -23,6 +23,7 @@ import pri.prepare.lovehymn.server.dal.SearchIndexD;
 import pri.prepare.lovehymn.server.dal.SectionD;
 import pri.prepare.lovehymn.server.dal.SectionRelatedD;
 import pri.prepare.lovehymn.server.dal.SettingD;
+import pri.prepare.lovehymn.server.dal.WarnDateD;
 import pri.prepare.lovehymn.server.entity.Logger;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -45,8 +46,9 @@ public class DBHelper extends SQLiteOpenHelper {
             "211221 新增了许多作者信息，推荐清空app数据使之重新加载",
             "211223 作者信息终于补完了，摘自诗歌背景或https://hymnary.org/",
             "220106 一本诗歌本支持多个白版pdf",
-            "220504 新增标签组字段"};
-    private static final int DB_VERSION = 250104;
+            "220504 新增标签组字段",
+            "250105 新增提醒的表：对于非正式出版的诗歌本"};
+    private static final int DB_VERSION = 250106;
     private static final String DB_NAME = "msg.db";
 
     public static DBHelper current;
@@ -75,7 +77,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private final Class[] cc = new Class[]{AuthorD.class, AuthorRelatedD.class, ContentD.class, ContentTypeD.class, HymnD.class,
             LetterD.class, SearchIndexD.class, SectionD.class, SectionRelatedD.class, SettingD.class, LabelD.class, LabelTypeD.class,
-            BookD.class, DailyMsgD.class};
+            BookD.class, DailyMsgD.class, WarnDateD.class};
     private final String[] dropTables = new String[]{};
 
     @Override

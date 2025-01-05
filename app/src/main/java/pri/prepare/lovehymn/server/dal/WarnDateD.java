@@ -6,13 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import pri.prepare.lovehymn.server.function.DBHelper;
 import pri.prepare.lovehymn.server.function.DBUtil;
 
-public class DailyMsgD extends DaoBase {
-    public String shortName;
-    public String fullName;
-    public String msg;
+public class WarnDateD extends DaoBase {
+    public String name;
+    public String lastTime;
 
     public static void clearAll() {
-        String sql = "delete from " + DailyMsgD.class.getSimpleName();
+        String sql = "delete from " + WarnDateD.class.getSimpleName() ;
         DBHelper.execSQL(sql);
     }
 
@@ -23,7 +22,7 @@ public class DailyMsgD extends DaoBase {
             id = DBUtil.getC().getLastId(this.getClass());
             return id;
         }
-        return -2;
+        return -1;
     }
 
     @Override
@@ -31,14 +30,14 @@ public class DailyMsgD extends DaoBase {
         DBUtil.getC().update(this);
     }
 
-    public static DailyMsgD getByName(String name) throws IllegalAccessException {
-        String sql = DBUtil.getC().getSelectSql(DailyMsgD.class) +
-                " where shortName='" + name + "' or fullName='" + name + "'";
+    public static WarnDateD getByName(String name) throws IllegalAccessException {
+        String sql = DBUtil.getC().getSelectSql(WarnDateD.class) +
+                " where name='" + name + "'";
 
         SQLiteDatabase db = DBHelper.current.getWritableDB();
         try (Cursor cursor = db.rawQuery(sql, null)) {
             if (cursor.moveToNext()) {
-                DailyMsgD a = new DailyMsgD();
+                WarnDateD a = new WarnDateD();
                 return DBUtil.getC().convert(cursor, a);
             }
             return null;

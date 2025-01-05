@@ -74,7 +74,6 @@ public class HymnD extends DaoBase {
     }
 
     public static HymnD[] getByBookId(int bookId) throws IllegalAccessException {
-
         ArrayList<HymnD> res = new ArrayList<>();
         String sql;
         if(bookId== Book.ALL.id){

@@ -1878,7 +1878,7 @@ public class Service {
         if (map.containsKey("shortname") && map.containsKey("pinyin") && map.containsKey("chinese")
                 && map.containsKey("privateId") && map.containsKey("daily")) {
             try {
-                DailyMsg.save(map.get("shortname"), map.get("daily"));
+                DailyMsg.save(map.get("shortname"), map.get("chinese"), map.get("daily"));
                 Logger.info("插入daily成功:" + map.get("shortname") + " " + map.get("daily"));
             } catch (Exception e) {
                 throw new RuntimeException(e);

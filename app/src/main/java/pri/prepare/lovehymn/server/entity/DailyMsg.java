@@ -13,21 +13,22 @@ public class DailyMsg {
 
     private final DailyMsgD dao;
 
-    public static String get(String shortName) {
+    public static String get(String name) {
         try {
-            return DailyMsgD.getByName(shortName).msg;
+            return DailyMsgD.getByName(name).msg;
         } catch (IllegalAccessException e) {
-            return "出错了，未找到" + shortName + "的每日信息";
+            return "出错了，未找到" + name + "的每日信息";
         }
     }
 
-    public static void save(String shortName, String msg) throws Exception {
+    public static void save(String shortName,String fullName, String msg) throws Exception {
         try {
             DailyMsgD msgD = DailyMsgD.getByName(shortName);
             if (msgD == null) {
                 DailyMsgD d = new DailyMsgD();
                 d.msg = msg;
                 d.shortName = shortName;
+                d.fullName=fullName;
                 d.insert(false);
             } else {
                 msgD.msg = msg;

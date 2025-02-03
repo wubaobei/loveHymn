@@ -261,8 +261,9 @@ public class Service {
     }
 
     public MyFile previousFile(MyFile f) {
-        if (!f.isPdf())
+        if (!f.isPdf()){
             return null;
+        }
 
         String s = f.getName();
         String ss = s.substring(0, s.length() - 4);
@@ -271,11 +272,13 @@ public class Service {
             if (sp.length == 2) {
                 if (sp[1].equals("2")) {
                     String newPath = f.getAbsolutePath().replace("-2", "-1");
-                    if ((new File(newPath)).exists())
+                    if ((new File(newPath)).exists()){
                         return MyFile.from(newPath);
+                    }
                     newPath = f.getAbsolutePath().replace("-2", "");
-                    if ((new File(newPath)).exists())
+                    if ((new File(newPath)).exists()){
                         return MyFile.from(newPath);
+                    }
                     ss = ss.replace("-2", "");
                 }
             }
@@ -297,13 +300,24 @@ public class Service {
                 while (newN.length() < 9) {
                     String newN2 = (ssi - 1) + "-2" + PDF_EXTEND;
                     String newPath2 = f.getAbsolutePath().replace(s, newN2);
-                    if ((new File(newPath2)).exists())
+                    if ((new File(newPath2)).exists()){
                         return MyFile.from(newPath2);
+                    }
 
                     String newPath = f.getAbsolutePath().replace(s, newN);
-                    if ((new File(newPath)).exists())
+                    if ((new File(newPath)).exists()) {
                         return MyFile.from(newPath);
+                    }
                     newN = "0" + newN;
+                }
+                int t=ssi;
+                while(t%100!=0){
+                    t--;
+                    String d3=String.format("%03d",t);
+                    String newPath2 = f.getParentFile().getAbsolutePath()+File.separator+d3+".pdf";
+                    if(new File(newPath2).exists()){
+                        return MyFile.from(newPath2);
+                    }
                 }
 
                 //检查上一级名字是不是数字
@@ -389,8 +403,9 @@ public class Service {
     }
 
     public MyFile nextFile(MyFile f) {
-        if (!f.isPdf())
+        if (!f.isPdf()) {
             return null;
+        }
         String s = f.getName();
         String ss = s.substring(0, s.length() - 4);
         if (ss.indexOf("-") > 0) {
@@ -409,8 +424,9 @@ public class Service {
         if (isInteger(ss)) {
             {
                 String np = f.getAbsolutePath().replace(f.getName(), f.getName().substring(0, f.getName().length() - 4) + "-2") + PDF_EXTEND;
-                if ((new File(np)).exists())
+                if ((new File(np)).exists()){
                     return MyFile.from(np);
+                }
             }
             int ssi = Integer.parseInt(ss);
             if (ssi > 0) {
@@ -434,6 +450,16 @@ public class Service {
                     MyFile af = MyFile.from(f.getAbsolutePath().replace(s, "-1.pdf"));
                     if (af.exists())
                         return af;
+                }
+
+                int t=ssi;
+                while(t%100!=0){
+                    t++;
+                    String d3=String.format("%03d",t);
+                    String newPath2 = f.getParentFile().getAbsolutePath()+File.separator+d3+".pdf";
+                    if(new File(newPath2).exists()){
+                        return MyFile.from(newPath2);
+                    }
                 }
 
                 //检查上一级名字是不是数字
@@ -1650,6 +1676,7 @@ public class Service {
         boolean hasDir = isDir && lbDir.listFiles().length > 0;
         boolean hasMp3 = isDir && lbDir.dirHasMp3();
         boolean hasPdf = isDir && lbDir.dirHasPdf();
+        boolean hasD001=isDir && (new File(SdCardTool.getD001())).exists();
 
         String sp = "\r\n";
         return "安卓系统:" + android.os.Build.VERSION.RELEASE + sp
@@ -1657,7 +1684,7 @@ public class Service {
                 + "生产厂家:" + android.os.Build.BRAND + sp
                 + "读写权限:" + permission + sp
                 + "获得诗歌蓝版文件夹:" + isDir + sp
-                + "文件夹:" + hasDir + " MP3:" + hasMp3 + " pdf:" + hasPdf + sp
+                + "文件夹:" + hasDir + " MP3:" + hasMp3 + " pdf:" + hasPdf +" D001:"+hasD001+ sp
                 + "app版本:" + getVersionStr(activity);
     }
 

@@ -6,8 +6,8 @@ android {
         applicationId "pri.prepare.lovehymn"
         minSdkVersion 26
         targetSdkVersion 29
-        versionCode 95
-        versionName "2.0.0"
+        versionCode 96
+        versionName "2.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

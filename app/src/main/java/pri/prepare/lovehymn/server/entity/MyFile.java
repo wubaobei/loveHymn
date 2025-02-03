@@ -133,10 +133,10 @@ public class MyFile extends File {
     public boolean dirHasPdf() {
         for (MyFile f : listFiles()) {
             if (f.isDirectory()) {
-                if (f.dirHasPdf())
-                    return true;
-            } else if (f.isPdf())
-                return true;
+                if (f.dirHasPdf()){
+                    return true;}
+            } else if (f.isPdf()){
+                return true;}
         }
         return false;
     }

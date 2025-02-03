@@ -40,8 +40,12 @@ public class SdCardTool {
         return getRoot() + File.separator + Constant.LB_DIR_NAME;
     }
 
+    public static String getD001(){
+        return getRoot() + File.separator + Constant.LB_DIR_NAME+ File.separator+"大本"+ File.separator+"0"+ File.separator+"001.pdf";
+    }
+
     public static String getResPath() {
-        return mkdirs(SdCardTool.getLbPath() + "/" + Constant.RES_NAME);
+        return mkdirs(SdCardTool.getLbPath() +  File.separator + Constant.RES_NAME);
     }
 
     public static String getStepPath() {

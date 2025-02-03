@@ -28,7 +28,7 @@ public class SimpleTextDialog extends Dialog implements IShowDialog {
 
         if (i == DOWNLOAD) {
             ArrayList<String> list = new ArrayList<>();
-            list.add("加qq群 586536796 在群文件中下载安装包与mp3资源（建议通过电脑下载）");
+            list.add("加qq群 727411513 在群文件中下载安装包与mp3资源（建议通过电脑下载）");
             list.add("P.S. 之前通过百度网盘下载，但总被封，现在转用qq群。若qq群也失效，请加作者微信或qq");
             tv.setText(String.join("\r\n", list));
         } else if (i == AD) {

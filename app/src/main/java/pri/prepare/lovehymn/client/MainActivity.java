@@ -31,6 +31,7 @@ import com.github.barteksc.pdfviewer.PDFView;
 import java.io.File;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     private TouchUtil tt;
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         try {
             tt.set(this.getWindowManager());
             tt.set(0, 0);
@@ -250,8 +251,7 @@ public class MainActivity extends AppCompatActivity {
             if (height == 0) {
                 return 1f;
             }
-            float f = 4f / 3 / width * height;
-            return f;
+            return 4f / 3 / width * height;
         } catch (Exception e) {
             Logger.exception(e);
             return 1f;
@@ -506,7 +506,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void beginHideAnimation() {
-        showBarStartTime = 0l;
+        showBarStartTime = 0L;
         RelativeLayout iv = binding.rLayout;
         RelativeLayout iv2 = binding.rLayout2;
 
@@ -942,30 +942,43 @@ public class MainActivity extends AppCompatActivity {
     };
 
     /**
-     * 检查mp3文件夹结构（手动解压）
+     * 检查文件夹结构（处理手动解压的情况）
      */
     private void checkFolderConstruction() {
-        File f = new File(SdCardTool.getLbPath());
-        if (!f.exists()) {
-            return;
-        }
-        File[] fs = f.listFiles();
-        if (fs == null) {
-            return;
-        }
-        String aim = "附加包";
-        for (File file : fs) {
-            if (file.isDirectory() && file.getName().endsWith(aim)) {
-                Logger.info("检测到'" + aim + "'文件夹，开始处理");
-                moveToParent(file);
+        File[] farr = new File[]{new File(SdCardTool.getLbPath()), new File(SdCardTool.getRoot())};
+        for (File f : farr) {
+            if (!f.exists()) {
+                return;
+            }
+            File[] fs = f.listFiles();
+            if (fs == null) {
+                return;
+            }
+            String aim = "附加包";
+            for (File file : fs) {
+                if (file.isDirectory() && file.getName().endsWith(aim)) {
+                    Logger.info("检测到'" + aim + "'文件夹，开始处理");
+                    moveToLb(file);
+                    Logger.info("处理完成");
+                }
+            }
+            aim = "综合包";
+            for (File file : fs) {
+                if (file.isDirectory() && file.getName().endsWith(aim)) {
+                    Logger.info("检测到'" + aim + "'文件夹，开始处理");
+                    moveToLb(file);
+                    Logger.info("处理完成");
+                }
             }
         }
     }
 
-
-    public static void moveToParent(File f) {
+    /**
+     * 将文件夹里的文件移出来并删除当前文件
+     */
+    public static void moveToLb(File f) {
         for (File file : f.listFiles()) {
-            moveFile(file, f.getParent() + File.separator + file.getName());
+            moveFile(file, SdCardTool.getLbPath() + File.separator + file.getName());
         }
         forceDelete(f);
     }
@@ -1053,7 +1066,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openSettingDialog() {
         try {
-            SettingDialog cl = new SettingDialog(this, i4Set, this.getWindowManager());
+            SettingDialog cl = new SettingDialog(this, i4Set);
             cl.showDialog();
         } catch (Exception e) {
             Logger.exception(e);
@@ -1078,7 +1091,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openCatalogDialog(String searchString) {
         try {
-            CatalogDialog cl = new CatalogDialog(this, i4Catalog, searchString, i4StopMp3, lastFile.getHymn());
+            CatalogDialog cl = new CatalogDialog(this, i4Catalog, searchString, i4StopMp3, lastFile == null ? null : lastFile.getHymn());
             cl.showDialog();
         } catch (Exception e) {
             Logger.exception(e);
@@ -1229,8 +1242,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (mp3 != null) {
-                if (musicManager == null)
+                if (musicManager == null) {
                     musicManager = new MusicManager(mp3);
+                }
                 mp3StateSet();
                 playBtn.setOnClickListener(v -> {
 //                    DisplayStat.getC().resetToolBar();
@@ -1459,9 +1473,12 @@ public class MainActivity extends AppCompatActivity {
         for (Book privateBook : Book.getPrivateBooks()) {
             if (f.getAbsolutePath().contains(privateBook.fullName)) {
                 if (!WarnDate.hasWarnToday(privateBook.fullName)) {
-                    new AlertDialog.Builder(MainActivity.this).setTitle("每日提醒")
-                            .setMessage(DailyMsg.get(privateBook.fullName))
-                            .show();
+                    //青年诗歌每天需要提醒，但标语诗歌等不需要
+                    if (DailyMsg.get(privateBook.fullName) != null && DailyMsg.get(privateBook.fullName).length() > 0) {
+                        new AlertDialog.Builder(MainActivity.this).setTitle("每日提醒")
+                                .setMessage(DailyMsg.get(privateBook.fullName))
+                                .show();
+                    }
                     WarnDate.addOrUpdateToday(privateBook.fullName);
                     return;
                 }

@@ -127,7 +127,7 @@ public class Service {
             MainActivity.msgWait = "正在解压 " + pathT + "\r\n预计耗时" + t + "-" + (2 * t) + "秒\r\n请勿退出";
             Logger.info("开始解压 " + path);
             try {
-                num += unzip(resPath, path, otherMsg);
+                num += unzip(resPath, path, otherMsg, true,false);
 
                 File rn = new File(path);
                 if (rn.delete())
@@ -1122,7 +1122,7 @@ public class Service {
      * @param msg 解压过程的问题数据的记录
      * @return 解压的文件数
      */
-    public int unzip(String target, String source, String[] msg) throws IOException {
+    public int unzip(String target, String source, String[] msg, boolean toast, boolean overWrite) throws IOException {
         long t1 = System.currentTimeMillis();
         int res = 0;
 
@@ -1149,8 +1149,12 @@ public class Service {
                 temp.getParentFile().mkdirs();
             }
             if (temp.exists()) {
-                msg[0] += "已存在'" + temp.getName() + "'跳过";
-                continue;
+                if (overWrite) {
+                    temp.delete();
+                } else {
+                    msg[0] += "已存在'" + temp.getName() + "'跳过";
+                    continue;
+                }
             }
             byte[] buffer = new byte[1024];
             try (OutputStream os = Files.newOutputStream(temp.toPath());
@@ -1163,7 +1167,9 @@ public class Service {
             }
         }
         zipInputStream.close();
-        MainActivity.msgWait = "解压" + source + "完成\r\n耗时：" + (System.currentTimeMillis() - t1) / 1000 + "秒";
+        if (toast) {
+            MainActivity.msgWait = "解压" + source + "完成\r\n耗时：" + (System.currentTimeMillis() - t1) / 1000 + "秒";
+        }
         for (Book bk : Book.getAll()) {
             bk.renamePinYin();
         }
@@ -1172,8 +1178,6 @@ public class Service {
 
     /**
      * 随机一首有MP3的诗歌pdf
-     *
-     * @return
      */
     public MyFile getRandomMp3File() {
         try {
@@ -1677,8 +1681,6 @@ public class Service {
 
     /**
      * 获取MP3列表（诗歌本，标签）
-     *
-     * @return
      */
     public List<String> getMp3C() {
         List<String> mp3List = getDirectoryMp3List();
@@ -1715,7 +1717,7 @@ public class Service {
         return false;
     }
 
-    public List<LoadRes> loadResList() throws IOException {
+    public List<LoadRes> loadResList() {
         String path = SdCardTool.getLbPath();
         File f = new File(path);
 
@@ -1726,7 +1728,7 @@ public class Service {
         return res;
     }
 
-    private List<LoadRes> getLoadZipFrom(File f, List<LoadRes> r) throws IOException {
+    private List<LoadRes> getLoadZipFrom(File f, List<LoadRes> r) {
         if (f == null) {
             return new ArrayList<>();
         }
@@ -1753,16 +1755,7 @@ public class Service {
                         }
                         if (!find) {
                             if (r.stream().noneMatch(l -> l.shortName.equals(c[0]))) {
-                                try {
-                                    Service.getC().unzipToLb(file);
-                                    File ft = new File(SdCardTool.getResPath() + File.separator + "load-" + c[0] + ".txt");
-                                    String[] rd = getReadMeAndDaily(ft);
-
-                                    res.add(new LoadRes(c[0], c[1], false, true, ft.getAbsolutePath(), rd[0], rd[1]));
-                                } catch (IOException e) {
-                                    Logger.exception(e);
-                                    throw e;
-                                }
+                                res.add(new LoadRes(c[0], c[1], false, false, file.getAbsolutePath(), null, null));
                             }
                         }
                     }
@@ -1805,54 +1798,6 @@ public class Service {
             }
         }
         return res;
-    }
-
-    /**
-     * 加载资源
-     */
-    public String autoLoadOtherRes() throws IOException {
-        //加载其他的诗歌附加包（篮板 mp3 白板 歌词作者等信息文件）
-        String path = SdCardTool.getLbPath();
-        File f = new File(path);
-        Logger.info("检查res中的加载引导文件");
-        checkLoadFileInRes();
-        if (f.exists()) {
-            checkZipInDir(f);
-            checkZipInDir(f.getParentFile());
-        }
-        return "todo return value";
-    }
-
-    /**
-     * 检查资源文件夹下的加载引导文件
-     */
-    private void checkLoadFileInRes() {
-        File resF = new File(SdCardTool.getResPath());
-        if (!resF.exists()) {
-            return;
-        }
-        File[] fs = resF.listFiles();
-        if (fs == null) {
-            return;
-        }
-        Book[] bs = Book.getPrivateBooks();
-        for (File f : fs) {
-            if (f.getName().length() == 10 && f.getName().startsWith("load")) {
-                String bookName = getLoadFileShortName(f);
-                boolean find = false;
-                for (Book b : bs) {
-                    if (b.simpleName.toLowerCase().equals(bookName)) {
-                        Logger.info("发现已加载");
-                        find = true;
-                        break;
-                    }
-                }
-                if (!find) {
-                    Logger.info("发现未加载");
-                    loadPrivateResFromLoadFile(f);
-                }
-            }
-        }
     }
 
     /**
@@ -1941,61 +1886,17 @@ public class Service {
 
     /**
      * 获取加载文件的诗歌的短名
-     *
-     * @param f
-     * @return
      */
     private String getLoadFileShortName(File f) {
         return String.valueOf(f.getName().charAt(5));
     }
 
     /**
-     * 检查目标文件夹下的综合包
-     *
-     * @param f
-     */
-    private void checkZipInDir(File f) throws IOException {
-        if (f == null) {
-            return;
-        }
-        Logger.info("检查" + f.getAbsolutePath() + "下的综合包");
-        File[] fs = f.listFiles();
-        if (fs != null) {
-            for (File file : fs) {
-                if (file.isFile() && file.getName().endsWith("综合包.zip")) {
-                    String[] c = getBookShortNameAndFullName(file);
-                    if (c.length == 0) {
-                        throw new RuntimeException("发现不合命名规范的综合包：" + file.getAbsolutePath());
-                    } else {
-                        Logger.info("发现" + c[1] + "的综合包");
-                        Book[] bs = Book.getPrivateBooks();
-                        boolean find = false;
-                        for (Book b : bs) {
-                            if (b.simpleName.toLowerCase().equals(c[0])) {
-                                Logger.info("发现已加载");
-                                find = true;
-                                break;
-                            }
-                        }
-                        if (!find) {
-                            Logger.info("发现未加载");
-                            unzipToLb(file);
-                            loadPrivateResFromLoadFile(new File(SdCardTool.getLbPath() + File.separator + "load-" + c[0] + ".txt"));
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * 解压压缩包到篮板
-     *
-     * @param file
      */
-    public void unzipToLb(File file) throws IOException {
+    public void unzipToLb(File file, boolean toast,boolean overWrite) throws IOException {
         Logger.info("开始解压" + file.getAbsolutePath());
-        unzip(SdCardTool.getLbPath(), file.getAbsolutePath(), new String[1]);
+        unzip(SdCardTool.getLbPath(), file.getAbsolutePath(), new String[1], toast,overWrite);
         Logger.info("解压完成");
     }
 

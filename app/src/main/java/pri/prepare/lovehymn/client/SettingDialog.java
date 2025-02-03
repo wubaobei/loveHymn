@@ -8,13 +8,13 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -36,13 +36,12 @@ import pri.prepare.lovehymn.server.entity.Setting;
 public class SettingDialog extends Dialog implements IShowDialog {
     private final Context ct;
     private final I4Set iTell;
-    private final WindowManager _wm;
 
     private final SettingLayoutBinding binding;
     private final Activity activity;
 
     @SuppressLint("SetTextI18n")
-    public SettingDialog(@NonNull Activity activity, I4Set tell, WindowManager wm) {
+    public SettingDialog(@NonNull Activity activity, I4Set tell) {
         super(activity);
         this.activity = activity;
         ct = activity;
@@ -52,7 +51,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
         tvv.setText("当前版本：" + Service.getC().getVersionStr(ct));
         Service.getC().checkVersion(activity);
         iTell = tell;
-        _wm = wm;
         setStatisticBtn();
         setLoadResBtn();
         setUpdateHistoryBtn();
@@ -168,19 +166,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
     }
 
     /**
-     * 经节中英显示
-     */
-    private String getCEText(int t) {
-        if (t == 1)
-            return "中文";
-        if (t == 2)
-            return "英文";
-        if (t == 3)
-            return "中英";
-        return "中文";
-    }
-
-    /**
      * 生僻字拼音
      */
     private void setDictSetting() {
@@ -199,8 +184,13 @@ public class SettingDialog extends Dialog implements IShowDialog {
      */
     private void setLoadResBtn() {
         binding.loadResBtn.setOnClickListener(v -> { //搜索资源
+            List<LoadRes> res = Service.getC().loadResList();
+            if (res.isEmpty()) {
+                toast("未发现其他资源");
+                return;
+            }
             //由于一般的附加包在打开时已经加载了，所以这里只加载其他的一些资源
-            new LoadResDialog(getContext()).showDialog();
+            new LoadResDialog(activity).showDialog();
             dismiss();
         });
         binding.loadResBtn.setOnLongClickListener(v -> {
@@ -320,7 +310,6 @@ public class SettingDialog extends Dialog implements IShowDialog {
         textView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         textView.setOnClickListener(v -> Tool.ShowDialog(ct, "更新历史", UpdateHistory.getVersionHistory(activity), -1));
     }
-    //
 
     @Override
     public void showDialog() {

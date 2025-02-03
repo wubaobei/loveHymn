@@ -32,8 +32,12 @@ public class SdCardTool {
         return path;
     }
 
+    public static String getRoot() {
+        return Environment.getExternalStorageDirectory().getAbsolutePath();
+    }
+
     public static String getLbPath() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + Constant.LB_DIR_NAME;
+        return getRoot() + File.separator + Constant.LB_DIR_NAME;
     }
 
     public static String getResPath() {
@@ -47,7 +51,7 @@ public class SdCardTool {
     public static final String STEP_FILE_NAME = "足迹.txt";
 
     public static String getSharePath() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "诗歌蓝版分享";
+        return getRoot() + File.separator + "诗歌蓝版分享";
     }
 
     public static String getLogPath() {
@@ -84,14 +88,14 @@ public class SdCardTool {
 
     public static String searchAddedFile() {
         //优先搜索百度网盘
-        MyFile f = MyFile.from(Environment.getExternalStorageDirectory().getAbsolutePath() + "/BaiduNetDisk");
+        MyFile f = MyFile.from(getRoot() + "/BaiduNetDisk");
         if (f.exists()) {
             String res = dfsDir(f, 6);
             if (res != null && res.length() > 0)
                 return res;
         }
 
-        return dfsDir(MyFile.from(Environment.getExternalStorageDirectory().getAbsolutePath()), 4);
+        return dfsDir(MyFile.from(getRoot()), 4);
     }
 
     private static String dfsDir(MyFile f, int deep) {
@@ -159,7 +163,7 @@ public class SdCardTool {
 
     public static String searchType = "";
 
-    private static ShowResult[] searchMusic(String ss){
+    private static ShowResult[] searchMusic(String ss) {
         List<ShowResult> res = new ArrayList<>();
         int[] n = new int[1];
         int ind = 0;
@@ -181,9 +185,10 @@ public class SdCardTool {
         }
         return res.toArray(new ShowResult[0]);
     }
-    private static ShowResult[] searchCorrect(String ss){
+
+    private static ShowResult[] searchCorrect(String ss) {
         List<ShowResult> res = new ArrayList<>();
-        for (String a :  Service.getC().correctOrders(ss)) {
+        for (String a : Service.getC().correctOrders(ss)) {
             try {
                 Hymn h = Hymn.search(a);
                 MyFile f = h.getFile();
@@ -195,6 +200,7 @@ public class SdCardTool {
         }
         return res.toArray(new ShowResult[0]);
     }
+
     private static ShowResult[] search0(String ss, int page, int bookId) throws Exception {
         String[] coArr;
         if (isMusicStr(ss)) {

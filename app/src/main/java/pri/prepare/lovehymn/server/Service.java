@@ -111,9 +111,10 @@ public class Service {
         otherMsg[0] = "";
         for (int i = 0; i < 10; i++) {
             String path = SdCardTool.searchAddedFile();
-            if (path == null || path.length() == 0) {
-                if (num > 0)
+            if (path.length() == 0) {
+                if (num > 0) {
                     return "更新了" + num + "个资源文件";
+                }
                 return "";
             }
             Logger.info("找到附加包：" + path);
@@ -127,22 +128,19 @@ public class Service {
             MainActivity.msgWait = "正在解压 " + pathT + "\r\n预计耗时" + t + "-" + (2 * t) + "秒\r\n请勿退出";
             Logger.info("开始解压 " + path);
             try {
-                num += unzip(resPath, path, otherMsg, true,false);
+                num += unzip(resPath, path, otherMsg, true, false);
 
                 File rn = new File(path);
-                if (rn.delete())
-                    Logger.info("删除'" + rn.getName() + "'");
-                else {
-                    Logger.info("删除'" + rn.getName() + "'失败");
-                    String p = rn.getAbsolutePath().replace(Constant.ADD_FILE_NAME, Constant.ADD_FILE_NAME + Constant.ADDED_FILE_FLAG);
 
-                    if (rn.renameTo(new File(p))) {
-                        Logger.info("删除'" + rn.getName() + "'失败，已重命名");
-                    } else {
-                        Logger.info("尝试重命名失败");
-                    }
-                    return "加载附加包出现了问题，已停止";
+                String p = rn.getAbsolutePath().replace(Constant.ADD_FILE_NAME, Constant.ADD_FILE_NAME + Constant.ADDED_FILE_FLAG);
+
+                if (rn.renameTo(new File(p))) {
+                    Logger.info("已重命名已解压的文件");
+                } else {
+                    Logger.info("尝试重命名失败");
                 }
+                return "加载附加包出现了问题，已停止";
+
             } catch (Exception e) {
                 MainActivity.msgWait = "解压" + path + "失败,请查看'设置'-'" + SettingDialog.ALL_READ + "'-'常见问题'";
                 Logger.exception(e);
@@ -261,7 +259,7 @@ public class Service {
     }
 
     public MyFile previousFile(MyFile f) {
-        if (!f.isPdf()){
+        if (!f.isPdf()) {
             return null;
         }
 
@@ -272,11 +270,11 @@ public class Service {
             if (sp.length == 2) {
                 if (sp[1].equals("2")) {
                     String newPath = f.getAbsolutePath().replace("-2", "-1");
-                    if ((new File(newPath)).exists()){
+                    if ((new File(newPath)).exists()) {
                         return MyFile.from(newPath);
                     }
                     newPath = f.getAbsolutePath().replace("-2", "");
-                    if ((new File(newPath)).exists()){
+                    if ((new File(newPath)).exists()) {
                         return MyFile.from(newPath);
                     }
                     ss = ss.replace("-2", "");
@@ -300,7 +298,7 @@ public class Service {
                 while (newN.length() < 9) {
                     String newN2 = (ssi - 1) + "-2" + PDF_EXTEND;
                     String newPath2 = f.getAbsolutePath().replace(s, newN2);
-                    if ((new File(newPath2)).exists()){
+                    if ((new File(newPath2)).exists()) {
                         return MyFile.from(newPath2);
                     }
 
@@ -310,12 +308,12 @@ public class Service {
                     }
                     newN = "0" + newN;
                 }
-                int t=ssi;
-                while(t%100!=0){
+                int t = ssi;
+                while (t % 100 != 0) {
                     t--;
-                    String d3=String.format("%03d",t);
-                    String newPath2 = f.getParentFile().getAbsolutePath()+File.separator+d3+".pdf";
-                    if(new File(newPath2).exists()){
+                    String d3 = String.format("%03d", t);
+                    String newPath2 = f.getParentFile().getAbsolutePath() + File.separator + d3 + ".pdf";
+                    if (new File(newPath2).exists()) {
                         return MyFile.from(newPath2);
                     }
                 }
@@ -424,7 +422,7 @@ public class Service {
         if (isInteger(ss)) {
             {
                 String np = f.getAbsolutePath().replace(f.getName(), f.getName().substring(0, f.getName().length() - 4) + "-2") + PDF_EXTEND;
-                if ((new File(np)).exists()){
+                if ((new File(np)).exists()) {
                     return MyFile.from(np);
                 }
             }
@@ -452,12 +450,12 @@ public class Service {
                         return af;
                 }
 
-                int t=ssi;
-                while(t%100!=0){
+                int t = ssi;
+                while (t % 100 != 0) {
                     t++;
-                    String d3=String.format("%03d",t);
-                    String newPath2 = f.getParentFile().getAbsolutePath()+File.separator+d3+".pdf";
-                    if(new File(newPath2).exists()){
+                    String d3 = String.format("%03d", t);
+                    String newPath2 = f.getParentFile().getAbsolutePath() + File.separator + d3 + ".pdf";
+                    if (new File(newPath2).exists()) {
                         return MyFile.from(newPath2);
                     }
                 }
@@ -1566,6 +1564,33 @@ public class Service {
         return res.trim();
     }
 
+    /**
+     * 清理已经标记为已加载的附加包
+     *
+     * @return
+     */
+    public String clearZip() {
+        String r = "";
+        for (File f : MyFile.from(SdCardTool.getRoot()).listFiles()) {
+            if (f.getName().contains(Constant.ADD_FILE_NAME) && f.getName().endsWith(".zip") &&
+                    f.getName().contains(Constant.ADDED_FILE_FLAG)) {
+                f.delete();
+                r += "删除" + f.getAbsolutePath() + "；";
+            }
+        }
+        for (File f : MyFile.from(SdCardTool.getLbPath()).listFiles()) {
+            if (f.getName().contains(Constant.ADD_FILE_NAME) && f.getName().endsWith(".zip") &&
+                    f.getName().contains(Constant.ADDED_FILE_FLAG)) {
+                f.delete();
+                r += "删除" + f.getAbsolutePath() + "；";
+            }
+        }
+        if (r.length() == 0) {
+            return "未发现需要删除的附加包";
+        }
+        return r;
+    }
+
     public String getNewOtherBookIndex() {
         Hymn[] hymns = Hymn.getByBook(Book.Other);
         HashSet<String> hs = new HashSet<>();
@@ -1676,7 +1701,7 @@ public class Service {
         boolean hasDir = isDir && lbDir.listFiles().length > 0;
         boolean hasMp3 = isDir && lbDir.dirHasMp3();
         boolean hasPdf = isDir && lbDir.dirHasPdf();
-        boolean hasD001=isDir && (new File(SdCardTool.getD001())).exists();
+        boolean hasD001 = isDir && (new File(SdCardTool.getD001())).exists();
 
         String sp = "\r\n";
         return "安卓系统:" + android.os.Build.VERSION.RELEASE + sp
@@ -1684,7 +1709,7 @@ public class Service {
                 + "生产厂家:" + android.os.Build.BRAND + sp
                 + "读写权限:" + permission + sp
                 + "获得诗歌蓝版文件夹:" + isDir + sp
-                + "文件夹:" + hasDir + " MP3:" + hasMp3 + " pdf:" + hasPdf +" D001:"+hasD001+ sp
+                + "文件夹:" + hasDir + " MP3:" + hasMp3 + " pdf:" + hasPdf + " D001:" + hasD001 + sp
                 + "app版本:" + getVersionStr(activity);
     }
 
@@ -1921,9 +1946,9 @@ public class Service {
     /**
      * 解压压缩包到篮板
      */
-    public void unzipToLb(File file, boolean toast,boolean overWrite) throws IOException {
+    public void unzipToLb(File file, boolean toast, boolean overWrite) throws IOException {
         Logger.info("开始解压" + file.getAbsolutePath());
-        unzip(SdCardTool.getLbPath(), file.getAbsolutePath(), new String[1], toast,overWrite);
+        unzip(SdCardTool.getLbPath(), file.getAbsolutePath(), new String[1], toast, overWrite);
         Logger.info("解压完成");
     }
 

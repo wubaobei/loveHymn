@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/title_padding_bottom"
-                android:text="其他设置"/>
+                android:text="其他设置" />
 
             <Button
                 android:id="@+id/button3"
@@ -72,6 +72,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="包括分享产生的临时文件，旧的日志，过期的资源文件"
+                android:textSize="@dimen/tip_size" />
+
+            <Button
+                android:id="@+id/clear_zip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="删除已加载的mp3附加包" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="V2.0.2修改了附加包的逻辑：解压后作标记而不是直接删除，如果你不需要分享给别人，则可以删除。如果分享给其他人，其他人拷贝后需要重命名一下，去掉'已加载'几个字"
                 android:textSize="@dimen/tip_size" />
 
             <Button

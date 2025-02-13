@@ -40,12 +40,12 @@ public class SdCardTool {
         return getRoot() + File.separator + Constant.LB_DIR_NAME;
     }
 
-    public static String getD001(){
-        return getRoot() + File.separator + Constant.LB_DIR_NAME+ File.separator+"大本"+ File.separator+"0"+ File.separator+"001.pdf";
+    public static String getD001() {
+        return getRoot() + File.separator + Constant.LB_DIR_NAME + File.separator + "大本" + File.separator + "0" + File.separator + "001.pdf";
     }
 
     public static String getResPath() {
-        return mkdirs(SdCardTool.getLbPath() +  File.separator + Constant.RES_NAME);
+        return mkdirs(SdCardTool.getLbPath() + File.separator + Constant.RES_NAME);
     }
 
     public static String getStepPath() {
@@ -90,35 +90,47 @@ public class SdCardTool {
         return FileStorageHelper.assetsCount;
     }
 
+    /**
+     * 获取可加载的附加包
+     */
     public static String searchAddedFile() {
-        //优先搜索百度网盘
-        MyFile f = MyFile.from(getRoot() + "/BaiduNetDisk");
-        if (f.exists()) {
-            String res = dfsDir(f, 6);
-            if (res != null && res.length() > 0)
-                return res;
+        //优先搜索蓝版
+        String s0 = dfsDir(MyFile.from(getLbPath()), 1);
+        if (s0.length() > 0) {
+            return s0;
         }
-
-        return dfsDir(MyFile.from(getRoot()), 4);
+        //然后搜索根目录
+        return dfsDir(MyFile.from(getRoot()), 1);
     }
 
     private static String dfsDir(MyFile f, int deep) {
-        if (deep < 0)
+        if (deep < 0) {
             return "";
-        if (f.getName().contains(Constant.ADD_FILE_NAME) && f.getName().endsWith(".zip") && f.getName().contains(Constant.ADDED_FILE_FLAG)) {
-            f.delete();
-            return null;
         }
-        if (f.getName().contains(Constant.ADD_FILE_NAME) && f.getName().endsWith(".zip"))
-            return f.getAbsolutePath();
+        if (f.getName().contains(Constant.ADD_FILE_NAME) && f.getName().endsWith(".zip")) {
+            if (f.getName().contains(Constant.ADDED_FILE_FLAG)) {
+                return "";
+            } else {
+                return f.getAbsolutePath();
+            }
+        }
 
         if (f.isDirectory()) {
-            if (f.getName().startsWith("."))
+            if (f.getName().startsWith(".")) {
+                //跳过隐藏文件夹
                 return "";
+            }
             for (MyFile fn : f.listFiles()) {
                 String p = dfsDir(fn, deep - 1);
-                if (p.length() > 0)
+                if (p.length() > 0) {
                     return p;
+                }
+            }
+        } else if (f.getName().contains(Constant.ADD_FILE_NAME) && f.getName().endsWith(".zip")) {
+            if (f.getName().contains(Constant.ADDED_FILE_FLAG)) {
+                return "";
+            } else {
+                return f.getAbsolutePath();
             }
         }
 

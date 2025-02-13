@@ -73,6 +73,9 @@ public class SpecialSettingDialog extends Dialog implements IShowDialog {
         //region 清理缓存及过期文件
         binding.clearCache.setOnClickListener(v -> Toast.makeText(getContext(), Service.getC().clearCache(), Toast.LENGTH_LONG).show());
         //endregion
+
+        binding.clearZip.setOnClickListener(v -> Toast.makeText(getContext(), Service.getC().clearZip(), Toast.LENGTH_LONG).show());
+
         //region 神秘代码
         binding.secretCode.setOnClickListener(v -> {
             CommonDialog cd = new CommonDialog(getContext(), enuCm.SECRET_CODE, null, activity);

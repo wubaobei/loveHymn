@@ -71,7 +71,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="V2.0.2修改了附加包的逻辑：解压后作标记而不是直接删除，如果你不需要分享给别人，则可以删除。如果分享给其他人，其他人拷贝后需要重命名一下，去掉'已加载'几个字"
+                android:text="V2.0.2修改了附加包的逻辑：解压后不直接删除，方便分享给其他人，如果你不需要分享给别人，则可以删除。"
                 android:textSize="@dimen/tip_size" />
 
             <Button

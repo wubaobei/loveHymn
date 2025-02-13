@@ -129,18 +129,6 @@ public class Service {
             Logger.info("开始解压 " + path);
             try {
                 num += unzip(resPath, path, otherMsg, true, false);
-
-                File rn = new File(path);
-
-                String p = rn.getAbsolutePath().replace(Constant.ADD_FILE_NAME, Constant.ADD_FILE_NAME + Constant.ADDED_FILE_FLAG);
-
-                if (rn.renameTo(new File(p))) {
-                    Logger.info("已重命名已解压的文件");
-                } else {
-                    Logger.info("尝试重命名失败");
-                }
-                return "加载附加包出现了问题，已停止";
-
             } catch (Exception e) {
                 MainActivity.msgWait = "解压" + path + "失败,请查看'设置'-'" + SettingDialog.ALL_READ + "'-'常见问题'";
                 Logger.exception(e);
@@ -1566,23 +1554,19 @@ public class Service {
 
     /**
      * 清理已经标记为已加载的附加包
-     *
-     * @return
      */
     public String clearZip() {
         String r = "";
-        for (File f : MyFile.from(SdCardTool.getRoot()).listFiles()) {
-            if (f.getName().contains(Constant.ADD_FILE_NAME) && f.getName().endsWith(".zip") &&
-                    f.getName().contains(Constant.ADDED_FILE_FLAG)) {
-                f.delete();
-                r += "删除" + f.getAbsolutePath() + "；";
-            }
-        }
-        for (File f : MyFile.from(SdCardTool.getLbPath()).listFiles()) {
-            if (f.getName().contains(Constant.ADD_FILE_NAME) && f.getName().endsWith(".zip") &&
-                    f.getName().contains(Constant.ADDED_FILE_FLAG)) {
-                f.delete();
-                r += "删除" + f.getAbsolutePath() + "；";
+        MyFile[] mfs=new MyFile[]{MyFile.from(SdCardTool.getRoot()),MyFile.from(SdCardTool.getLbPath())};
+        for (MyFile mf : mfs) {
+            for (File f : mf.listFiles()) {
+                if (f.getName().contains(Constant.ADD_FILE_NAME) && f.getName().endsWith(".zip")) {
+                    int type = SdCardTool.getFjbType(f);
+                    if ((type == 1 && SdCardTool.DbHasLoad()) || (type == 2 && SdCardTool.OwHasLoad())) {
+                        f.delete();
+                        r += "删除" + f.getAbsolutePath() + "；";
+                    }
+                }
             }
         }
         if (r.length() == 0) {

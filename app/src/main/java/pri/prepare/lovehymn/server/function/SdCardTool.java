@@ -44,6 +44,18 @@ public class SdCardTool {
         return getRoot() + File.separator + Constant.LB_DIR_NAME + File.separator + "大本" + File.separator + "0" + File.separator + "001.pdf";
     }
 
+    public static String getB001() {
+        return getRoot() + File.separator + Constant.LB_DIR_NAME + File.separator + "补充本" + File.separator + "00" + File.separator + "001.pdf";
+    }
+
+    public static String getE001() {
+        return getRoot() + File.separator + Constant.LB_DIR_NAME + File.separator + "儿童诗歌" + File.separator + "00" + File.separator + "001.pdf";
+    }
+
+    public static String getWd() {
+        return getRoot() + File.separator + Constant.LB_DIR_NAME + File.separator + "white" + File.separator + "b.pdf";
+    }
+
     public static String getResPath() {
         return mkdirs(SdCardTool.getLbPath() + File.separator + Constant.RES_NAME);
     }
@@ -107,13 +119,6 @@ public class SdCardTool {
         if (deep < 0) {
             return "";
         }
-        if (f.getName().contains(Constant.ADD_FILE_NAME) && f.getName().endsWith(".zip")) {
-            if (f.getName().contains(Constant.ADDED_FILE_FLAG)) {
-                return "";
-            } else {
-                return f.getAbsolutePath();
-            }
-        }
 
         if (f.isDirectory()) {
             if (f.getName().startsWith(".")) {
@@ -127,15 +132,44 @@ public class SdCardTool {
                 }
             }
         } else if (f.getName().contains(Constant.ADD_FILE_NAME) && f.getName().endsWith(".zip")) {
-            if (f.getName().contains(Constant.ADDED_FILE_FLAG)) {
+            int type = getFjbType(f);
+            if (type == 0) {
                 return "";
-            } else {
-                return f.getAbsolutePath();
             }
+
+            if (type == 1 && DbHasLoad()) {
+                Logger.info("已经加载大本补充本附加包");
+                return "";
+            }
+            if (type == 2 && OwHasLoad()) {
+                Logger.info("已经加载其他诗歌和白板附加包");
+                return "";
+            }
+            return f.getAbsolutePath();
+
         }
 
         return "";
     }
+
+    public static int getFjbType(File f) {
+        int type = 0;
+        if (f.getName().contains("大本") || f.getName().contains("补充本")) {
+            type = 1;
+        } else if (f.getName().contains("其他") || f.getName().contains("白板")) {
+            type = 2;
+        }
+        return type;
+    }
+
+    public static boolean OwHasLoad() {
+        return new File(getE001()).exists() || new File(getWd()).exists();
+    }
+
+    public static boolean DbHasLoad() {
+        return new File(getD001()).exists() || new File(getB001()).exists();
+    }
+
 
     private static boolean isInteger(String str) {
         Pattern pattern = Pattern.compile("^[-+]?\\d*$");

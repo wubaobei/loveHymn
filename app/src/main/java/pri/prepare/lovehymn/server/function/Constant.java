@@ -38,7 +38,6 @@ public class Constant {
     public static final int btnMinWidth = 80;
     public static final String WHITE = "white";
     public static final String ADD_FILE_NAME = "附加包";
-    public static final String ADDED_FILE_FLAG = "已加载";
 
     /**
      * 标点符号（包括中英）
@@ -75,7 +74,6 @@ public class Constant {
             "微信：prepareWu",
             "感谢所有搜集整理蓝版和MP3等资料的同伴们和家人的支持",
             "如果你觉得这个APP不错，也可以给作者一点捐赠\uD83D\uDE00"};
-    public static final String ADURL = "https://www.jianshu.com/p/7964f2b8de07";
 
     public static final String READ_ME = "使用说明";
     public static final String TIPS = "小贴士";

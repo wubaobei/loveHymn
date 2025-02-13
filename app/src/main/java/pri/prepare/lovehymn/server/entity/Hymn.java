@@ -210,8 +210,13 @@ public class Hymn {
 
     private static Hymn search2(String bookStr) {
         try {
-            if (!bookStr.contains("-") || bookStr.charAt(1) == '-')
+            if (bookStr.contains("附")) {
+                bookStr = bookStr.replace("附", "-");
+            }
+
+            if (!bookStr.contains("-") || bookStr.charAt(1) == '-') {
                 return search(Book.getByName(bookStr.substring(0, 1)), Integer.parseInt(bookStr.substring(1)), 1);
+            }
 
             String s1 = bookStr.substring(0, 1);
             String s2 = bookStr.substring(1);

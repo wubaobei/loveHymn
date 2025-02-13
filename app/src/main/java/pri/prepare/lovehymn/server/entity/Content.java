@@ -125,7 +125,6 @@ public class Content {
                 res += s + ":" + h.getTitle() + "\r\n" + h.getShortLyric() + "\r\n";
             }
         }
-        Logger.info("set otherShowString " + res);
         otherShowString = res.trim();
     }
 }

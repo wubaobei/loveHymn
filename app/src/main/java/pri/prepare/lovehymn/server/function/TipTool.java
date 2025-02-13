@@ -32,7 +32,7 @@ public class TipTool {
             new TipStruct(R.drawable.tip5, "去设置中看看吧"),
             new TipStruct(R.drawable.tip6, "如有建议快点告诉作者"),
             new TipStruct(R.drawable.tip9, "如有你觉得标题栏影响你看诗歌歌词，可以在设置中关闭"),
-            new TipStruct(R.drawable.tip11, "这里也可以搜旋律（目前仅限大本）"),
+            new TipStruct(R.drawable.tip11, "这里也可以搜旋律（目前仅限大本，补充本和儿童诗歌）"),
             new TipStruct(R.drawable.tip12, "这里可以进入MP3播放器（如果你下载过MP3附加包）"),
             new TipStruct(R.drawable.tip13, "来这里获取最新版本或者分享链接给同伴"),
             new TipStruct(R.drawable.tip14, "长按标签显示该标签下的所有诗歌"),
@@ -43,7 +43,7 @@ public class TipTool {
             new TipStruct(R.drawable.tip16, "长按pdf可显示历史、分享等功能"),
             new TipStruct(R.drawable.tip17, "播放列表长按诗歌本有更多选项"),
             new TipStruct("双指左右滑动可以查看快速查看浏览历史"),
-            new TipStruct("注意了，" + Constant.TIPS + "内容可能和当前版本有一定的出入，当前整理自1.6.5版本"),
+            new TipStruct("注意了，" + Constant.TIPS + "内容可能和当前版本有一定的出入，当前整理自2.0.2版本"),
             new TipStruct("可以在设置中关闭此‘" + Constant.TIPS + "’", true)};
 
     public static TipStruct[] getAll(boolean hideSpecial) {

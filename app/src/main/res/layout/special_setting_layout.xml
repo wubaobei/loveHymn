@@ -23,19 +23,6 @@
                 android:text="其他设置" />
 
             <Button
-                android:id="@+id/button3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="切换搜索的结果的分隔符" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="主要是针对于多关键字搜索，你试过多关键字搜索就能明白"
-                android:textSize="@dimen/tip_size" />
-
-            <Button
                 android:id="@+id/clear_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

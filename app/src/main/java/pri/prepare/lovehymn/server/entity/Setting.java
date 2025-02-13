@@ -43,10 +43,6 @@ public class Setting {
      * pdf阅读进度
      */
     public static final int PDF_Y_OFFSET = 15;
-    /**
-     * 搜索结果的分隔符
-     */
-    public static final int SEARCH_RESULT_SPLIT = 17;
     public static final String[] SEARCH_RESULT_SPLIT_Arr = new String[]{"...", "++++++++", "——————朴素的分割线——————"};
     /**
      * 显示状态栏（针对真全面屏）
@@ -201,7 +197,6 @@ public class Setting {
             defaultMap.put(SHOW_TOOL_BAR_ON_LOAD, true);
             defaultMap.put(SHOW_LYRIC, false);
             defaultMap.put(SHOW_DICT, true);
-            defaultMap.put(SEARCH_RESULT_SPLIT, 0);
             defaultMap.put(STEP_FORMAT_TYPE, 1);
             defaultMap.put(COLLECT_HISTORY_LAST_CHOOSE, 0);
             defaultMap.put(AUTO_STEP, 1);

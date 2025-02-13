@@ -32,7 +32,7 @@ public class ShowResult {
     }
 
     public ShowResult(MyFile f, Hymn hymn, ArrayList<String> ls) throws Exception {
-        String ss = Setting.SEARCH_RESULT_SPLIT_Arr[Setting.getValueI(Setting.SEARCH_RESULT_SPLIT)];
+        String ss = Setting.SEARCH_RESULT_SPLIT_Arr[0];
 
         lightStr = ls.toArray(new String[0]);
         String ssp = "\r\n" ;

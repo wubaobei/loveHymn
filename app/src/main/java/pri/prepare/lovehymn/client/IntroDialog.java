@@ -77,12 +77,12 @@ public class IntroDialog extends Dialog implements IShowDialog {
         ll.setGravity(Gravity.CENTER_VERTICAL);
 
         if (AuthorRelatedD.getByAuthorId(author.getId()).length > 1) {
-            final ImageButton ibtn = new ImageButton(ct);
-            ibtn.setBackgroundResource(R.drawable.sc_search);
+            final ImageButton iBtn = new ImageButton(ct);
+            iBtn.setBackgroundResource(R.drawable.sc_search);
             ViewGroup.LayoutParams lp = new LinearLayout.LayoutParams(80, 80);
-            ibtn.setLayoutParams(lp);
-            Tool.setSearchLink(ibtn, author.getName(), _listener, this);
-            ll.addView(ibtn);
+            iBtn.setLayoutParams(lp);
+            Tool.setSearchLink(iBtn, author.getName(), _listener, this);
+            ll.addView(iBtn);
         }
 
         TextView tv2 = new TextView(ct);

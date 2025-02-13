@@ -55,7 +55,7 @@ public class CommonDialog extends Dialog implements IShowDialog {
             RENAME_LABEL_init(iRefresh, params[0]);
         } else if (c == enuCm.SECRET_CODE) {
             SECRET_CODE_init();
-            binding.cmIo.setVisibility(View.VISIBLE);
+            binding.cmIo.setVisibility(View.GONE);
         } else if (c == enuCm.LEAVE_STEP) {
             LEAVE_STEP_init(iRefresh, params[0]);
         } else if (c == enuCm.EDIT_REMARK) {
@@ -170,8 +170,6 @@ public class CommonDialog extends Dialog implements IShowDialog {
                     String sp = "\r\n";
                     String content = CODE_AUTHOR + ":所有作者名" + sp
                             + CODE_STATUS + ":手机及app状态" + sp
-                            + ENCODE + ":加密" + sp
-                            + DECODE + ":解密" + sp
                             + CODE_OUTPUT_RES + ":导出资源文件" + sp
                             + CODE_STEP_TIME + ":显示/隐藏自动足迹时间";
                     Tool.ShowDialog(getContext(), "代码编号", content);
@@ -186,12 +184,6 @@ public class CommonDialog extends Dialog implements IShowDialog {
                     String path = SdCardTool.getSharePath() + File.separator + "资源文件导出";
                     Service.getC().outputRes(path);
                     toast("导出完成，请到" + path + "查看");
-                } else if (s == ENCODE) {
-                    binding.cmIo.setText(WebHelper.encode(binding.cmIo.getText().toString()));
-                    return;
-                } else if (s == DECODE) {
-                    binding.cmIo.setText(WebHelper.decode(binding.cmIo.getText().toString()));
-                    return;
                 } else {
                     toast("未识别的代码");
                     return;
@@ -247,8 +239,6 @@ public class CommonDialog extends Dialog implements IShowDialog {
     //0-99 显示
     private static final int CODE_AUTHOR = 1;
     private static final int CODE_STATUS = 2;
-    private static final int ENCODE = 3;
-    private static final int DECODE = 4;
     //100-199 输出
     private static final int CODE_OUTPUT_RES = 100;
     //200-299 调试信息

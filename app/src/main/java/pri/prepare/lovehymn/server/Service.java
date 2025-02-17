@@ -20,7 +20,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -273,10 +272,12 @@ public class Service {
             //
             if (ss.equals("-1")) {
                 MyFile fa = f.getParentFile();
-                MyFile[] fs = Service.getC().orderFiles(fa.getParentFile().listFiles());
-                MyFile aim = fs[fs.length - 2];
-                MyFile[] as = Service.getC().orderFiles(aim.listFiles());
-                return as[as.length - 1];
+                if (fa != null) {
+                    MyFile[] fs = Service.getC().orderFiles(fa.getParentFile().listFiles());
+                    MyFile aim = fs[fs.length - 2];
+                    MyFile[] as = Service.getC().orderFiles(aim.listFiles());
+                    return as[as.length - 1];
+                }
             }
             //
             int ssi = Integer.parseInt(ss);
@@ -308,6 +309,9 @@ public class Service {
 
                 //检查上一级名字是不是数字
                 MyFile pf = f.getParentFile();
+                if (pf == null) {
+                    return null;
+                }
                 if (isInteger(pf.getName())) {
                     //父级相邻文件夹
                     String newP = pf.getAbsolutePath().substring(0, pf.getAbsolutePath().length() - pf.getName().length()) + sameFormatStr(-1, pf.getName());
@@ -343,6 +347,9 @@ public class Service {
     }
 
     private MyFile getMaxPdfFile(MyFile newF) {
+        if (newF == null) {
+            return null;
+        }
         int max = -10000;
         MyFile res = null;
         for (MyFile f : newF.listFiles()) {
@@ -379,6 +386,9 @@ public class Service {
     }
 
     private boolean hasAddedFile(MyFile f) {
+        if (f == null) {
+            return false;
+        }
         if (f.isDirectory()) {
             for (MyFile fn : f.listFiles())
                 if (fn.isFile() && fn.getName().startsWith("-") && fn.isPdf()) {
@@ -683,15 +693,15 @@ public class Service {
     }
 
     public void loadResDir(Activity activity) {
-        MyFile qitaFile = SdCardTool.getQitaFile();
+        MyFile otherFile = SdCardTool.getQitaFile();
         int[] resource = new int[]{R.raw.a101, R.raw.a102, R.raw.a103, R.raw.a104, R.raw.a106};
         String[] rn = new String[]{"大本", "补充本", "唱诗人", "新歌颂咏", "儿童诗歌"};
         //数量 5本诗歌本+作者+书名+其他(如果有)
-        LoadProcess.RES_SUM = resource.length + 2 + (qitaFile != null ? 1 : 0);
-        if (qitaFile != null) {
+        LoadProcess.RES_SUM = resource.length + 2 + (otherFile != null ? 1 : 0);
+        if (otherFile != null) {
             LoadProcess.RES_COUNT++;
             Logger.info("开始加载 其他诗歌");
-            loadResFile(qitaFile);
+            loadResFile(otherFile);
         }
         for (int i = 0; i < resource.length; i++) {
             LoadProcess.RES_COUNT++;
@@ -792,8 +802,8 @@ public class Service {
             }
         //is book and order by book id
         if (isBookName) {
-            List fileList = Arrays.asList(fs);
-            fileList.sort((Comparator<MyFile>) (o1, o2) -> {
+            List<MyFile> fileList = Arrays.asList(fs);
+            fileList.sort((o1, o2) -> {
                 if (o1.isDirectory() && o2.isFile()) {
                     return -1;
                 }
@@ -807,8 +817,8 @@ public class Service {
             return fs;
         }
 
-        List fileList = Arrays.asList(fs);
-        Collections.sort(fileList, (Comparator<MyFile>) (o1, o2) -> {
+        List<MyFile> fileList = Arrays.asList(fs);
+        fileList.sort((o1, o2) -> {
             if (o1.isDirectory() && o2.isFile()) {
                 return -1;
             }
@@ -1528,6 +1538,7 @@ public class Service {
                         f.delete();
                     }
                 } catch (Exception e) {
+                    Logger.exception(e);
                 }
             }
         }
@@ -1556,15 +1567,15 @@ public class Service {
      * 清理已经标记为已加载的附加包
      */
     public String clearZip() {
-        String r = "";
-        MyFile[] mfs=new MyFile[]{MyFile.from(SdCardTool.getRoot()),MyFile.from(SdCardTool.getLbPath())};
+        StringBuilder r = new StringBuilder();
+        MyFile[] mfs = new MyFile[]{MyFile.from(SdCardTool.getRoot()), MyFile.from(SdCardTool.getLbPath())};
         for (MyFile mf : mfs) {
             for (File f : mf.listFiles()) {
                 if (f.getName().contains(Constant.ADD_FILE_NAME) && f.getName().endsWith(".zip")) {
                     int type = SdCardTool.getFjbType(f);
                     if ((type == 1 && SdCardTool.DbHasLoad()) || (type == 2 && SdCardTool.OwHasLoad())) {
                         f.delete();
-                        r += "删除" + f.getAbsolutePath() + "；";
+                        r.append("删除").append(f.getAbsolutePath()).append("；");
                     }
                 }
             }
@@ -1572,7 +1583,7 @@ public class Service {
         if (r.length() == 0) {
             return "未发现需要删除的附加包";
         }
-        return r;
+        return r.toString();
     }
 
     public String getNewOtherBookIndex() {
@@ -1658,8 +1669,9 @@ public class Service {
 
     private void dfsRN(MyFile f) {
         if (f.isDirectory()) {
-            for (MyFile fn : f.listFiles())
+            for (MyFile fn : f.listFiles()) {
                 dfsRN(fn);
+            }
         } else {
             if (f.isPdf()) {
                 if (f.getName().length() == "0001.pdf".length() && f.getName().startsWith("0")) {
@@ -1729,10 +1741,6 @@ public class Service {
 
     /**
      * 网上版本和当前版本比较
-     *
-     * @param webVer
-     * @param currentVer
-     * @return
      */
     public boolean compareVersion(String webVer, String currentVer) {
         try {
@@ -1951,6 +1959,92 @@ public class Service {
             return new String[]{String.valueOf(c), name.substring(0, name.indexOf(String.valueOf(c)))};
         }
         return new String[0];
+    }
+
+    /**
+     * 检查文件夹结构（处理手动解压的情况）
+     */
+    public void checkFolderConstruction() {
+        File[] farr = new File[]{new File(SdCardTool.getLbPath()), new File(SdCardTool.getRoot())};
+        for (File f : farr) {
+            if (!f.exists()) {
+                return;
+            }
+            File[] fs = f.listFiles();
+            if (fs == null) {
+                return;
+            }
+            String aim = "附加包";
+            for (File file : fs) {
+                if (file.isDirectory() && file.getName().contains(aim)) {
+                    Logger.info("检测到'" + aim + "'文件夹，开始处理");
+                    moveToLb(file);
+                    Logger.info("处理完成");
+                }
+            }
+            aim = "综合包";
+            for (File file : fs) {
+                if (file.isDirectory() && file.getName().contains(aim)) {
+                    Logger.info("检测到'" + aim + "'文件夹，开始处理");
+                    moveToLb(file);
+                    Logger.info("处理完成");
+                }
+            }
+        }
+    }
+
+    /**
+     * 将文件夹里的文件移出来并删除当前文件
+     */
+    private void moveToLb(File f) {
+        File[] fs = f.listFiles();
+        if (fs == null) {
+            return;
+        }
+        for (File file : fs) {
+            moveFile(file, SdCardTool.getLbPath() + File.separator + file.getName());
+        }
+        forceDelete(f);
+    }
+
+    private void moveFile(File file, String s) {
+        if (file.isFile()) {
+            rename(file, new File(s));
+        } else {
+            createFolder(new File(s));
+            File[] fs = file.listFiles();
+            if (fs != null) {
+                for (File listFile : fs) {
+                    moveFile(listFile, s + File.separator + listFile.getName());
+                }
+            }
+        }
+    }
+
+    private void forceDelete(File f) {
+        if (f.isFile()) {
+            f.delete();
+        } else {
+            File[] fs = f.listFiles();
+            if (fs != null) {
+                for (File file : fs) {
+                    forceDelete(file);
+                }
+                f.delete();
+            }
+        }
+    }
+
+    private void rename(File from, File to) {
+        if (!to.exists()) {
+            from.renameTo(to);
+        }
+    }
+
+    private void createFolder(File file) {
+        if (!file.exists()) {
+            file.mkdirs();
+        }
     }
 
 }

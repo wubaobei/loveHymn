@@ -933,89 +933,13 @@ public class MainActivity extends AppCompatActivity {
      */
     final Runnable checkResAble = () -> {
         try {
-            checkFolderConstruction();
+            Service.getC().checkFolderConstruction();
             checkRes();
             jumpCheck = true;
         } catch (Exception e) {
             Logger.exception(e);
         }
     };
-
-    /**
-     * 检查文件夹结构（处理手动解压的情况）
-     */
-    private void checkFolderConstruction() {
-        File[] farr = new File[]{new File(SdCardTool.getLbPath()), new File(SdCardTool.getRoot())};
-        for (File f : farr) {
-            if (!f.exists()) {
-                return;
-            }
-            File[] fs = f.listFiles();
-            if (fs == null) {
-                return;
-            }
-            String aim = "附加包";
-            for (File file : fs) {
-                if (file.isDirectory() && file.getName().endsWith(aim)) {
-                    Logger.info("检测到'" + aim + "'文件夹，开始处理");
-                    moveToLb(file);
-                    Logger.info("处理完成");
-                }
-            }
-            aim = "综合包";
-            for (File file : fs) {
-                if (file.isDirectory() && file.getName().endsWith(aim)) {
-                    Logger.info("检测到'" + aim + "'文件夹，开始处理");
-                    moveToLb(file);
-                    Logger.info("处理完成");
-                }
-            }
-        }
-    }
-
-    /**
-     * 将文件夹里的文件移出来并删除当前文件
-     */
-    public static void moveToLb(File f) {
-        for (File file : f.listFiles()) {
-            moveFile(file, SdCardTool.getLbPath() + File.separator + file.getName());
-        }
-        forceDelete(f);
-    }
-
-    private static void forceDelete(File f) {
-        if (f.isFile()) {
-            f.delete();
-        } else {
-            for (File file : f.listFiles()) {
-                forceDelete(file);
-            }
-            f.delete();
-        }
-    }
-
-    private static void moveFile(File file, String s) {
-        if (file.isFile()) {
-            rename(file, new File(s));
-        } else {
-            createFolder(new File(s));
-            for (File listFile : file.listFiles()) {
-                moveFile(listFile, s + File.separator + listFile.getName());
-            }
-        }
-    }
-
-    private static void createFolder(File file) {
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-    }
-
-    private static void rename(File from, File to) {
-        if (!to.exists()) {
-            from.renameTo(to);
-        }
-    }
 
     private void checkRes() {
         long t1 = System.currentTimeMillis();

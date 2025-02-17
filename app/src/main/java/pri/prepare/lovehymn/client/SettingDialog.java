@@ -183,7 +183,9 @@ public class SettingDialog extends Dialog implements IShowDialog {
      * 加载资源按钮
      */
     private void setLoadResBtn() {
-        binding.loadResBtn.setOnClickListener(v -> { //搜索资源
+        binding.loadResBtn.setOnClickListener(v -> {
+            Service.getC().checkFolderConstruction();
+            //搜索资源
             List<LoadRes> res = Service.getC().loadResList();
             if (res.isEmpty()) {
                 toast("未发现其他资源");

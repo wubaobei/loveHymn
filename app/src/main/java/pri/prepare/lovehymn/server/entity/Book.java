@@ -161,7 +161,7 @@ public class Book {
     public int getMp3Count() {
         if (_mp3Count < 0) {
             if (getMp3Directory() != null) {
-                _mp3Count = getMp3Directory().getMp3List().size();
+                _mp3Count = getMp3Directory().searchFileByName(".mp3").size();
             } else {
                 _mp3Count = 0;
             }
@@ -172,17 +172,20 @@ public class Book {
     public void renamePinYin() {
         String pyPath = SdCardTool.getLbPath() + File.separator + pinYin;
         String zwPath = SdCardTool.getLbPath() + File.separator + fullName;
-        if (new File(pyPath).exists()) {
+        MyFile py = MyFile.from(pyPath);
+        if (py.exists()) {
             File zw = new File(zwPath);
             if (zw.exists()) {
-                String nn = SdCardTool.getLbPath() + File.separator + fullName + "hideIn" + DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now());
-                zw.renameTo(new File(nn));
-                Logger.info("重命名" + zwPath + "->" + nn);
+                Logger.info("合并" + pinYin + "->" + fullName);
+                for (MyFile file : py.listFiles()) {
+                    file.moveToFolder(zwPath, false);
+                }
+                py.deleteForce();
+            } else {
+                Logger.info("重命名" + pinYin + "->" + fullName);
+                new File(pyPath).renameTo(new File(zwPath));
             }
-            Logger.info("重命名" + pinYin + "->" + fullName);
-            new File(pyPath).renameTo(new File(zwPath));
         }
-
     }
 
     public void delete() {

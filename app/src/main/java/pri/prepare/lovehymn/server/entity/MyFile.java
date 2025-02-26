@@ -2,16 +2,8 @@ package pri.prepare.lovehymn.server.entity;
 
 import androidx.annotation.NonNull;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 import pri.prepare.lovehymn.server.Service;
 import pri.prepare.lovehymn.server.dal.ContentTypeD;
@@ -19,9 +11,6 @@ import pri.prepare.lovehymn.server.dal.HymnD;
 import pri.prepare.lovehymn.server.function.CommonTool;
 import pri.prepare.lovehymn.server.function.SdCardTool;
 
-/**
- * 封装一层
- */
 public class MyFile extends File {
     private MyFile(String path) {
         super(path);
@@ -39,8 +28,29 @@ public class MyFile extends File {
             }
             return contents.toArray(new String[0]);
         } catch (Exception e) {
-            Logger.exception(e);
+            e.printStackTrace();
             return new String[0];
+        }
+    }
+
+    public static void to(String path, List<String> content) {
+        to(path, content.toArray(new String[0]));
+    }
+
+    public static void to(String path, String... content) {
+        if (content == null || content.length == 0) {
+            throw new RuntimeException("内容为空，请检查");
+        }
+        File f = new File(path);
+        try {
+            FileWriter fw = new FileWriter(f);
+            for (String s : content) {
+                fw.write(s);
+                fw.write("\r\n");
+            }
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -60,8 +70,165 @@ public class MyFile extends File {
             return new MyFile[0];
         }
         MyFile[] res = new MyFile[s.length];
-        for (int i = 0; i < s.length; i++)
+        for (int i = 0; i < s.length; i++) {
             res[i] = MyFile.from(s[i].getAbsolutePath());
+        }
+        return res;
+    }
+
+    @Override
+    public MyFile getParentFile() {
+        return MyFile.from(super.getParentFile().getAbsolutePath());
+    }
+
+    public String[] getContent() {
+        ArrayList<String> contents = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(this))) {
+            String tempString;
+            while ((tempString = reader.readLine()) != null) {
+                contents.add(tempString);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return contents.toArray(new String[0]);
+    }
+
+    public String[] getTrimContent() {
+        ArrayList<String> contents = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(this))) {
+            String tempString;
+            while ((tempString = reader.readLine()) != null) {
+                if (tempString.trim().length() == 0)
+                    continue;
+                contents.add(tempString.trim());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return contents.toArray(new String[0]);
+    }
+
+    private static final String PDF = ".pdf";
+    private static final String mp3 = ".mp3";
+
+    public boolean isPdf() {
+        return isFile() && getName().toLowerCase().endsWith(PDF);
+    }
+
+    public boolean isMp3() {
+        return isFile() && getName().toLowerCase().endsWith(mp3);
+    }
+
+    /**
+     * 排序的文件
+     */
+    public MyFile[] listFilesOrders() {
+        MyFile[] arr = listFiles();
+        if (arr == null) {
+            return new MyFile[0];
+        }
+        List<MyFile> list = new ArrayList<>(Arrays.asList(arr));
+        list.sort(Comparator.comparing(File::getName));
+        return list.toArray(new MyFile[0]);
+    }
+
+    /**
+     * 删除当前文件（或文件夹）
+     */
+    public boolean deleteForce() {
+        if (isFile()) {
+            return delete();
+        }
+
+        for (MyFile f : listFiles()) {
+            if (f.isFile()) {
+                f.delete();
+            } else {
+                f.deleteForce();
+            }
+        }
+        return delete();
+    }
+
+    /**
+     * 把当前文件（或文件夹）移动到目标文件夹里面
+     *
+     * @param overWrite 是否覆盖
+     */
+    public void moveToFolder(String folderPath, boolean overWrite) {
+        File aim = new File(folderPath);
+        if (aim.exists()) {
+            if (aim.isFile()) {
+                throw new RuntimeException("目标文件夹路径异常");
+            }
+        } else {
+            aim.mkdirs();
+        }
+        _moveToFolder(folderPath, overWrite);
+        deleteForce();
+    }
+
+    private void _moveToFolder(String folderPath, boolean overWrite) {
+        if (this.isFile()) {
+            File aim = new File(folderPath + File.separator + this.getName());
+            if (aim.exists()) {
+                if (!overWrite) {
+                    return;
+                } else {
+                    aim.delete();
+                    this.renameTo(aim);
+                }
+            } else {
+                this.renameTo(aim);
+            }
+            return;
+        }
+        File cf = new File(folderPath + File.separator + getName());
+        if (!cf.exists()) {
+            cf.mkdir();
+        }
+
+        for (MyFile myFile : listFiles()) {
+            myFile._moveToFolder(cf.getAbsolutePath(), overWrite);
+        }
+    }
+
+
+    /**
+     * 获取MP3列表（降序）
+     */
+    public List<MyFile> searchFileByName(String name) {
+        if (isFile()) {
+            return new ArrayList<>();
+        }
+
+        List<MyFile> res = new ArrayList<>();
+
+//        if (getName().equals(SdCardTool.getLbPath())) {
+//            Logger.info("lb");
+//            return res;
+//        }
+
+        List<MyFile> temp = new ArrayList<>();
+
+        for (MyFile d : listFilesOrderIndexDesc())
+            if (!d.isFile()) {
+                if (d.getName().equals("-")) {
+                    for (MyFile f : d.listFilesOrderIndexDesc())
+                        if (f.isFile() && f.getName().contains(name)) {
+                            temp.add(f);
+                        }
+                } else {
+                    for (MyFile f : d.listFilesOrderIndexDesc())
+                        if (f.isMp3()) {
+                            res.add(f);
+                        }
+                }
+            }
+        for (int i = temp.size() - 1; i >= 0; i--) {
+            res.add(0, temp.get(i));
+        }
         return res;
     }
 
@@ -72,186 +239,11 @@ public class MyFile extends File {
         return res;
     }
 
-    @Override
-    public MyFile getParentFile() {
-        return MyFile.from(super.getParentFile().getAbsolutePath());
-    }
-
-    public boolean isPdf() {
-        return getName().toUpperCase().endsWith(".PDF");
-    }
-
-    public File getfile() {
-        return this;
-    }
-
-    public Map<String, String> getMapContent() {
-        String[] t = getContent();
-        Map<String, String> map = new HashMap<>();
-        for (String s : t) {
-            if (s.contains("=")) {
-                int ind = s.indexOf("=");
-                map.put(s.substring(0, ind).trim(), s.substring(ind + 1).trim());
-            }
-        }
-        return map;
-    }
-
     /**
-     * 获取内容（过滤空字符串）
-     *
-     * @return
+     * 是安安卓隐藏文件夹
      */
-    public String[] getContent() {
-        ArrayList<String> contents = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(getfile()))) {
-            String tempString;
-            while ((tempString = reader.readLine()) != null) {
-                if (tempString.trim().length() == 0)
-                    continue;
-                contents.add(tempString.trim());
-            }
-        } catch (Exception e) {
-            Logger.exception(e);
-        }
-        return contents.toArray(new String[0]);
-    }
-
-    private List<MyFile> mp3List = null;
-
-    public boolean dirHasMp3() {
-        for (MyFile f : listFiles()) {
-            if (f.isDirectory()) {
-                if (f.dirHasMp3())
-                    return true;
-            } else if (f.isMp3())
-                return true;
-        }
-        return false;
-    }
-
-    public boolean dirHasPdf() {
-        for (MyFile f : listFiles()) {
-            if (f.isDirectory()) {
-                if (f.dirHasPdf()){
-                    return true;}
-            } else if (f.isPdf()){
-                return true;}
-        }
-        return false;
-    }
-
-    /**
-     * 获取MP3列表（降序）
-     *
-     * @return
-     */
-    public List<MyFile> getMp3List() {
-        if (isFile()) {
-            return new ArrayList<>();
-        }
-
-        if (mp3List == null) {
-            mp3List = new ArrayList<>();
-
-            if (getName().equals(SdCardTool.getLbPath())) {
-                Logger.info("lb");
-                return mp3List;
-            }
-
-            List<MyFile> temp = new ArrayList<>();
-
-            for (MyFile d : listFilesOrderIndexDesc())
-                if (!d.isFile()) {
-                    if (d.getName().equals("-")) {
-                        //附 的诗歌MP3放最后
-                        for (MyFile f : d.listFilesOrderIndexDesc())
-                            if (f.isMp3()) {
-                                temp.add(f);
-                            }
-                    } else
-                        for (MyFile f : d.listFilesOrderIndexDesc())
-                            if (f.isMp3()) {
-                                mp3List.add(f);
-                            }
-                }
-            for (int i = temp.size() - 1; i >= 0; i--)
-                mp3List.add(0, temp.get(i));
-        }
-        return mp3List;
-    }
-
-    public boolean isMp3() {
-        return isFile() && getName().endsWith(".mp3");
-    }
-
-    public MyFile getPdf() {
-        if (!isFile())
-            return null;
-        if (isPdf())
-            return this;
-        String p = getAbsolutePath().replace(".mp3", ".pdf");
-        for (Book bk : Book.getAll()) {
-            if (p.contains(File.separator + bk.simpleName + File.separator)) {
-                String p2 = p.replace(File.separator + bk.simpleName + File.separator, File.separator + bk.fullName + File.separator);
-                if (new File(p2).exists()) {
-                    return MyFile.from(p2);
-                }
-            } else if (p.contains(File.separator + bk.simpleName.toLowerCase() + File.separator)) {
-                String p2 = p.replace(File.separator + bk.simpleName.toLowerCase() + File.separator, File.separator + bk.fullName + File.separator);
-                if (new File(p2).exists()) {
-                    return MyFile.from(p2);
-                }
-            } else if (p.contains(bk.fullName + "mp3")) {
-                String p1 = p.replace(bk.fullName + "mp3", bk.fullName);
-                if (new File(p1).exists())
-                    return MyFile.from(p1);
-            }
-        }
-
-        return null;
-    }
-
-    public MyFile getMp3() {
-        return getMp3(true);
-    }
-
-    public MyFile getMp3(boolean search) {
-        if (!isFile())
-            return null;
-        String p = getAbsolutePath().replace(".pdf", ".mp3");
-        for (Book bk : Book.getAll()) {
-            if (p.contains(bk.fullName)) {
-                String p2 = p.replace(bk.fullName, bk.simpleName);
-                if (new File(p2).exists()) {
-                    return MyFile.from(p2);
-                }
-            }
-        }
-
-        Hymn h = getHymn();
-        if (search)
-            try {
-                if (h != null) {
-                    for (Content c : h.getContents()) {
-                        if (c.isType(ContentTypeD.getSameSongType())) {
-                            String[] co = Service.getC().correctOrders(c.getValue());
-                            for (String otherHymn : co) {
-                                Hymn oh = Hymn.search(otherHymn);
-                                MyFile mp3 = oh.getFile().getMp3(false);
-                                if (mp3 != null) {
-                                    return mp3;
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                Logger.info("content error");
-                Logger.exception(e);
-            }
-
-        return null;
+    public boolean isHiddenDirectory() {
+        return isDirectory() && getName().startsWith(".");
     }
 
     public Hymn getHymn() {
@@ -315,6 +307,48 @@ public class MyFile extends File {
                 return bk;
             }
         }
+        return null;
+    }
+
+    public MyFile getMp3() {
+        return getMp3(true);
+    }
+
+    public MyFile getMp3(boolean search) {
+        if (!isFile())
+            return null;
+        String p = getAbsolutePath().replace(".pdf", ".mp3");
+        for (Book bk : Book.getAll()) {
+            if (p.contains(bk.fullName)) {
+                String p2 = p.replace(bk.fullName, bk.simpleName);
+                if (new File(p2).exists()) {
+                    return MyFile.from(p2);
+                }
+            }
+        }
+
+        Hymn h = getHymn();
+        if (search)
+            try {
+                if (h != null) {
+                    for (Content c : h.getContents()) {
+                        if (c.isType(ContentTypeD.getSameSongType())) {
+                            String[] co = Service.getC().correctOrders(c.getValue());
+                            for (String otherHymn : co) {
+                                Hymn oh = Hymn.search(otherHymn);
+                                MyFile mp3 = oh.getFile().getMp3(false);
+                                if (mp3 != null) {
+                                    return mp3;
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Logger.info("content error");
+                Logger.exception(e);
+            }
+
         return null;
     }
 
@@ -406,23 +440,31 @@ public class MyFile extends File {
         }
     }
 
-    /**
-     * 是安安卓隐藏文件夹
-     */
-    public boolean isHiddenDirectory() {
-        return isDirectory() && getName().startsWith(".");
-    }
+    public MyFile getPdf() {
+        if (!isFile())
+            return null;
+        if (isPdf())
+            return this;
+        String p = getAbsolutePath().replace(".mp3", ".pdf");
+        for (Book bk : Book.getAll()) {
+            if (p.contains(File.separator + bk.simpleName + File.separator)) {
+                String p2 = p.replace(File.separator + bk.simpleName + File.separator, File.separator + bk.fullName + File.separator);
+                if (new File(p2).exists()) {
+                    return MyFile.from(p2);
+                }
+            } else if (p.contains(File.separator + bk.simpleName.toLowerCase() + File.separator)) {
+                String p2 = p.replace(File.separator + bk.simpleName.toLowerCase() + File.separator, File.separator + bk.fullName + File.separator);
+                if (new File(p2).exists()) {
+                    return MyFile.from(p2);
+                }
+            } else if (p.contains(bk.fullName + "mp3")) {
+                String p1 = p.replace(bk.fullName + "mp3", bk.fullName);
+                if (new File(p1).exists())
+                    return MyFile.from(p1);
+            }
+        }
 
-    /**
-     * 所属文件排序
-     *
-     * @return 隐藏-中文-数字-字母 文件夹-文件
-     */
-    public MyFile[] listFilesOrders() {
-        MyFile[] list = listFiles();
-
-        CommonTool.getC().ArraySort(list, CommonTool.FOLDER_FILE_COMPARE);
-        return list;
+        return null;
     }
 
     public int compareValue() {
@@ -444,17 +486,40 @@ public class MyFile extends File {
         return -v;
     }
 
-    public boolean deleteForce() {
-        if (isFile())
-            return delete();
+    public boolean dirHasMp3() {
         for (MyFile f : listFiles()) {
-            if (f.isFile())
-                f.delete();
-            else
-                f.deleteForce();
+            if (f.isDirectory()) {
+                if (f.dirHasMp3())
+                    return true;
+            } else if (f.isMp3())
+                return true;
         }
-        return delete();
+        return false;
+    }
+
+    public boolean dirHasPdf() {
+        for (MyFile f : listFiles()) {
+            if (f.isDirectory()) {
+                if (f.dirHasPdf()){
+                    return true;}
+            } else if (f.isPdf()){
+                return true;}
+        }
+        return false;
+    }
+
+    public Map<String, String> getMapContent() {
+        String[] t = getContent();
+        Map<String, String> map = new HashMap<>();
+        for (String s : t) {
+            if (s.contains("=")) {
+                int ind = s.indexOf("=");
+                map.put(s.substring(0, ind).trim(), s.substring(ind + 1).trim());
+            }
+        }
+        return map;
     }
 }
+
 
 

@@ -145,14 +145,14 @@ public class Service {
     /**
      * 扫描所有文件并预处理
      */
-    public void predealDir(File f) {
+    public void preDealDir(File f) {
         try {
             if (f.isDirectory()) {
                 if (f.getName().equals(Constant.RES_NAME) || f.getName().equals(Constant.WHITE)) {
                     return;
                 }
                 for (MyFile fn : orderFiles(MyFile.from(f.getAbsolutePath()).listFiles())) {
-                    predealDir(fn.getfile());
+                    preDealDir(fn);
                 }
             } else {
                 //加入文件名索引，加快搜索速度
@@ -618,10 +618,10 @@ public class Service {
                     }
                 } else {
                     boolean flag = false;
-                    for (ContentTypeD ctype : ContentTypeD.getAll()) {
-                        if (line.startsWith(ctype.name + "：")) {
-                            stat = 10 + ctype.id;
-                            h.setContent(ctype, (stat != 10 ? "\t\t" : "") + line.substring(ctype.name.length() + 1).trim());
+                    for (ContentTypeD contentTypeD : ContentTypeD.getAll()) {
+                        if (line.startsWith(contentTypeD.name + "：")) {
+                            stat = 10 + contentTypeD.id;
+                            h.setContent(contentTypeD, (stat != 10 ? "\t\t" : "") + line.substring(contentTypeD.name.length() + 1).trim());
                             flag = true;
                             break;
                         }
@@ -670,7 +670,7 @@ public class Service {
         }
 
         if (res.getName().contains(Label.BAK_FILE)) {
-            loadLable(res);
+            loadLabel(res);
             return true;
         } else if (res.getName().contains("足迹")) {
             loadStep(res);
@@ -715,7 +715,7 @@ public class Service {
         loadLetterRes(activity);
     }
 
-    private void loadLable(MyFile res) {
+    private void loadLabel(MyFile res) {
         Logger.info("开始加载" + res.getName());
         Label.reload(res);
     }
@@ -1006,7 +1006,7 @@ public class Service {
         }
 
         if (!newFile.getParentFile().exists()) {
-            newFile.getParentFile().getfile().mkdirs();
+            newFile.getParentFile().mkdirs();
         }
 
         try {
@@ -1249,13 +1249,11 @@ public class Service {
 
     /**
      * 检查版本服务，无返回值
-     *
-     * @param ct
      */
-    public void checkVersion(Activity ct) {
+    public void checkVersion(Activity activity) {
         try {
-            String res = ct.getPackageManager().getPackageInfo(ct.getPackageName(), 0).versionName;
-            String[] vs = UpdateHistory.getVersionHistory(ct);
+            String res = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
+            String[] vs = UpdateHistory.getVersionHistory(activity);
             for (String v : vs) {
                 String[] va = v.split(" ");
                 if (va.length <= 2)
@@ -1293,7 +1291,7 @@ public class Service {
         if (path.length() > 0) {
             LoadProcess.process = LOAD_ENUM.PRE_DEAL_FILE;
             Logger.info("step 3:开始预处理");
-            Service.getC().predealDir(new File(path));
+            Service.getC().preDealDir(new File(path));
             Logger.info("step 4:开始加载资源文件");
 
             try {
@@ -1698,6 +1696,18 @@ public class Service {
         boolean hasMp3 = isDir && lbDir.dirHasMp3();
         boolean hasPdf = isDir && lbDir.dirHasPdf();
         boolean hasD001 = isDir && (new File(SdCardTool.getD001())).exists();
+        StringBuilder sb = new StringBuilder();
+        if (permission) {
+            File f = new File(SdCardTool.getLbPath());
+            if (f.exists()) {
+                File[] fs = f.listFiles();
+                if (fs != null) {
+                    for (File file : fs) {
+                        sb.append(file.getName()).append(";");
+                    }
+                }
+            }
+        }
 
         String sp = "\r\n";
         return "安卓系统:" + android.os.Build.VERSION.RELEASE + sp
@@ -1706,6 +1716,7 @@ public class Service {
                 + "读写权限:" + permission + sp
                 + "获得诗歌蓝版文件夹:" + isDir + sp
                 + "文件夹:" + hasDir + " MP3:" + hasMp3 + " pdf:" + hasPdf + " D001:" + hasD001 + sp
+                + (sb.length() == 0 ? "" : ("'诗歌蓝版':" + sb)) + sp
                 + "app版本:" + getVersionStr(activity);
     }
 

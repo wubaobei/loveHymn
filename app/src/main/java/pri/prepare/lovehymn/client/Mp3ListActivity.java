@@ -278,12 +278,12 @@ public class Mp3ListActivity extends AppCompatActivity {
                         Book b = bks[i];
                         MyFile dir = b.getMp3Directory();
                         if (dir != null)
-                            list.addAll(dir.getMp3List());
+                            list.addAll(dir.searchFileByName(".mp3"));
                     }
                 } else {
                     MyFile file = book.getMp3Directory();
                     if (file != null)
-                        list = file.getMp3List();
+                        list = file.searchFileByName(".mp3");
                 }
 
                 switch (helper.getType()) {

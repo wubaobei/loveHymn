@@ -1364,7 +1364,7 @@ public class MainActivity extends AppCompatActivity {
             bringOtherToFront();
             isSwitchPdf = true;
             pdfPro = 0f;
-            pdfView.fromFile(f.getfile()).load();
+            pdfView.fromFile(f).load();
             Setting.updateSetting(Setting.LAST_OPEN, f.getAbsolutePath());
             detailBtnSet(f);
             mp3BtnSet(f);

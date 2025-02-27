@@ -2,13 +2,11 @@ package pri.prepare.lovehymn.client.tool;
 
 public class TimeStatTool {
     /**
-     * @param maxStatTime 最大统计时间间隔 单位ms
      * @param warnTime    提醒时间 单位s
      */
-    public TimeStatTool(int maxStatTime, int warnTime) {
+    public TimeStatTool( int warnTime) {
         totTime = 0;
         thisTime = System.currentTimeMillis();
-        this.maxStatTime = maxStatTime;
         this.warnTime = warnTime * 1000;
         isPause = false;
         hasShow = false;
@@ -17,23 +15,20 @@ public class TimeStatTool {
     public void Restart() {
         totTime = 0;
         thisTime = System.currentTimeMillis();
-        //this.maxStatTime = maxStatTime;
-        //this.warnTime = warnTime * 1000;
         isPause = false;
         hasShow = false;
     }
 
     private long totTime;
     private long thisTime;
-    private int maxStatTime;
-    private int warnTime;
+    private final int warnTime;
     private boolean isPause;
     private boolean hasShow;
 
     public void Stat() {
         if (!isPause) {
             long t = System.currentTimeMillis();
-            if (t - thisTime < maxStatTime) {
+            if (t - thisTime < 300) {
                 totTime += t - thisTime;
             }
             thisTime = t;

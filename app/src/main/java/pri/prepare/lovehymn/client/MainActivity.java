@@ -52,7 +52,6 @@ import pri.prepare.lovehymn.client.tool.TipStruct;
 import pri.prepare.lovehymn.client.tool.TouchUtil;
 import pri.prepare.lovehymn.client.tool.Tool;
 import pri.prepare.lovehymn.client.tool.VolumeUtil;
-import pri.prepare.lovehymn.client.tool.enuCm;
 import pri.prepare.lovehymn.databinding.ActivityMainBinding;
 import pri.prepare.lovehymn.server.UpdateHistory;
 import pri.prepare.lovehymn.server.entity.Book;
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             if (!showHis && Setting.getValueB(Setting.SHOW_TIG)) {
                 showTips();
             }
-            timeTool = new TimeStatTool(300, 300);
+            timeTool = new TimeStatTool(10);
         } catch (Exception e) {
             Logger.info("onCreate 出现bug");
             Logger.exception(e);
@@ -200,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (ScreenUtils.isLandscape(getWindowManager())) {
                 Tool.hideStatusBar(this);
+                binding.stepLl.setVisibility(View.INVISIBLE);
                 screenCastingMode = Setting.getValueB(Setting.SCREEN_CASTING_MODE);
             } else if (Setting.getValueB(Setting.STATUS_BAR_SHOW) && !showTime) {
                 Tool.showStatusBar(getWindow(), this);
@@ -351,18 +351,18 @@ public class MainActivity extends AppCompatActivity {
             boolean lp = tt.LongPress(ev);
 
             if (screenCastingMode) {
-                if (tt.clickCenterZoneInd(ev, 0, 3)) {
+                if (tt.clickXCenterZoneInd(ev, 0, 3)) {
                     float r = getPdfV0().getPositionOffset() - getUDpercent();
                     if (r >= -1f / getPdfV0().getPageCount() / 2) {
                         getPdfV0().setPositionOffset(r);
                     }
                     return true;
                 }
-                if (tt.clickCenterZoneInd(ev, 1, 3)) {
+                if (tt.clickXCenterZoneInd(ev, 1, 3)) {
                     hideBtnClickEvent();
                     return true;
                 }
-                if (tt.clickCenterZoneInd(ev, 2, 3)) {
+                if (tt.clickXCenterZoneInd(ev, 2, 3)) {
                     float r = getPdfV0().getPositionOffset() + getUDpercent();
                     if (r < 1 + 1f / getPdfV0().getPageCount() / 2) {
                         getPdfV0().setPositionOffset(r);
@@ -370,10 +370,15 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             }
-
+            //记录下按下的动作
+            tt.clickYCenterZoneInd(ev, 7, 8);
             if (tt.clickCenter(ev)) {
-                hideBtnClickEvent();
-                return true;
+                if (!tt.clickYCenterZoneInd(ev, 7, 8)) {
+                    hideBtnClickEvent();
+                    return true;
+                } else {
+                    Logger.info("7/8");
+                }
             }
 
             if (tr == TouchUtil.THREE_LEFT) {
@@ -530,7 +535,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showBar() {
-        Logger.info("show bar");
         toolBarStatus = 1;
         RelativeLayout iv = binding.rLayout;
         RelativeLayout iv2 = binding.rLayout2;
@@ -845,10 +849,28 @@ public class MainActivity extends AppCompatActivity {
                     updateKAfterTime = Long.MAX_VALUE;
                 }
                 //当满足条件时 弹出添加足迹提示（自动足迹）
-                if (timeTool.WarnOnce() && (Setting.getValueI(Setting.AUTO_STEP) == 1) && (!lastHymn.hasStepToday())) {
-                    CommonDialog cd = new CommonDialog(MainActivity.this, enuCm.LEAVE_STEP, () -> setTitleText(lastFile)
-                            , MainActivity.this, String.valueOf(lastHymn.getId()));
-                    cd.showDialog();
+                if (timeTool.WarnOnce() && (Setting.getValueI(Setting.AUTO_STEP) == 1)
+                        && (!lastHymn.hasStepToday()) && !screenCastingMode) {
+                    binding.stepLl.setVisibility(View.VISIBLE);
+                    binding.stepLl.bringToFront();
+                    binding.stepClose.setOnClickListener(v -> {
+                        Logger.info("stepClose");
+                        binding.stepLl.setVisibility(View.GONE);
+                    });
+                    binding.stepSure.setOnClickListener(v -> {
+                        Logger.info("stepSure");
+                        //binding.stepLl.setVisibility(View.GONE);
+                        Hymn hymn = lastHymn;
+                        String newStep = hymn.addStep();
+                        try {
+                            hymn.update();
+                            SdCardTool.writeToFile(SdCardTool.getResPath() + File.separator + SdCardTool.STEP_FILE_NAME, hymn + " " + newStep, SdCardTool.FILE_APPEND);
+                            setTitleText(lastFile);
+                            binding.stepLl.setVisibility(View.GONE);
+                        } catch (Exception e) {
+                            Logger.exception(e);
+                        }
+                    });
                 }
 
                 boolean showStepTime = Setting.getValueB(Setting.AUTO_STEP_TIME);

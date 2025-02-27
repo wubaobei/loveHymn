@@ -1,6 +1,5 @@
 package pri.prepare.lovehymn.client.tool;
 
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 
@@ -53,7 +52,6 @@ public class TouchUtil {
 
     public boolean clickCenter(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            //tn++;
             time = System.currentTimeMillis();
             x = ev.getX();
             y = ev.getY();
@@ -62,8 +60,9 @@ public class TouchUtil {
             if (isCenter && System.currentTimeMillis() - time < td) {
                 time = System.currentTimeMillis();
 
-                if (Math.abs(x - ev.getX()) > dxy || Math.abs(y - ev.getY()) > dxy)
+                if (Math.abs(x - ev.getX()) > dxy || Math.abs(y - ev.getY()) > dxy) {
                     return false;
+                }
 
                 x = ev.getX();
                 y = ev.getY();
@@ -81,7 +80,7 @@ public class TouchUtil {
     private long timeZ = 0L;
     private float xZ, yZ;
 
-    public boolean clickCenterZoneInd(MotionEvent ev, int xInd, int maxX) {
+    public boolean clickXCenterZoneInd(MotionEvent ev, int xInd, int maxX) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             timeZ = System.currentTimeMillis();
             xZ = ev.getX();
@@ -99,9 +98,33 @@ public class TouchUtil {
         return false;
     }
 
+    public boolean clickYCenterZoneInd(MotionEvent ev, int yInd, int maxY) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            timeZ = System.currentTimeMillis();
+            xZ = ev.getX();
+            yZ = ev.getY();
+        } else if (ev.getAction() == MotionEvent.ACTION_UP) {
+            if (System.currentTimeMillis() - timeZ < td && getCenter()) {
+                timeZ = System.currentTimeMillis();
+
+                if (Math.abs(xZ - ev.getX()) > dxy || Math.abs(yZ - ev.getY()) > dxy) {
+                    return false;
+                }
+
+                return getZoneY(ev.getY(), yInd, maxY);
+            }
+        }
+        return false;
+    }
+
     private boolean getZoneX(float x, int xInd, int maxX) {
         assert maxX > 0;
         return x >= xInd * width / maxX && x <= (xInd + 1) * width / maxX;
+    }
+
+    private boolean getZoneY(float y, int yInd, int maxY) {
+        assert maxY > 0;
+        return y >= yInd * width / maxY && y <= (yInd + 1) * width / maxY;
     }
 
     //endregion

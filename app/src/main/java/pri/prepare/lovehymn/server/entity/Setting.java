@@ -32,10 +32,6 @@ public class Setting {
      */
     public static final int MP3_LOOP = 5;
     /**
-     * 相关经节中英显示
-     */
-    //public static final int SHOW_CHINESE_ENGLISH = 7;
-    /**
      * 收藏夹
      */
     public static final int COLLECT = 12;
@@ -118,10 +114,6 @@ public class Setting {
      */
     public static final int MP3_COUNT_CACHE = 37;
     /**
-     * 最新版本（用于更新app的提醒显示）
-     */
-    //public static final int NEW_VERSION = 40;
-    /**
      * 最近播放列表缓存
      */
     public static final int SHORT_CUT1 = 41;
@@ -138,14 +130,6 @@ public class Setting {
      */
     public static final int LOAD_STEP = 50;
     /**
-     * 关闭异步功能
-     */
-    //public static final int USE_ASYNC = 52;
-    /**
-     * 启动页背景
-     */
-    //public static final int START_PAGE_BACKGROUND = 53;
-    /**
      * 横屏时进入投影模式
      */
     public static final int SCREEN_CASTING_MODE =54;
@@ -160,7 +144,6 @@ public class Setting {
     public static final int lyric_default_text_size = 15;
 
     public static final boolean line_show_default = true;
-    public static final int show_chinese_english_default = 1;
 
     public static final String TABLE = SettingD.class.getSimpleName();
     public final int Key;
@@ -207,21 +190,17 @@ public class Setting {
             defaultMap.put(LYRIC_SIZE, Setting.lyric_default_text_size);
             defaultMap.put(PDF_TIME, 0);
             defaultMap.put(DISAPPEAR_TIME, SettingDialog.getInitDisappearTime());
-            //defaultMap.put(SHOW_CHINESE_ENGLISH, show_chinese_english_default);
             defaultMap.put(RES_VERSION, 0);
             defaultMap.put(MP3_COUNT_CACHE, "");
             defaultMap.put(COLLECT, "");
             defaultMap.put(LAST_OPEN, Service.getC().getFirstHymnPath());
             defaultMap.put(SHORT_CUT1, "99]false]1]a");//默认显示所有诗歌
-            //defaultMap.put(NEW_VERSION, "");
             defaultMap.put(OPEN_RECENT, "");
             defaultMap.put(LAST_VERSION_NAME, "");
             defaultMap.put(PAUSE_TIME, "");
             defaultMap.put(LOAD_LABEL, false);
             defaultMap.put(LOAD_OTHER, false);
             defaultMap.put(LOAD_STEP, false);
-            //defaultMap.put(USE_ASYNC, false);
-            //defaultMap.put(START_PAGE_BACKGROUND, 0);
             defaultMap.put(SCREEN_CASTING_MODE, true);
         }
         return defaultMap.get(key);

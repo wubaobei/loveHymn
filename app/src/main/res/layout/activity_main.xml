@@ -91,11 +91,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:background="#00ffffff"
                         android:paddingTop="4dp"
                         android:paddingEnd="15dp"
                         android:text="TextView"
                         android:textColor="#00bb00"
-                        android:background="#00ffffff"
                         tools:ignore="RtlSymmetry" />
 
                     <TextView
@@ -379,6 +379,33 @@
                 </RelativeLayout>
 
             </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/step_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/step_close"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/btn_step_top"
+                    android:gravity="center"
+                    android:text="x"
+                    android:textSize="30dp" />
+
+                <TextView
+                    android:id="@+id/step_sure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_step_bottom"
+                    android:text="留\n下\n足\n迹"
+                    android:textSize="30dp" />
+            </LinearLayout>
 
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

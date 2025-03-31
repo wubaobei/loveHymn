@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             if (!showHis && Setting.getValueB(Setting.SHOW_TIG)) {
                 showTips();
             }
-            timeTool = new TimeStatTool(10);
+            timeTool = new TimeStatTool(180);
         } catch (Exception e) {
             Logger.info("onCreate 出现bug");
             Logger.exception(e);
@@ -371,14 +371,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             //记录下按下的动作
-            tt.clickYCenterZoneInd(ev, 7, 8);
+
             if (tt.clickCenter(ev)) {
-                if (!tt.clickYCenterZoneInd(ev, 7, 8)) {
-                    hideBtnClickEvent();
-                    return true;
-                } else {
-                    Logger.info("7/8");
-                }
+                hideBtnClickEvent();
             }
 
             if (tr == TouchUtil.THREE_LEFT) {
@@ -597,7 +592,7 @@ public class MainActivity extends AppCompatActivity {
             checkWhenOpen();
             mp3StateSet();
 
-            setCataLL();
+            setCatalogLl();
 
             binding.bgMsg.setText("加载pdf失败，请尝试下列方法，如果仍有问题联系作者\r\n" + Service.getC().getFixFunctions() + "\r\n"
                     + Service.getC().getDebugMsg(this));
@@ -637,7 +632,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 目录放最前边，而非中间，可以改为可设置的
      */
-    private void setCataLL() {
+    private void setCatalogLl() {
         TableRow tr = binding.trList;
         LinearLayout ll = binding.cataLl;
         tr.removeView(ll);
@@ -656,8 +651,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void recordPdfProcess() {
         try {
-            PDFView pdfv = getPdfV0();
-            Setting.updateSetting(Setting.PDF_Y_OFFSET, (int) (pdfv.getPositionOffset() * 10000));
+            PDFView pdfView = getPdfV0();
+            Setting.updateSetting(Setting.PDF_Y_OFFSET, (int) (pdfView.getPositionOffset() * 10000));
         } catch (Exception e) {
             Logger.info("记录pdf进度出现异常");
             Logger.exception(e);
@@ -849,34 +844,40 @@ public class MainActivity extends AppCompatActivity {
                     updateKAfterTime = Long.MAX_VALUE;
                 }
                 //当满足条件时 弹出添加足迹提示（自动足迹）
-                if (timeTool.WarnOnce() && (Setting.getValueI(Setting.AUTO_STEP) == 1)
+                if (timeTool.WarnOnce()&& (Setting.getValueI(Setting.AUTO_STEP) == 1)
                         && (!lastHymn.hasStepToday()) && !screenCastingMode) {
-                    binding.stepLl.setVisibility(View.VISIBLE);
-                    binding.stepLl.bringToFront();
-                    binding.stepClose.setOnClickListener(v -> {
-                        Logger.info("stepClose");
-                        binding.stepLl.setVisibility(View.GONE);
-                    });
-                    binding.stepSure.setOnClickListener(v -> {
-                        Logger.info("stepSure");
-                        //binding.stepLl.setVisibility(View.GONE);
-                        Hymn hymn = lastHymn;
-                        String newStep = hymn.addStep();
-                        try {
-                            hymn.update();
-                            SdCardTool.writeToFile(SdCardTool.getResPath() + File.separator + SdCardTool.STEP_FILE_NAME, hymn + " " + newStep, SdCardTool.FILE_APPEND);
-                            setTitleText(lastFile);
+                    Logger.info("set VISIBLE");
+                        binding.stepLl.setVisibility(View.VISIBLE);
+                    binding.stepClose.setVisibility(View.VISIBLE);
+                    binding.stepSure.setVisibility(View.VISIBLE);
+                        binding.stepLl.bringToFront();
+                        binding.stepClose.setOnClickListener(v -> {
+                            Logger.info("stepClose");
                             binding.stepLl.setVisibility(View.GONE);
-                        } catch (Exception e) {
-                            Logger.exception(e);
-                        }
-                    });
+                        });
+                        binding.stepSure.setOnClickListener(v -> {
+                            Logger.info("stepSure");
+                            Hymn hymn = lastHymn;
+                            String newStep = hymn.addStep();
+                            try {
+                                hymn.update();
+                                SdCardTool.writeToFile(SdCardTool.getResPath() + File.separator + SdCardTool.STEP_FILE_NAME, hymn + " " + newStep, SdCardTool.FILE_APPEND);
+                                setTitleText(lastFile);
+                                binding.stepLl.setVisibility(View.GONE);
+                                toastInTimerH("已留下足迹");
+                            } catch (Exception e) {
+                                Logger.exception(e);
+                            }
+                        });
                 }
 
                 boolean showStepTime = Setting.getValueB(Setting.AUTO_STEP_TIME);
-                binding.timeTv.setVisibility(showStepTime ? View.VISIBLE : View.INVISIBLE);
                 if (showStepTime) {
+                    binding.timeTv.setVisibility(View.VISIBLE);
+                    binding.timeTv.bringToFront();
                     binding.timeTv.setText(timeTool.getTime());
+                }else{
+                    binding.timeTv.setVisibility(View.INVISIBLE);
                 }
 
                 if (tt.notSet()) {
@@ -1350,6 +1351,8 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        binding.stepSure.setVisibility(View.INVISIBLE);
+        binding.stepClose.setVisibility(View.INVISIBLE);
         try {
             dailyWarn(f);
         } catch (Exception e) {

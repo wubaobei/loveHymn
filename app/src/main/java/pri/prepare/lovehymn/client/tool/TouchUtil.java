@@ -46,8 +46,11 @@ public class TouchUtil {
     private int h1 = 0, h2 = 0;
     private float x = 0f, y = 0f;
 
+    /**
+     * xy都在中心位置
+     */
     private boolean getCenter() {
-        return y > h1 && y < height - h2;
+        return y > h1 && y < height - h2 && x > width / 8 && x < width * 7 / 8;
     }
 
     public boolean clickCenter(MotionEvent ev) {
@@ -110,7 +113,6 @@ public class TouchUtil {
                 if (Math.abs(xZ - ev.getX()) > dxy || Math.abs(yZ - ev.getY()) > dxy) {
                     return false;
                 }
-
                 return getZoneY(ev.getY(), yInd, maxY);
             }
         }
@@ -124,7 +126,7 @@ public class TouchUtil {
 
     private boolean getZoneY(float y, int yInd, int maxY) {
         assert maxY > 0;
-        return y >= yInd * width / maxY && y <= (yInd + 1) * width / maxY;
+        return y >= yInd * height / maxY && y <= (yInd + 1) * height / maxY;
     }
 
     //endregion

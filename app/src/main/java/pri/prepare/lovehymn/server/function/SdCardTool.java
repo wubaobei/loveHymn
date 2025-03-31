@@ -252,7 +252,6 @@ public class SdCardTool {
     }
 
     private static ShowResult[] search0(String ss, int page, int bookId) throws Exception {
-        String[] coArr;
         if (isMusicStr(ss)) {
             //搜索旋律
             searchType = "isMusicStr";
@@ -288,7 +287,6 @@ public class SdCardTool {
                                 continue;
                         }
                         if (searchTemp0.contains(p)) {
-                            Logger.info("has same path");
                             continue;
                         }
                         searchTemp0.add(p);
@@ -299,8 +297,6 @@ public class SdCardTool {
                     if (n == Constant.SEARCH_RESULT_SHOW_MAX_COUNT + 1)
                         break;
                 }
-
-                searchTemp0 = orderByNumberAndBook(searchTemp0);
 
                 tooMuch = searchTemp0.size() == Constant.SEARCH_RESULT_SHOW_MAX_COUNT + 1;
             }
@@ -396,14 +392,8 @@ public class SdCardTool {
         return res;
     }
 
-    private static ArrayList<String> orderByNumberAndBook(ArrayList<String> searchTemp0) {
-        return searchTemp0;
-    }
-
     /**
      * 获取资源列表，用于比较更新情况
-     *
-     * @return
      */
     public static String[] getResFileList() {
         ArrayList<String> s = new ArrayList<>();
@@ -454,11 +444,7 @@ public class SdCardTool {
 
     /**
      * 写文件
-     *
-     * @param path
-     * @param record
      * @param writeType 0 禁止覆盖 1 覆盖 2 追加
-     * @return
      */
     public static boolean writeToFile(String path, String record, int writeType) {
         if (writeType == FILE_NO_OVERWRITE && new File(path).exists())
@@ -473,7 +459,7 @@ public class SdCardTool {
         }
     }
 
-    public static MyFile getQitaFile() {
+    public static MyFile getOtherFile() {
         String path = getResPath();
         path += "/199.qita.txt";
         if (new File(path).exists())

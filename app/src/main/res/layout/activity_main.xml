@@ -39,10 +39,23 @@
                 android:layout_centerHorizontal="true"
                 android:background="#00000000" />
 
+            <TextView
+                android:id="@+id/timeTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="#00ffffff"
+                android:paddingTop="4dp"
+                android:paddingEnd="15dp"
+                android:text="TextView"
+                android:textColor="#bb3300"
+                tools:ignore="RtlSymmetry" />
+
             <RelativeLayout
                 android:id="@+id/other_tool_ll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
 
                 <!--这个按钮纯粹的占位用-->
                 <Button
@@ -86,17 +99,6 @@
                         android:textSize="22sp"
                         android:typeface="serif" />
 
-                    <TextView
-                        android:id="@+id/timeTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:background="#00ffffff"
-                        android:paddingTop="4dp"
-                        android:paddingEnd="15dp"
-                        android:text="TextView"
-                        android:textColor="#00bb00"
-                        tools:ignore="RtlSymmetry" />
 
                     <TextView
                         android:id="@+id/dpdp"
@@ -386,6 +388,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:visibility="invisible"
                 android:orientation="vertical">
 
                 <TextView
@@ -404,7 +407,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/btn_step_bottom"
                     android:text="留\n下\n足\n迹"
-                    android:textSize="30dp" />
+                    android:textSize="30dp"/>
             </LinearLayout>
 
         </RelativeLayout>

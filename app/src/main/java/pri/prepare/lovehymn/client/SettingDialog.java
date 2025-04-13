@@ -52,6 +52,7 @@ public class SettingDialog extends Dialog implements IShowDialog {
         Service.getC().checkVersion(activity);
         iTell = tell;
         setStatisticBtn();
+        setFolderBtn();
         setLoadResBtn();
         setUpdateHistoryBtn();
         setAuthorTV();
@@ -102,12 +103,12 @@ public class SettingDialog extends Dialog implements IShowDialog {
      * 设置图标
      */
     private void setSettingIcons() {
-        int[] btnId = new int[]{R.id.resStatBtn, R.id.all_read,
+        int[] btnId = new int[]{R.id.resStatBtn, R.id.folderStructBtn, R.id.all_read,
                 R.id.dispearTime, R.id.downloadAddressBtn,
                 R.id.specialSettingBtn,
                 R.id.lableBtn, R.id.showstatusbar, R.id.screenCastingMode,
                 R.id.showtoolbar, R.id.dict_show, R.id.close_tig_btn, R.id.signSettingBtn, R.id.loadResBtn};
-        int[] dId = new int[]{R.drawable.s_2, R.drawable.s_4,
+        int[] dId = new int[]{R.drawable.s_2, R.drawable.folder, R.drawable.s_4,
                 R.drawable.s_5, R.drawable.s_6,
                 R.drawable.special_setting,
                 R.drawable.label_icon, R.drawable.statuslan, R.drawable.screen_casting_mode,
@@ -177,6 +178,13 @@ public class SettingDialog extends Dialog implements IShowDialog {
      */
     private void setStatisticBtn() {
         binding.resStatBtn.setOnClickListener(v -> Tool.ShowDialog(ct, "资源统计", Service.getC().getResStatString(), -1));
+    }
+
+    /**
+     * 目录结构统计
+     */
+    private void setFolderBtn() {
+        binding.folderStructBtn.setOnClickListener(v -> Tool.ShowDialog(ct, "目录结构", Service.getC().getFolderStruct(), -1));
     }
 
     /**

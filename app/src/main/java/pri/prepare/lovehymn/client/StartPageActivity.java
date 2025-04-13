@@ -175,8 +175,9 @@ public class StartPageActivity extends AppCompatActivity {
                     PersonRemark.init();
                     long t2 = System.currentTimeMillis() - t1;
                     Logger.info("初始化耗时:" + t2);
-                    if (t2 < 800)
+                    if (t2 < 800) {
                         Thread.sleep(800 - t2);
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

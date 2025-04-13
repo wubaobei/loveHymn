@@ -99,6 +99,7 @@ public class Service {
      * @return 如果不为空，则显示出来
      */
     public String scanAddedFile() {
+        //20250405修改：加载时不解压附加包，加载完成后再解压，提升加载成功率
         String resPath = SdCardTool.getLbPath();
         if (!new File(resPath).isDirectory()) {
             Logger.info("no added file(0)");
@@ -111,34 +112,34 @@ public class Service {
         for (int i = 0; i < 10; i++) {
             String path = SdCardTool.searchAddedFile();
             if (path.length() == 0) {
-                if (num > 0) {
-                    return "更新了" + num + "个资源文件";
-                }
+//                if (num > 0) {
+//                    return "更新了" + num + "个资源文件";
+//                }
                 return "";
             }
-            Logger.info("找到附加包：" + path);
+            Logger.info("找到附加包：" + path + " 但暂时不解压");
 
-            String pathT = path;
-            if (new File(path).exists()) {
-                pathT = new File(path).getName();
-            }
-            long t = new File(path).length() / 15000000;
-            LoadProcess.UNZIP_SUM = i + 1;
-            MainActivity.msgWait = "正在解压 " + pathT + "\r\n预计耗时" + t + "-" + (2 * t) + "秒\r\n请勿退出";
-            Logger.info("开始解压 " + path);
-            try {
-                num += unzip(resPath, path, otherMsg, true, false);
-            } catch (Exception e) {
-                MainActivity.msgWait = "解压" + path + "失败,请查看'设置'-'" + SettingDialog.ALL_READ + "'-'常见问题'";
-                Logger.exception(e);
-            }
+//            String pathT = path;
+//            if (new File(path).exists()) {
+//                pathT = new File(path).getName();
+//            }
+//            long t = new File(path).length() / 15000000;
+//            LoadProcess.UNZIP_SUM = i + 1;
+//            MainActivity.msgWait = "正在解压 " + pathT + "\r\n预计耗时" + t + "-" + (2 * t) + "秒\r\n请勿退出";
+//            Logger.info("开始解压 " + path);
+//            try {
+//                num += unzip(resPath, path, otherMsg, true, false);
+//            } catch (Exception e) {
+//                MainActivity.msgWait = "解压" + path + "失败,请查看'设置'-'" + SettingDialog.ALL_READ + "'-'常见问题'";
+//                Logger.exception(e);
+//            }
         }
 
-        if (otherMsg[0].length() > 0) {
-            if (otherMsg[0].length() > 30)
-                otherMsg[0] = otherMsg[0].substring(0, 30) + "...";
-            otherMsg[0] = "(" + otherMsg[0] + ")";
-        }
+//        if (otherMsg[0].length() > 0) {
+//            if (otherMsg[0].length() > 30)
+//                otherMsg[0] = otherMsg[0].substring(0, 30) + "...";
+//            otherMsg[0] = "(" + otherMsg[0] + ")";
+//        }
         return "更新了" + num + "个资源文件" + otherMsg[0];
     }
 
@@ -1312,8 +1313,9 @@ public class Service {
      */
     public String checkSelf() {
         try {
-            if (!new File(getFirstHymnPath()).exists())
+            if (!new File(getFirstHymnPath()).exists()) {
                 return "找不到诗歌pdf，请检查'诗歌蓝版'文件夹的位置或内容有无问题。如果你下载的是升级包，请再去下载pdf附加包。如果已下载，但无法自动加载，请将下载的附加包移动到储存卡根目录。";
+            }
 
             LetterD[] allLetter = LetterD.getAll();
             if (allLetter.length != 66) {
@@ -2057,5 +2059,78 @@ public class Service {
             file.mkdirs();
         }
     }
+
+    public String[] getFolderStruct() {
+        try {
+            List<String> arr = new ArrayList<>();
+            String p = SdCardTool.getLbPath();
+            File f = new File(p);
+            if (!f.exists()) {
+                arr.add("找不到诗歌蓝版文件夹或无权限");
+                return arr.toArray(new String[0]);
+            }
+            arr.add(f.getName());
+            for (File file : f.listFiles()) {
+                dfsFs(file, 1, arr);
+            }
+
+            return arr.toArray(new String[0]);
+        } catch (Exception e) {
+            Logger.exception(e);
+            return new String[]{e.getMessage()};
+        }
+    }
+
+    private void dfsFs(File file, int deep, List<String> arr) {
+        if (file.isDirectory()) {
+            arr.add(rp(deep) + file.getName());
+            for (File f2 : file.listFiles()) {
+                dfsFs(f2, deep + 1, arr);
+            }
+        } else {
+            if (file.getName().toLowerCase().endsWith("mp3")) {
+                String t = arr.get(arr.size() - 1);
+                if (t.contains("mp3")) {
+                    t = rp(deep) + "mp3 " + (Integer.parseInt(t.split(" ")[1]) + 1);
+                    arr.set(arr.size() - 1, t);
+                } else {
+                    arr.add(rp(deep) + "mp3 1");
+                }
+            } else if (file.getName().toLowerCase().endsWith("pdf")) {
+                String t = arr.get(arr.size() - 1);
+                if (t.contains("pdf")) {
+                    t = rp(deep) + "pdf " + (Integer.parseInt(t.split(" ")[1]) + 1);
+                    arr.set(arr.size() - 1, t);
+                } else {
+                    arr.add(rp(deep) + "pdf 1");
+                }
+            } else {
+                arr.add(rp(deep) + file.getName());
+            }
+        }
+    }
+
+    private String rp(int deep) {
+        if (deep == 1) {
+            return "-";
+        }
+        if (deep == 2) {
+            return "--";
+        }
+        if (deep == 3) {
+            return "---";
+        }
+        if (deep == 4) {
+            return "----";
+        }
+        if (deep == 5) {
+            return "-----";
+        }
+        if (deep == 6) {
+            return "------";
+        }
+        return "?";
+    }
+
 
 }

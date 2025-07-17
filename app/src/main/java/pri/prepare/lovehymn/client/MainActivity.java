@@ -36,7 +36,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 
-import pri.prepare.lovehymn.BuildConfig;
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.tool.DisplayStat;
 import pri.prepare.lovehymn.client.tool.HistoryTool;
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
             createTime = System.currentTimeMillis();
 
-            tt = new TouchUtil(this.getWindowManager());
+            tt = new TouchUtil(this.getWindowManager(), this.getWindow());
 
             boolean showHis = showVersionUpdateHistory();
             if (!showHis && Setting.getValueB(Setting.SHOW_TIG)) {
@@ -151,7 +150,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         try {
-            tt.set(this.getWindowManager());
+            Logger.info("onConfigurationChanged");
+            tt.set(this.getWindowManager(), this.getWindow());
             tt.set(0, 0);
 
             setScreenK();
@@ -350,16 +350,19 @@ public class MainActivity extends AppCompatActivity {
             int dr = tt.PressDouble(ev);
             boolean lp = tt.LongPress(ev);
 
+            tt.setEvent4status("");
             if (screenCastingMode) {
                 if (tt.clickXCenterZoneInd(ev, 0, 3)) {
                     float r = getPdfV0().getPositionOffset() - getUDpercent();
                     if (r >= -1f / getPdfV0().getPageCount() / 2) {
                         getPdfV0().setPositionOffset(r);
                     }
+                    tt.setEvent4status("上一页");
                     return true;
                 }
                 if (tt.clickXCenterZoneInd(ev, 1, 3)) {
-                    hideBtnClickEvent();
+                    hideOrShowBtnClickEvent();
+                    tt.setEvent4status("中间");
                     return true;
                 }
                 if (tt.clickXCenterZoneInd(ev, 2, 3)) {
@@ -367,13 +370,15 @@ public class MainActivity extends AppCompatActivity {
                     if (r < 1 + 1f / getPdfV0().getPageCount() / 2) {
                         getPdfV0().setPositionOffset(r);
                     }
+                    tt.setEvent4status("下一页");
                     return true;
                 }
             }
             //记录下按下的动作
 
             if (tt.clickCenter(ev)) {
-                hideBtnClickEvent();
+                hideOrShowBtnClickEvent();
+                tt.setEvent4status("中间");
             }
 
             if (tr == TouchUtil.THREE_LEFT) {
@@ -382,6 +387,7 @@ public class MainActivity extends AppCompatActivity {
                 toastInTimerH("请使用双指滑动代替三指滑动");
             } else if (dr == TouchUtil.DOUBLE_LEFT) {
                 MyFile f = HistoryTool.getNext();
+                tt.setEvent4status("上/下一首");
                 if (f != null) {
                     loadPdf(f, false);
                 } else {
@@ -389,6 +395,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else if (dr == TouchUtil.DOUBLE_RIGHT) {
                 MyFile f = HistoryTool.getPreview();
+                tt.setEvent4status("上/下一首");
                 if (f != null) {
                     loadPdf(f, false);
                 } else {
@@ -396,9 +403,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else if (dr == TouchUtil.DOUBLE_UP) {
                 quickSign(Setting.getValueI(Setting.DOUBLE_FINGER_UP));
+                tt.setEvent4status("双指上滑");
             } else if (dr == TouchUtil.DOUBLE_DOWN) {
                 quickSign(Setting.getValueI(Setting.DOUBLE_FINGER_DOWN));
+                tt.setEvent4status("双指下滑");
             } else if (pn != 0) {
+                tt.setEvent4status("上/下一首");
                 if (pn == 1) {
                     if (fn != null)
                         loadPdf(fn);
@@ -413,6 +423,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             } else if (lp) {
+                tt.setEvent4status("长按");
                 //长按
                 CollectHistoryDialog dialog = new CollectHistoryDialog(this, lastFile, lastHymn, i4Set, i4Lc);
                 dialog.showDialog();
@@ -422,6 +433,9 @@ public class MainActivity extends AppCompatActivity {
             //当加载失败时，可能需要通过长按查看教程，屏蔽此时的错误提示
             if (loadPdfSuccess)
                 toastInTimerH("出了点小问题：" + e.getMessage());
+        }
+        if (tt.getStatus().endsWith("lastEvent:")) {
+            tt.setEvent4status("其他触摸事件");
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -492,11 +506,14 @@ public class MainActivity extends AppCompatActivity {
     private int toolBarStatus = 0;
     private long showBarStartTime = 0;
 
-    private void hideBtnClickEvent() {
+    /**
+     * 显示活隐藏工具栏
+     */
+    private void hideOrShowBtnClickEvent() {
+        //如果在动画过程中，则不处理
         if (toolBarStatus == 2) {
             return;
         }
-
 
         if (toolBarStatus == 1) {
             beginHideAnimation();
@@ -722,6 +739,10 @@ public class MainActivity extends AppCompatActivity {
                         Logger.exception(e);
                     }
 
+                    if (tt.needSetBarHeight()) {
+                        tt.set(MainActivity.this.getWindow());
+                    }
+
                     if (hideAgain) {
                         hideAgain = false;
                         hideBar();
@@ -844,39 +865,39 @@ public class MainActivity extends AppCompatActivity {
                     updateKAfterTime = Long.MAX_VALUE;
                 }
                 //当满足条件时 弹出添加足迹提示（自动足迹）
-                if (timeTool.WarnOnce()&& (Setting.getValueI(Setting.AUTO_STEP) == 1)
+                if (timeTool.WarnOnce() && (Setting.getValueI(Setting.AUTO_STEP) == 1)
                         && (!lastHymn.hasStepToday()) && !screenCastingMode) {
                     Logger.info("set VISIBLE");
-                        binding.stepLl.setVisibility(View.VISIBLE);
+                    binding.stepLl.setVisibility(View.VISIBLE);
                     binding.stepClose.setVisibility(View.VISIBLE);
                     binding.stepSure.setVisibility(View.VISIBLE);
-                        binding.stepLl.bringToFront();
-                        binding.stepClose.setOnClickListener(v -> {
-                            Logger.info("stepClose");
+                    binding.stepLl.bringToFront();
+                    binding.stepClose.setOnClickListener(v -> {
+                        Logger.info("stepClose");
+                        binding.stepLl.setVisibility(View.GONE);
+                    });
+                    binding.stepSure.setOnClickListener(v -> {
+                        Logger.info("stepSure");
+                        Hymn hymn = lastHymn;
+                        String newStep = hymn.addStep();
+                        try {
+                            hymn.update();
+                            SdCardTool.writeToFile(SdCardTool.getResPath() + File.separator + SdCardTool.STEP_FILE_NAME, hymn + " " + newStep, SdCardTool.FILE_APPEND);
+                            setTitleText(lastFile);
                             binding.stepLl.setVisibility(View.GONE);
-                        });
-                        binding.stepSure.setOnClickListener(v -> {
-                            Logger.info("stepSure");
-                            Hymn hymn = lastHymn;
-                            String newStep = hymn.addStep();
-                            try {
-                                hymn.update();
-                                SdCardTool.writeToFile(SdCardTool.getResPath() + File.separator + SdCardTool.STEP_FILE_NAME, hymn + " " + newStep, SdCardTool.FILE_APPEND);
-                                setTitleText(lastFile);
-                                binding.stepLl.setVisibility(View.GONE);
-                                toastInTimerH("已留下足迹");
-                            } catch (Exception e) {
-                                Logger.exception(e);
-                            }
-                        });
+                            toastInTimerH("已留下足迹");
+                        } catch (Exception e) {
+                            Logger.exception(e);
+                        }
+                    });
                 }
 
                 boolean showStepTime = Setting.getValueB(Setting.AUTO_STEP_TIME);
                 if (showStepTime) {
                     binding.timeTv.setVisibility(View.VISIBLE);
                     binding.timeTv.bringToFront();
-                    binding.timeTv.setText(timeTool.getTime());
-                }else{
+                    binding.timeTv.setText(timeTool.getTime() + "\r\n" + tt.getStatus());
+                } else {
                     binding.timeTv.setVisibility(View.INVISIBLE);
                 }
 
@@ -885,7 +906,7 @@ public class MainActivity extends AppCompatActivity {
                             (viv == View.VISIBLE ? binding.mp3Layout.getHeight() : 0);
                     int h2 = binding.tableLayout.getHeight();
 
-                    tt.set(h1, h2);
+                    tt.set(h1, h2 * 2);
                 }
 
                 //长按显示收藏历史
@@ -1055,32 +1076,33 @@ public class MainActivity extends AppCompatActivity {
                 String newPath = SdCardTool.getSharePath() + File.separator + Service.getC().getNameAfterDeal(file, true);
                 if (isMp3) {
                     newPath = newPath.replace("pdf", "mp3");
-                    if (!Service.getC().copyFile(file.getMp3(), MyFile.from(newPath)))
+                    if (!Service.getC().copyFile(file.getMp3(), MyFile.from(newPath))) {
                         return;
+                    }
                 } else if (!Service.getC().copyFile(file, MyFile.from(newPath))) {
-                    Logger.info("复制文件出错");
                     return;
                 }
-
-                uri = FileProvider.getUriForFile(MainActivity.this, BuildConfig.APPLICATION_ID + ".preparewu", new File(newPath));
-
-                Logger.info("uri: " + uri);
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.putExtra(Intent.EXTRA_STREAM, uri);
-                if (isMp3)
-                    share.setType("audio/x-mpeg");
-                else
-                    share.setType("application/pdf");
-                share.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                share.addCategory(Intent.CATEGORY_DEFAULT);
-                share.setPackage("com.tencent.mm");
-
-                if (share.resolveActivity(MainActivity.this.getPackageManager()) != null) {
-                    startActivity(share);
-                    Logger.info("分享文件成功");
-                } else {
-                    Logger.info("分享文件出错");
-                }
+Service.getC().share(MainActivity.this, new File(newPath));
+//                uri = FileProvider.getUriForFile(MainActivity.this, "pri.prepare.lovehymn.provider", new File(newPath));
+//
+//                Logger.info("uri: " + uri);
+//                Intent share = new Intent(Intent.ACTION_SEND);
+//                share.putExtra(Intent.EXTRA_STREAM, uri);
+//                if (isMp3) {
+//                    share.setType("audio/x-mpeg");
+//                } else {
+//                    share.setType("application/pdf");
+//                }
+//                share.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                share.addCategory(Intent.CATEGORY_DEFAULT);
+//                share.setPackage("com.tencent.mm");
+//
+//                if (share.resolveActivity(MainActivity.this.getPackageManager()) != null) {
+//                    startActivity(share);
+//                    Logger.info("分享文件成功");
+//                } else {
+//                    Logger.info("分享文件出错");
+//                }
             } catch (Exception e) {
                 Logger.exception(e);
             }

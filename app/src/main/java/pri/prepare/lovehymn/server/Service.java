@@ -5,10 +5,13 @@ import static pri.prepare.lovehymn.server.function.SdCardTool.FILE_OVERWRITE;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.text.ClipboardManager;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,7 +36,6 @@ import java.util.zip.ZipInputStream;
 import pri.prepare.lovehymn.R;
 import pri.prepare.lovehymn.client.LoadRes;
 import pri.prepare.lovehymn.client.MainActivity;
-import pri.prepare.lovehymn.client.SettingDialog;
 import pri.prepare.lovehymn.client.tool.LOAD_ENUM;
 import pri.prepare.lovehymn.client.tool.LoadProcess;
 import pri.prepare.lovehymn.server.dal.AuthorD;
@@ -1133,6 +1135,12 @@ public class Service {
             arr.add(p);
         }
 
+        String[] es = SdCardTool.getExceptionFolder();
+        if (es.length > 0) {
+            String p = "异常文件夹：" + String.join(";", es);
+            arr.add(p);
+        }
+
         TC.end("getResStatString");
         TC.log();
         arr.add("现在大部分资源都收集好了：大本诗歌资源最全，补充本次之，可能暂时不会再完善了。MP3基本都有，有一些MP3仅是伴奏，或是普通录音，若有好的资源，可以提供给作者。");
@@ -2069,40 +2077,114 @@ public class Service {
                 arr.add("找不到诗歌蓝版文件夹或无权限");
                 return arr.toArray(new String[0]);
             }
-            arr.add(f.getName());
-            for (File file : f.listFiles()) {
-                dfsFs(file, 1, arr);
-            }
 
-            return arr.toArray(new String[0]);
+            for (File file : f.listFiles()) {
+                int[] ns = new int[2];
+                if (isCorrect(file, "pdf", ns)) {
+                    arr.add(file.getName() + ":pdf folder*" + ns[0] + " file*" + ns[1]);
+                } else if (isCorrect(file, "mp3", ns)) {
+                    arr.add(file.getName() + ":mp3 folder*" + ns[0] + " file*" + ns[1]);
+                } else {
+                    dfsFs(file, 0, arr);
+                }
+            }
+            String[] t = arr.toArray(new String[0]);
+            for (int i = 0; i < t.length; i++) {
+                t[i] = t[i].replace(RS, "*");
+            }
+            return t;
         } catch (Exception e) {
             Logger.exception(e);
             return new String[]{e.getMessage()};
         }
     }
 
+    /**
+     * 获取文件夹下所有文件是否是特定文件类型
+     *
+     * @param file folder
+     * @param type pdf mp3 etc
+     * @param ns   [0] folderNumber [1] fileNumber
+     * @return
+     */
+    private boolean isCorrect(File file, String type, int[] ns) {
+        if (!file.isDirectory()) {
+            return false;
+        }
+        if (isCorrect0(file, type, ns)) {
+            return true;
+        }
+        ns[0] = 0;
+        ns[1] = 0;
+
+        for (File d : file.listFiles()) {
+            if (!d.isDirectory()) {
+                return false;
+            }
+            ns[0]++;
+            for (File f : d.listFiles()) {
+                if (!f.isFile()) {
+                    return false;
+                }
+                if (!f.getName().endsWith(type)) {
+                    return false;
+                }
+                ns[1]++;
+            }
+        }
+        return true;
+    }
+
+    private boolean isCorrect0(File file, String type, int[] ns) {
+        if (!file.isDirectory()) {
+            return false;
+        }
+        ns[0] = 0;
+        for (File f : file.listFiles()) {
+            if (!f.isFile()) {
+                return false;
+            }
+            if (!f.getName().endsWith(type)) {
+                return false;
+            }
+            ns[1]++;
+        }
+        return true;
+    }
+
+    private static final String RS = "=";
+
     private void dfsFs(File file, int deep, List<String> arr) {
         if (file.isDirectory()) {
-            arr.add(rp(deep) + file.getName());
-            for (File f2 : file.listFiles()) {
-                dfsFs(f2, deep + 1, arr);
+            int[] ns = new int[2];
+            if (isCorrect(file, "pdf", ns)) {
+                if (ns[0] == 0) {
+                    arr.add(rp(deep) + file.getName() + ":pdf file*" + ns[1]);
+                } else {
+                    arr.add(rp(deep) + file.getName() + ":pdf folder*" + ns[0] + " file*" + ns[1]);
+                }
+            } else {
+                arr.add(rp(deep) + file.getName());
+                for (File f2 : file.listFiles()) {
+                    dfsFs(f2, deep + 1, arr);
+                }
             }
         } else {
             if (file.getName().toLowerCase().endsWith("mp3")) {
                 String t = arr.get(arr.size() - 1);
                 if (t.contains("mp3")) {
-                    t = rp(deep) + "mp3 " + (Integer.parseInt(t.split(" ")[1]) + 1);
+                    t = rp(deep) + "mp3" + RS + (Integer.parseInt(t.split(RS)[1]) + 1);
                     arr.set(arr.size() - 1, t);
                 } else {
-                    arr.add(rp(deep) + "mp3 1");
+                    arr.add(rp(deep) + "mp3" + RS + "1");
                 }
             } else if (file.getName().toLowerCase().endsWith("pdf")) {
                 String t = arr.get(arr.size() - 1);
                 if (t.contains("pdf")) {
-                    t = rp(deep) + "pdf " + (Integer.parseInt(t.split(" ")[1]) + 1);
+                    t = rp(deep) + "pdf" + RS + (Integer.parseInt(t.split(RS)[1]) + 1);
                     arr.set(arr.size() - 1, t);
                 } else {
-                    arr.add(rp(deep) + "pdf 1");
+                    arr.add(rp(deep) + "pdf" + RS + "1");
                 }
             } else {
                 arr.add(rp(deep) + file.getName());
@@ -2111,6 +2193,9 @@ public class Service {
     }
 
     private String rp(int deep) {
+        if (deep == 0) {
+            return "";
+        }
         if (deep == 1) {
             return "-";
         }
@@ -2133,4 +2218,39 @@ public class Service {
     }
 
 
+    public void share(Activity mainActivity, File file) {
+        try {
+            Logger.info("share " + file.getName());
+            final Uri uri;
+            if (!file.getAbsolutePath().startsWith(SdCardTool.getSharePath())) {
+                Logger.info("只能共享在共享文件夹里的文件");
+                return;
+            }
+            uri = FileProvider.getUriForFile(mainActivity, "pri.prepare.lovehymn.provider", file);
+
+            Logger.info("uri: " + uri);
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.putExtra(Intent.EXTRA_STREAM, uri);
+
+            if (file.getName().toLowerCase().endsWith("mp3")) {
+                share.setType("audio/x-mpeg");
+            } else if (file.getName().toLowerCase().endsWith("pdf")) {
+                share.setType("application/pdf");
+            } else {
+                share.setType("text/plain");
+            }
+            share.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            share.addCategory(Intent.CATEGORY_DEFAULT);
+            share.setPackage("com.tencent.mm");
+
+            if (share.resolveActivity(mainActivity.getPackageManager()) != null) {
+                mainActivity.startActivity(share);
+                Logger.info("分享文件成功");
+            } else {
+                Logger.info("分享文件出错");
+            }
+        } catch (Exception e) {
+            Logger.exception(e);
+        }
+    }
 }

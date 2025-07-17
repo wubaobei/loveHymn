@@ -1,21 +1,54 @@
 package pri.prepare.lovehymn.client.tool;
 
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 
 import pri.prepare.lovehymn.server.entity.Logger;
 
 public class TouchUtil {
-    public TouchUtil(WindowManager wm) {
-        set(wm);
+    public TouchUtil(WindowManager wm, Window window) {
+        set(wm, window);
     }
 
     private int width, height;
+    private int barHeight = -100;
 
-    public void set(WindowManager wm) {
+    public void set(WindowManager wm, Window window) {
         width = ScreenUtils.getScreenWidth(wm);
         height = ScreenUtils.getScreenHeight(wm);
+
+        set(window);
+
         Logger.info("set wh " + width + " " + height);
+    }
+
+    public boolean needSetBarHeight() {
+        barHeight++;
+        if (barHeight % 10 != 0) {
+            return false;
+        }
+        return barHeight < 0;
+    }
+
+    public void set(Window window) {
+        if (barHeight < 0) {
+            View decorView = window.getDecorView();
+            WindowInsets insets = decorView.getRootWindowInsets();
+            if (insets != null) {
+                int navigationBarHeight = insets.getSystemWindowInsetBottom();
+                Logger.info("navigationBarHeight " + navigationBarHeight);
+                if (navigationBarHeight > 0) {
+                    barHeight = navigationBarHeight;
+                    height -= barHeight;
+                }
+                // 使用获取到的高度
+            } else {
+                Logger.info("insets is null");
+            }
+        }
     }
 
     public void set(int height1, int height2) {
@@ -359,4 +392,14 @@ public class TouchUtil {
         jumpFlag = true;
     }
     //endregion
+
+    private String es = "";
+
+    public void setEvent4status(String s) {
+        es = s;
+    }
+
+    public String getStatus() {
+        return "width:" + width + " height:" + height + "\r\nh1:" + h1 + " h2:" + h2 + "\r\nx=" + (int) x + " y=" + (int) y + "\r\nlastEvent:" + es;
+    }
 }

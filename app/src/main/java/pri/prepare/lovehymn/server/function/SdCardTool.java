@@ -396,7 +396,7 @@ public class SdCardTool {
      * 获取资源列表，用于比较更新情况
      */
     public static String[] getResFileList() {
-        ArrayList<String> s = new ArrayList<>();
+        List<String> s = new ArrayList<>();
         for (MyFile fnn : MyFile.from(getResPath()).listFiles()) {
             String n = fnn.getName();
             if (n.contains(".")) {
@@ -416,6 +416,20 @@ public class SdCardTool {
         Collections.sort(s);
         if (s.size() == 0)
             Logger.info("no res file");
+        return s.toArray(new String[0]);
+    }
+    public static String[] getExceptionFolder() {
+        List<String> s = new ArrayList<>();
+        List<String> c=List.of("res","white","补充本","唱诗人","大本","儿童诗歌","其它","青年诗歌","特会标语诗歌","新歌颂咏");
+        for (MyFile fnn : MyFile.from(getLbPath()).listFiles()) {
+            if(fnn.getName().length()==1){
+                continue;
+            }
+            if(c.contains(fnn.getName())){
+                continue;
+            }
+            s.add(fnn.getName());
+        }
         return s.toArray(new String[0]);
     }
 

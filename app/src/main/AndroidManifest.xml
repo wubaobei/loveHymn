@@ -20,7 +20,8 @@
         <activity
             android:name=".client.StartPageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashActivityTheme">
+            android:theme="@style/SplashActivityTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -46,7 +47,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.preparewu"
+            android:authorities="pri.prepare.lovehymn.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

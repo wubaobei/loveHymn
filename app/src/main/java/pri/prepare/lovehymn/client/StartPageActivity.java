@@ -144,7 +144,7 @@ public class StartPageActivity extends AppCompatActivity {
     final Runnable rb = new Runnable() {
         @Override
         public void run() {
-            Logger.info("开始获取权限，并尝试更新资源");
+            Logger.info("初始化及自检 "+Service.getC().getVersionStr(StartPageActivity.this));
             try {
                 //请求文件管理权限
                 requestPermission();
@@ -179,7 +179,7 @@ public class StartPageActivity extends AppCompatActivity {
                         Thread.sleep(800 - t2);
                     }
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Logger.exception(e);
                 }
 
                 ts = -1;
@@ -221,6 +221,7 @@ public class StartPageActivity extends AppCompatActivity {
     private long ts;
 
     private void toMain() {
+        Logger.info("跳转首页");
         Intent intent = new Intent(StartPageActivity.this, MainActivity.class);
         startActivity(intent);
         StartPageActivity.this.finish();

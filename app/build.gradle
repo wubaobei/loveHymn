@@ -1,14 +1,16 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
 
 android {
-    compileSdkVersion 30
+    namespace 'pri.prepare.lovehymn'
+    compileSdk 33
     defaultConfig {
         applicationId "pri.prepare.lovehymn"
-        minSdkVersion 26
-        targetSdkVersion 29
-        versionCode 98
-        versionName "2.0.3"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdk 26
+        targetSdk 33
+        versionCode 99
+        versionName "2.0.4"
     }
     buildTypes {
         release {
@@ -17,11 +19,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_9
+        targetCompatibility JavaVersion.VERSION_1_9
     }
     dataBinding {
         enabled true
+    }
+    configurations {
+        all {
+            exclude group: 'com.google.guava', module: 'listenablefuture'
+        }
     }
 
 }
@@ -33,11 +40,15 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
-//    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'org.apache.commons:commons-lang3:3.4'
     implementation 'com.google.guava:guava:18.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'org.jsoup:jsoup:1.12.2'
     implementation 'junit:junit:4.12'
+}
+
+repositories {
+    google()
+    jcenter ()
 }

@@ -3,6 +3,7 @@ package pri.prepare.lovehymn.server;
 import static pri.prepare.lovehymn.server.function.SdCardTool.FILE_NO_OVERWRITE;
 import static pri.prepare.lovehymn.server.function.SdCardTool.FILE_OVERWRITE;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -2218,6 +2219,7 @@ public class Service {
     }
 
 
+    @SuppressLint("QueryPermissionsNeeded")
     public void share(Activity mainActivity, File file) {
         try {
             Logger.info("share " + file.getName());

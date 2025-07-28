@@ -152,9 +152,15 @@ public class StartPageActivity extends AppCompatActivity {
                 verifyStoragePermissions(StartPageActivity.this);
                 //等待用户给与读写权限
                 if (Service.getC().noPer(StartPageActivity.this)) {
+                    int n=0;
                     while (Service.getC().noPer(StartPageActivity.this)) {
                         try {
                             Thread.sleep(500);
+                            n++;
+                            if(n%10==0){
+                                Logger.info("再次申请读写权限");
+                                verifyStoragePermissions(StartPageActivity.this);
+                            }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

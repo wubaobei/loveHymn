@@ -1082,27 +1082,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (!Service.getC().copyFile(file, MyFile.from(newPath))) {
                     return;
                 }
-Service.getC().share(MainActivity.this, new File(newPath));
-//                uri = FileProvider.getUriForFile(MainActivity.this, "pri.prepare.lovehymn.provider", new File(newPath));
-//
-//                Logger.info("uri: " + uri);
-//                Intent share = new Intent(Intent.ACTION_SEND);
-//                share.putExtra(Intent.EXTRA_STREAM, uri);
-//                if (isMp3) {
-//                    share.setType("audio/x-mpeg");
-//                } else {
-//                    share.setType("application/pdf");
-//                }
-//                share.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                share.addCategory(Intent.CATEGORY_DEFAULT);
-//                share.setPackage("com.tencent.mm");
-//
-//                if (share.resolveActivity(MainActivity.this.getPackageManager()) != null) {
-//                    startActivity(share);
-//                    Logger.info("分享文件成功");
-//                } else {
-//                    Logger.info("分享文件出错");
-//                }
+                Service.getC().share(MainActivity.this, new File(newPath));
             } catch (Exception e) {
                 Logger.exception(e);
             }

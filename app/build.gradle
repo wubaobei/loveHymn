@@ -9,8 +9,8 @@ android {
         applicationId "pri.prepare.lovehymn"
         minSdk 26
         targetSdk 33
-        versionCode 99
-        versionName "2.0.4"
+        versionCode 100
+        versionName "2.0.4.1"
     }
     buildTypes {
         release {
